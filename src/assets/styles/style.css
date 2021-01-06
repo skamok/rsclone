@@ -12,3 +12,19 @@ html {
   box-sizing: inherit;
 }
 
+/*Test for signup*/
+.formsignup,
+.formsignin {
+  font-size: large;
+  color: black;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  width: 300px;
+  background-color: darkkhaki;
+  height: 120px;
+  margin: 10px auto; 
+}
+/*END Test for signup*/
+
