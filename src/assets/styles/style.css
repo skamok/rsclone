@@ -1,14 +1,201 @@
 @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Zhi+Mang+Xing&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap');
 
 html {
   box-sizing: border-box;
   font-size: 10px;
-  font-family: 'Open Sans', sans-serif;
+  font-family: 'Quicksand', sans-serif;
   font-weight: 300;
   color: #d2d2d2;
+}
+
+body {
+  height: 100vh;
+  background-color: #5A5C59;
 }
 
 *, *::before, *::after {
   box-sizing: inherit;
 }
 
+button {
+  transition: 0.3s ease-out;
+}
+
+header {
+  height: 10%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.logo {
+  font-family: 'Zhi Mang Xing', sans-serif;
+  font-size: 48px;
+}
+
+.logo-entered {
+  font-size: 36px;
+}
+
+main {
+  height: 80%;
+}
+
+.authorization {
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  column-gap: 10%;
+}
+
+.sign-in-block, .registration-block {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  row-gap: 5px;
+}
+
+.authorization-buttons {
+  width: 230px;
+  height: 61px;
+  background: #DDDDDD;
+  box-shadow: 4px 3px 4px rgba(255, 255, 255, 0.23);
+  border-radius: 15px;
+  outline: none;
+  border: none;
+  font-family: 'Quicksand', sans-serif;
+  font-size: 24px;
+  font-weight: 400;
+  color: #6D6D6D;
+}
+
+.hints {
+  font-weight: 400;
+  font-size: 16px;
+  color: #DCC29B;
+}
+
+footer {
+  height: 10%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  column-gap: 8px;
+}
+
+.gh_link {
+  font-family: 'Quicksand', sans-serif;
+  font-size: 14px;
+  color: #DCC29B;
+}
+
+.gh-links {
+  display: flex;
+  align-items: center;
+  column-gap: 8px;
+}
+
+.powered_by, .for {
+  color: #fff;
+  font-size: 1.4rem;
+}
+
+.rss_logo {
+  width: 80px;
+}
+
+.inputs {
+  width: 375px;
+  height: 40px;
+  background: #DDDDDD;
+  box-shadow: 4px 3px 4px rgba(255, 255, 255, 0.25);
+  border-radius: 10px;
+  outline: none;
+  font-family: 'Quicksand', sans-serif;
+  padding: 5px;
+}
+
+.sign_in_form {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  row-gap: 5%;
+}
+
+.submit_button {
+  width: 230px;
+  height: 50px;
+  background: #DCC29B;
+  box-shadow: 4px 3px 4px rgba(255, 255, 255, 0.25);
+  border-radius: 15px;
+  border: none;
+  outline: none;
+  font-family: 'Quicksand', sans-serif;
+  font-size: 2.4rem;
+  font-weight: 300;
+}
+
+/* _____________________________________________hover effects */
+
+.authorization-buttons:hover, .gh_link:hover, .rss_logo:hover {
+  transform: scale(1.05);
+  transition: 0.3s ease-out;
+  cursor: pointer;
+}
+
+.inputs:hover {
+  transform: scale(1.05);
+  transition: 0.3s ease-out;
+}
+
+.submit_button:hover {
+  opacity: 0.5;
+  transition: 0.3s ease-out;
+  cursor: pointer;
+}
+
+.authorization-buttons:active, .gh_link:active, .rss_logo:active {
+  opacity: .7;
+}
+
+/* _____________________________________________media */
+
+@media screen and (max-width: 540px) {
+  .authorization {
+    flex-direction: column;
+    row-gap: 10%;
+  }
+
+  footer {
+    flex-direction: column;
+    row-gap: 5px;
+  }
+
+  .gh-links {
+    column-gap: 5px;
+  }
+
+  .gh_link {
+    font-size: 1.2rem;
+  }
+
+  .powered_by, .for {
+    display: none;
+  }
+
+  .inputs {
+    width: 300px;
+  }
+
+  .submit_button {
+    width: 200px;
+    height: 40px;
+  }
+}
