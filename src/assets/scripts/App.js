@@ -37,7 +37,7 @@ formAddLot.btnAddLot = formAddLot.form.querySelector('#btnaddlot');
 const formReadLot = {
   form: document.getElementById('formreadlot')
 };
-formReadLot.EDecsription = formReadLot.form.querySelector('#lotdecsription');
+formReadLot.EDecsription = formReadLot.form.querySelector('#lotdescription');
 formReadLot.ETitle = formReadLot.form.querySelector('#lottitle');
 formReadLot.img0 = formReadLot.form.querySelector('#lotimg0');
 formReadLot.img1 = formReadLot.form.querySelector('#lotimg1');
@@ -91,7 +91,20 @@ export default class App {
     this.firebase.readLots()
       .then((lots) => {
         const lotsArray = Object.entries(lots);
-        
+        this.formReadLot.EDecsription.innerHTML = lotsArray[0][1].description;
+        this.formReadLot.ETitle.innerHTML = lotsArray[0][1].title;
+        for (let index = 0; index < 2; index++) {
+          console.log(lotsArray[0][1].imgURLs[index]);
+          const imgRef = this.firebase.storageRef.child(lotsArray[0][1].imgURLs[index]);
+          imgRef.getDownloadURL().then((url) => {
+            console.log(url);
+            if (index === 0 ) {
+              formReadLot.img0.src = url;
+            } else {
+              formReadLot.img1.src = url;
+            }
+          });
+        }
       });
   }
 }

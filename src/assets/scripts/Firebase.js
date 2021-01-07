@@ -90,6 +90,7 @@ export default class Firebase {
     for (let index = 0; index < lot.imgFiles.length; index++) {
       const imgRef = lotStorageRef.child(lot.imgFiles[index].name);
       imgsArray.push(imgRef.fullPath);
+      //imgsArray.push(imgRef.getDownloadURL);
       imgRef.put(lot.imgFiles[index]);
     }
     const newLot = {
