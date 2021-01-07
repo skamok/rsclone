@@ -1,4 +1,5 @@
 import SignInPage from './SignInPage.js';
+import RegistrationPage from './RegistrationPage.js';
 
 export default class AuthorizationPage {
   constructor() {
@@ -38,6 +39,10 @@ export default class AuthorizationPage {
     this.buttonRegistration = document.createElement('button');
     this.buttonRegistration.classList.add('registration-button', 'authorization-buttons');
     this.buttonRegistration.innerText = 'Registration';
+    this.buttonRegistration.addEventListener('click', () => {
+      const registrationPage = new RegistrationPage();
+      registrationPage.createRegistrationPage();
+    });
 
     this.registrationBlock.appendChild(this.registrationHint);
     this.registrationBlock.appendChild(this.buttonRegistration);

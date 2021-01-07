@@ -116,6 +116,7 @@ footer {
   border-radius: 10px;
   outline: none;
   font-family: 'Quicksand', sans-serif;
+  padding: 5px;
 }
 
 .sign_in_form {
