@@ -1,3 +1,5 @@
+import SignInPage from './SignInPage.js';
+
 export default class AuthorizationPage {
   constructor() {
     this.header = document.querySelector('header');
@@ -18,6 +20,10 @@ export default class AuthorizationPage {
     this.buttonSignIn = document.createElement('button');
     this.buttonSignIn.classList.add('sign-in-button', 'authorization-buttons');
     this.buttonSignIn.innerText = 'Sign in';
+    this.buttonSignIn.addEventListener('click', () => {
+      const signInPage = new SignInPage();
+      signInPage.createSignInPage();
+    });
 
     this.signInBlock.appendChild(this.signInHint);
     this.signInBlock.appendChild(this.buttonSignIn);

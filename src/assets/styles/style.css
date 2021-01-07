@@ -108,10 +108,54 @@ footer {
   width: 80px;
 }
 
+.inputs {
+  width: 375px;
+  height: 40px;
+  background: #DDDDDD;
+  box-shadow: 4px 3px 4px rgba(255, 255, 255, 0.25);
+  border-radius: 10px;
+  outline: none;
+  font-family: 'Quicksand', sans-serif;
+}
+
+.sign_in_form {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  row-gap: 5%;
+}
+
+.submit_button {
+  width: 230px;
+  height: 50px;
+  background: #DCC29B;
+  box-shadow: 4px 3px 4px rgba(255, 255, 255, 0.25);
+  border-radius: 15px;
+  border: none;
+  outline: none;
+  font-family: 'Quicksand', sans-serif;
+  font-size: 2.4rem;
+  font-weight: 300;
+}
+
 /* _____________________________________________hover effects */
 
 .authorization-buttons:hover, .gh_link:hover, .rss_logo:hover {
   transform: scale(1.05);
+  transition: 0.3s ease-out;
+  cursor: pointer;
+}
+
+.inputs:hover {
+  transform: scale(1.05);
+  transition: 0.3s ease-out;
+}
+
+.submit_button:hover {
+  opacity: 0.5;
   transition: 0.3s ease-out;
   cursor: pointer;
 }
@@ -143,5 +187,14 @@ footer {
 
   .powered_by, .for {
     display: none;
+  }
+
+  .inputs {
+    width: 300px;
+  }
+
+  .submit_button {
+    width: 200px;
+    height: 40px;
   }
 }
