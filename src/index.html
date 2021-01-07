@@ -13,5 +13,39 @@
     <input type="text" id="password" name="password">
     <input type="submit" value="Submit" id="btnsignup">
   </form>
+  <form class="formsignin" id="formsignin">
+    <label for="email">SIGNIN email:</label>
+    <input type="text" id="signinemail" name="email">    
+    <label for="password">password</label>
+    <input type="text" id="signinpassword" name="password">
+    <input type="submit" value="Submit" id="btnsignin">
+    <input type="reset" value="SignOut" id="btnsignout">
+  </form>
+  <div class="formaddlot" id="formaddlot">
+    <label for="btnuploadfiles">Upload Images</label>
+    <input type="file" id="btnuploadfiles" name="btnuploadfiles" multiple size="50"> 
+    <label for="title">Lot Title</label>
+    <input type="text" id="title" name="title" maxlength="128" size="50" value="Lorem ipsum">
+    <label for="decsription">Lot description</label>
+    <input type="text" id="decsription" name="decsription" maxlength="128" size="50" value="Dolor sit amet consectetur adipisicing elit. Illo, maxime.">
+    <div class="imgcontainer">
+      <img src="" alt="img0" id="img0" width="150">
+      <img src="" alt="img1" id="img1" width="150">
+    </div> 
+    <button id="btnaddlot">
+      Add Lot
+    </button>
+  </div>
+  <div id="formreadlot" class="formreadlot">
+    <p id="lottitle">Title</p>
+    <p id="lotdiscription">lotdiscription</p>
+    <div class="imgcontainer">
+      <img src="" alt="img0" id="lotimg0" width="150">
+      <img src="" alt="img1" id="lotimg1" width="150">
+    </div>
+    <button id="btnreadlot">
+      Read Lot
+    </button>
+  </div>
 </body>
 </html>

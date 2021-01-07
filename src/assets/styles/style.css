@@ -26,5 +26,25 @@ html {
   height: 120px;
   margin: 10px auto; 
 }
+
+.formaddlot,
+.formreadlot {
+  font-size: large;
+  color: black;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  width: 300px;
+  background-color: darkkhaki;
+  height: 300px;
+  width: 400px;
+  margin: 10px auto; 
+}
+
+.imgcontainer {
+  display: flex;
+  flex-direction: row;
+}
 /*END Test for signup*/
 
