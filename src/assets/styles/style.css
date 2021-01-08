@@ -30,13 +30,18 @@ header {
   align-items: center;
 }
 
+.header_entered {
+  justify-content: space-between;
+}
+
 .logo {
   font-family: 'Zhi Mang Xing', sans-serif;
   font-size: 48px;
 }
 
-.logo-entered {
+.logo_entered {
   font-size: 36px;
+  margin-left: 20px;
 }
 
 main {
@@ -142,6 +147,25 @@ footer {
   font-weight: 300;
 }
 
+.profile_container {
+  width: 20%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.profile_image {
+  width: 30%;
+}
+
+.profile_subcontainer {
+  display: flex;
+  flex-direction: column;
+}
+
+.username_header {
+  font-family: 'Quicksand', sans-serif;
+}
 /* _____________________________________________hover effects */
 
 .authorization-buttons:hover, .gh_link:hover, .rss_logo:hover {

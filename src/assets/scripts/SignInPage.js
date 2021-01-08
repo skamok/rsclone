@@ -1,3 +1,5 @@
+import MainPage from './MainPage.js';
+
 export default class SignInPage {
   constructor(firebase) {
     this.main = document.querySelector('main');
@@ -33,6 +35,10 @@ export default class SignInPage {
     this.buttonSubmit.setAttribute('type', 'submit');
     this.buttonSubmit.innerText = 'Submit';
     this.signInForm.appendChild(this.buttonSubmit);
+    this.buttonSubmit.addEventListener('click', () => {
+      const mainPage = new MainPage();
+      mainPage.createMainPage();
+    });
 
     this.main.appendChild(this.signInContainer);
 
