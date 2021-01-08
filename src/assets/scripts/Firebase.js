@@ -96,7 +96,6 @@ export default class Firebase {
     for (let index = 0; index < lot.imgFiles.length; index++) {
       const imgRef = lotStorageRef.child(lot.imgFiles[index].name);
       imgsArray.push(imgRef.fullPath);
-      //imgsArray.push(imgRef.getDownloadURL);
       imgRef.put(lot.imgFiles[index]);
     }
     const newLot = {
@@ -108,14 +107,29 @@ export default class Firebase {
     };
     Firebase.log('firebase.addLot lot =', lotId, newLot);
     const lotRef = this.lotsNode.child(lotId);
-    const retPromice = lotRef.set(newLot).catch((e) => {
-      const obj = {
-        code: e.code,
-        message: e.message
-      };
-      Firebase.log('firebase.addLot error', obj);
-      return new Error(e.message);
-    });
+    const retPromice = lotRef.set(newLot)
+      .then(() => {
+        const userLotsRef = this.usersNode.child(userID + '/lots');
+        const retPromice = userLotsRef.once('value')
+          .then((snapshot) => {
+            let data = snapshot.val();
+            if (data === null) {
+              data = [lotId];
+            } else {
+              data.push(lotId);
+            }
+            userLotsRef.set(data);
+            Firebase.log('firebase.addLot user lots', data);
+          });
+      })
+      .catch((e) => {
+        const obj = {
+          code: e.code,
+          message: e.message
+        };
+        Firebase.log('firebase.addLot error', obj);
+        throw e;
+      });
     return retPromice;
   }
 
