@@ -43,7 +43,7 @@ export default class AddLotInPage {
     this.labelBtnAddPhotos.appendChild(this.contentBthPhotos);
     this.wrapPhotos = document.createElement('div');
     this.wrapPhotos.classList.add('wrap_photos');
-    this.container.appendChild(this.wrapPhotos);
+    this.formLot.appendChild(this.wrapPhotos);
 
     this.inputPhotos.addEventListener('change', resizeImagesForMiniature);
 
