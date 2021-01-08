@@ -1,6 +1,7 @@
 export default class RegistrationPage {
-  constructor() {
+  constructor(firebase) {
     this.main = document.querySelector('main');
+    this.firebase = firebase;
   }
 
   createRegistrationPage() {
@@ -15,7 +16,7 @@ export default class RegistrationPage {
 
     this.emailField = document.createElement('input');
     this.emailField.classList.add('email_field', 'inputs');
-    this.emailField.setAttribute('type', 'text');
+    this.emailField.setAttribute('type', 'email');
     this.emailField.setAttribute('placeholder', 'Email');
 
     this.registrationForm.appendChild(this.emailField);
@@ -48,5 +49,16 @@ export default class RegistrationPage {
     this.registrationForm.appendChild(this.buttonSubmit);
 
     this.main.appendChild(this.registrationContainer);
+
+    this.registrationForm.addEventListener('submit', this.signUp);
+  }
+
+  signUp = (event) => {
+    event.preventDefault();
+    this.firebase.signUP(this.emailField.value, this.passwordField.value, this.usernameField.value)
+      .then((obj) => {
+        alert(obj.email);
+      })
+      .catch((e) => alert(e));
   }
 }
