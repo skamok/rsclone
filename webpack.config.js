@@ -80,6 +80,14 @@ module.exports = {
             }
           }
         ]
+      },
+      {
+        enforce: 'pre',
+        test: /\.js$/,
+        loader: 'source-map-loader',
+        exclude: /node_modules\/@firebase/ // to exclude firebase from source-map
+        // exclude: /node_modules\/@firebase\/auth/ //to just exclude firebase auth from source-map
+        // https://stackoverflow.com/questions/62694558/firebase-auth-import-source-map-warnings
       }
     ]
   }

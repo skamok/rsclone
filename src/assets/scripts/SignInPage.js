@@ -1,6 +1,7 @@
 export default class SignInPage {
-  constructor() {
+  constructor(firebase) {
     this.main = document.querySelector('main');
+    this.firebase = firebase;
   }
 
   createSignInPage() {
@@ -13,12 +14,12 @@ export default class SignInPage {
     this.signInForm.classList.add('sign_in_form');
     this.signInContainer.appendChild(this.signInForm);
 
-    this.usernameField = document.createElement('input');
-    this.usernameField.classList.add('username_field', 'inputs');
-    this.usernameField.setAttribute('type', 'text');
-    this.usernameField.setAttribute('placeholder', 'Username');
+    this.emailField = document.createElement('input');
+    this.emailField.classList.add('email_field', 'inputs');
+    this.emailField.setAttribute('type', 'email');
+    this.emailField.setAttribute('placeholder', 'Email');
 
-    this.signInForm.appendChild(this.usernameField);
+    this.signInForm.appendChild(this.emailField);
 
     this.passwordField = document.createElement('input');
     this.passwordField.classList.add('username_field', 'inputs');
@@ -34,5 +35,16 @@ export default class SignInPage {
     this.signInForm.appendChild(this.buttonSubmit);
 
     this.main.appendChild(this.signInContainer);
+
+    this.signInForm.addEventListener('submit', this.signIn);
+  }
+
+  signIn = (event) => {
+    event.preventDefault();
+    this.firebase.signIN(this.emailField.value, this.passwordField.value)
+      .then((obj) => {
+        alert(obj.user.email);
+      })
+      .catch((e) => alert(e.message));
   }
 }
