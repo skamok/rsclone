@@ -28,17 +28,10 @@ export function resizeImagesForMiniature() {
         ctx.drawImage(img, -((width - 200) / 2), 0, width, height);
       }
     };
-    const wrapPhotos = document.querySelector('.wrap_photos');
-    wrapPhotos.appendChild(contain);
+    const main = document.querySelector('main');
+    main.appendChild(contain);
     contain.appendChild(canvas);
   }
-  const arrBtnDeletePhoto = document.querySelectorAll('.btn_delete_photo');
-  arrBtnDeletePhoto.forEach((elem) => {
-    elem.addEventListener('click', (e) => {
-      const containPhoto = e.target.closest('.contain_photo');
-      containPhoto.remove();
-    });
-  });
 }
 
 export function resizeImagesForServer() {
