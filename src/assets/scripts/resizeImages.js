@@ -42,7 +42,7 @@ export function resizeImagesForMiniature() {
 }
 
 export function resizeImagesForServer() {
-  let arrImages = [];
+  const arrImages = [];
   const MAX_WIDTH = 800;
   const MAX_HEIGHT = 600;
   for (let i = 0; i < this.files.length; i += 1) {
