@@ -206,6 +206,24 @@ export default class Firebase {
       });
   }
 
+  readCurrentUser() {
+    const userID = this.auth.currentUser.uid;
+    const refUser = this.usersNode.child(userID);
+    return refUser.once('value')
+      .then((dataSnapshot) => {
+        const user = dataSnapshot.val();
+        return Promise.resolve(user);
+      })
+      .catch((e) => {
+        const obj = {
+          code: e.code,
+          message: e.message
+        };
+        Firebase.log('firebase.readUsers error', obj);
+        throw e;
+      });
+  }
+
   static log(val, ...rest) {
     if (rest.length > 0) {
       // eslint-disable-next-line no-console
