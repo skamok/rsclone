@@ -113,7 +113,7 @@ export default class Firebase {
         return lotRef.set(newLot);
       })
       .then(() => {
-        const userLotsRef = this.usersNode.child(userID + '/lots');
+        const userLotsRef = this.usersNode.child(`${userID}/lots`);
         return userLotsRef.once('value');
       })
       .then((dataSnapshot) => {
@@ -136,49 +136,45 @@ export default class Firebase {
       });
   }
 
-  addLot(lot) {
-    const imgsArray = [];
+  addLotMultiPic(lot) {
     const userID = this.auth.currentUser.uid;
     const lotId = this.lotsNode.push().key;
     const lotStorageRef = this.storageLotsRef.child(lotId);
-    for (let index = 0; index < lot.imgFiles.length; index++) {
-      const imgRef = lotStorageRef.child(lot.imgFiles[index].name);
-      imgsArray.push(imgRef.fullPath);
-      imgRef.put(lot.imgFiles[index]);
-    }
-    const newLot = {
-      userID,
-      title: lot.title,
-      description: lot.description,
-      dtCreate: (new Date()).toJSON(),
-      imgURLs: imgsArray
-    };
-    Firebase.log('firebase.addLot lot =', lotId, newLot);
-    const lotRef = this.lotsNode.child(lotId);
-    const retPromice = lotRef.set(newLot)
+    return Firebase.loadFiles(lotStorageRef, lot.imgFiles)
+      .then((imgURLsArray) => {
+        const newLot = {
+          userID,
+          title: lot.title,
+          description: lot.description,
+          dtCreate: (new Date()).toJSON(),
+          imgURLs: imgURLsArray
+        };
+        const lotRef = this.lotsNode.child(lotId);
+        Firebase.log('firebase.addLotMultiPic lot =', lotId, newLot);
+        return lotRef.set(newLot);
+      })
       .then(() => {
-        const userLotsRef = this.usersNode.child(userID + '/lots');
-        const retPromice = userLotsRef.once('value')
-          .then((snapshot) => {
-            let data = snapshot.val();
-            if (data === null) {
-              data = [lotId];
-            } else {
-              data.push(lotId);
-            }
-            userLotsRef.set(data);
-            Firebase.log('firebase.addLot user lots', data);
-          });
+        const userLotsRef = this.usersNode.child(`${userID}/lots`);
+        return userLotsRef.once('value');
+      })
+      .then((dataSnapshot) => {
+        let userLotsArray = dataSnapshot.val();
+        if (userLotsArray === null) {
+          userLotsArray = [lotId];
+        } else {
+          userLotsArray.push(lotId);
+        }
+        Firebase.log('firebase.LotMultiPic userLots =', userLotsArray);
+        return dataSnapshot.ref.set(userLotsArray);
       })
       .catch((e) => {
         const obj = {
           code: e.code,
           message: e.message
         };
-        Firebase.log('firebase.addLot error', obj);
+        Firebase.log('firebase.LotMultiPic error', obj);
         throw e;
       });
-    return retPromice;
   }
 
   readLots() {
@@ -232,5 +228,21 @@ export default class Firebase {
       // eslint-disable-next-line no-console
       console.log(val);
     }
+  }
+
+  static async loadFiles(lotStorageRef, files) {
+    const imgURLs = [];
+    // eslint-disable-next-line no-restricted-syntax
+    for (const file of files) {
+      const imgRef = lotStorageRef.child(file.name);
+      // eslint-disable-next-line no-await-in-loop
+      await imgRef.put(file)
+        .then((uploadTaskSnapshot) => uploadTaskSnapshot.ref.getDownloadURL())
+        .then((downloadURL) => {
+          imgURLs.push(downloadURL);
+          Firebase.log('firebase.loadFiles downloadURL = ', downloadURL);
+        });
+    }
+    return imgURLs;
   }
 }
