@@ -88,6 +88,54 @@ export default class Firebase {
     this.auth.signOut();
   }
 
+  addLotSinglePic(lot) {
+    const imgsArray = [];
+    const userID = this.auth.currentUser.uid;
+    const lotId = this.lotsNode.push().key;
+    const lotStorageRef = this.storageLotsRef.child(lotId);
+    const imgRef = lotStorageRef.child(lot.imgFiles[0].name);
+    return imgRef.put(lot.imgFiles[0])
+      .then((snapshot) => {
+        Firebase.log('firebase.addLotSinglePic image loaded ');
+        return snapshot.ref.getDownloadURL();
+      })
+      .then((downloadURL) => {
+        imgsArray.push(downloadURL);
+        const newLot = {
+          userID,
+          title: lot.title,
+          description: lot.description,
+          dtCreate: (new Date()).toJSON(),
+          imgURLs: imgsArray
+        };
+        const lotRef = this.lotsNode.child(lotId);
+        Firebase.log('firebase.addLotSinglePic lot =', lotId, newLot);
+        return lotRef.set(newLot);
+      })
+      .then(() => {
+        const userLotsRef = this.usersNode.child(userID + '/lots');
+        return userLotsRef.once('value');
+      })
+      .then((dataSnapshot) => {
+        let userLotsArray = dataSnapshot.val();
+        if (userLotsArray === null) {
+          userLotsArray = [lotId];
+        } else {
+          userLotsArray.push(lotId);
+        }
+        Firebase.log('firebase.addLotSinglePic userLots =', userLotsArray);
+        return dataSnapshot.ref.set(userLotsArray);
+      })
+      .catch((e) => {
+        const obj = {
+          code: e.code,
+          message: e.message
+        };
+        Firebase.log('firebase.addLotSinglePic error', obj);
+        throw e;
+      });
+  }
+
   addLot(lot) {
     const imgsArray = [];
     const userID = this.auth.currentUser.uid;
@@ -140,6 +188,22 @@ export default class Firebase {
       return data;
     });
     return retPromise;
+  }
+
+  readUsers() {
+    return this.usersNode.once('value')
+      .then((dataSnapshot) => {
+        const users = dataSnapshot.val();
+        return Promise.resolve(users);
+      })
+      .catch((e) => {
+        const obj = {
+          code: e.code,
+          message: e.message
+        };
+        Firebase.log('firebase.readUsers error', obj);
+        throw e;
+      });
   }
 
   static log(val, ...rest) {
