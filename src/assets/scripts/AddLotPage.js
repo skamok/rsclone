@@ -108,11 +108,5 @@ export default class AddLotInPage {
     this.btnSubmit.setAttribute('value', 'Add an advert');
     this.btnSubmit.classList.add('lot_submit');
     this.formLot.appendChild(this.btnSubmit);
-
-   /* this.container.innerHTML = `
-     
-        <input type="submit" value="Add an advert" class="lot_submit">
-      </form>
-    `; */
   }
 }

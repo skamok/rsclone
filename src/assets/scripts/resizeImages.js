@@ -9,6 +9,7 @@ export function resizeImagesForMiniature() {
     const deleteBtn = document.createElement('div');
     deleteBtn.classList.add('btn_delete_photo');
     contain.appendChild(deleteBtn);
+    contain.classList.add('contain');
     const canvas = document.createElement('CANVAS');
     const ctx = canvas.getContext('2d');
     img.onload = () => {
@@ -39,6 +40,9 @@ export function resizeImagesForMiniature() {
       containPhoto.remove();
     });
   });
+  const main = document.querySelector('main');
+  main.appendChild(contain);
+  contain.appendChild(canvas);
 }
 
 export function resizeImagesForServer() {
