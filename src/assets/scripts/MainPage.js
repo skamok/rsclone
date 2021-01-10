@@ -1,6 +1,7 @@
 /* eslint-disable no-console */
-
 import MainPageLots from './MainPageLots.js';
+// eslint-disable-next-line import/no-named-as-default
+import AddLotInPage from './AddLotPage.js';
 
 export default class MainPage {
   constructor(firebase, mainSection, headerSection, logo) {
@@ -58,6 +59,8 @@ export default class MainPage {
 
         this.burgerMenuAddLot = document.createElement('div');
         this.burgerMenuAddLot.classList.add('burger_menu_element');
+        // eslint-disable-next-line no-new
+        this.burgerMenuAddLot.addEventListener('click', () => { new AddLotInPage(this.burgerMenuAddLot); });
 
         this.burgerMenuAddLotIcon = document.createElement('img');
         this.burgerMenuAddLotIcon.classList.add('add_lot_img');
