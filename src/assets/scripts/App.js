@@ -1,6 +1,5 @@
 import Firebase from './Firebase.js';
 import AuthorizationPage from './AuthorizationPageCreation.js';
-import AddLotInPage from './AddLotPage.js';
 
 const firebaseConfig = {
   apiKey: 'AIzaSyB1IcbVVCqWFMAOoFpt8K19T63RsKTXHoI',
@@ -19,6 +18,6 @@ export default class App {
   }
 
   init() {
-    const a = new AddLotInPage();
+    this.authorizationPage.createAuthorizationPage();
   }
 }

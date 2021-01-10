@@ -1,11 +1,8 @@
 import { resizeImagesForMiniature } from './resizeImages.js';
 
 export default class AddLotInPage {
-  constructor() {
-    this.container = document.createElement('section');
-    this.container.classList.add('lots_container');
-    this.main = document.querySelector('main');
-    this.main.appendChild(this.container);
+  constructor(сontainer) {
+    this.container = сontainer;
     this.createAddLotPage();
   }
 
@@ -16,6 +13,8 @@ export default class AddLotInPage {
     this.container.appendChild(this.headForm);
 
     this.formLot = document.createElement('form');
+    this.formLot.setAttribute('name', 'form_lot');
+    this.formLot.setAttribute('submit', this.formLotValidation);
     this.container.appendChild(this.formLot);
 
     this.inputPhotos = document.createElement('input');
@@ -51,6 +50,7 @@ export default class AddLotInPage {
     this.lotName.classList.add('name_lot');
     this.lotName.innerText = 'Lot name';
     this.formLot.appendChild(this.lotName);
+    // this.lotName.addEventListener('change', () => { console.log('ok')});
 
     this.inputLotName = document.createElement('input');
     this.inputLotName.setAttribute('type', 'text');
@@ -108,5 +108,12 @@ export default class AddLotInPage {
     this.btnSubmit.setAttribute('value', 'Add an advert');
     this.btnSubmit.classList.add('lot_submit');
     this.formLot.appendChild(this.btnSubmit);
+    // this.btnSubmit.addEventListener('click', this.formLotValidation);
   }
+
+  /* formLotValidation() {
+    //e.preventDefault()
+    //const form = document.forms["form_lot"].[];
+    //console.log(form);
+  } */
 }

@@ -1,3 +1,5 @@
+import AddLotInPage from './AddLotPage.js';
+
 export default class MainPage {
   constructor(firebase) {
     this.main = document.querySelector('main');
@@ -55,6 +57,7 @@ export default class MainPage {
 
         this.burgerMenuAddLot = document.createElement('div');
         this.burgerMenuAddLot.classList.add('burger_menu_element');
+        this.burgerMenuAddLot.addEventListener('click', () => { new AddLotInPage(this.burgerMenuAddLot); });
 
         this.burgerMenuAddLotIcon = document.createElement('img');
         this.burgerMenuAddLotIcon.classList.add('add_lot_img');
