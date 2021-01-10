@@ -1,4 +1,5 @@
 import MainPage from './MainPage.js';
+import MainPageLots from './MainPageLots.js';
 
 export default class SignInPage {
   constructor(firebase) {
@@ -53,6 +54,8 @@ export default class SignInPage {
       .then(() => {
         const mainPage = new MainPage(this.firebase);
         mainPage.createMainPage();
+        const mainPageLots = new MainPageLots(this.firebase);
+        mainPageLots.createMainPageLots();
       })
       .catch((e) => {
         this.errorField.innerText = `${e.message}`;
