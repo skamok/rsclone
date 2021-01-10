@@ -501,3 +501,182 @@ footer {
 .hidden {
   display: none;
 }
+
+/*______________________________________________adding lot */
+
+.lots_container > span {
+  display: block;
+}
+
+.btn-tertiary{
+  padding: 0;
+  line-height: 40px;
+  width: 180px;
+  display: block;
+  background: #C4C4C4;
+  color: black;
+  font-size: 22px;
+  border-radius: 10px;
+  font-weight: 500;
+  transition: all 0.3s;
+  box-shadow: 2px 2px 4px rgba(255, 255, 255, 0.23);
+}
+
+.btn-tertiary:hover,.btn-tertiary:focus{
+  color:#888;
+  border-color:#888;
+  transform: scale(1.05);
+}
+
+.input-file{
+  width:.1px;
+  height:.1px;
+  opacity:0;
+  overflow:hidden;
+  position:absolute;
+  z-index:-1
+}
+
+.input-file + .js-labelFile{
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+  padding:0 10px;
+  cursor:pointer;
+  margin-bottom: 15px;
+}
+
+.input-file + .js-labelFile .icon:before{
+  content: " ";
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  background: url(../images/iconAddPhotos.png) no-repeat;
+  background-size: contain;
+  margin-right: 10px;
+}
+
+.input-file + .js-labelFile.has-file .icon:before{
+  content:"\f00c";
+  color:#5AAC7B
+}
+
+.add_lot {
+  font-size: 30px;
+  font-weight: 600;
+  color: white;
+  margin-bottom: 15px;
+}
+
+.wrap_photos {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.contain_photo {
+  width: 150px;
+  height: 150px;
+  overflow: hidden;
+  border-radius: 10px;
+  margin: 10px;
+  position: relative;
+}
+
+.btn_delete_photo {
+  position: absolute;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: url(../images/delete_btn_photo.png) no-repeat;
+  right: 5px;
+  top: 5px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn_delete_photo:hover {
+  transform: scale(1.1);
+}
+
+
+.name_lot, .category_lot, .description_lot, .karma_count_lot, .region_lot {
+  display: block;
+  font-size: 18px;
+  font-weight: 500;
+  margin: 15px 0px;
+}
+
+.name_lot_input, .karma_count_lot_input {
+  display: block;
+  margin-top: 15px;
+  width: 220px;
+  height: 30px;
+  border-radius: 5px;
+  background: #C4C4C4;
+  border: 0px;
+  outline: none;
+  transition: all 0.3s;
+  font-size: 16px;
+  padding: 0px 7px;
+  box-shadow: 2px 2px 4px rgba(255, 255, 255, 0.23);
+}
+
+.name_lot_input:hover {
+  transform: scale(1.05);
+}
+
+.select_category {
+  width: 220px;
+  height: 30px;
+  border: 0px;
+  outline: none;
+  border-radius: 5px;
+  background: #c4c4c4;
+  font-size: 16px;
+  padding: 0px 7px;
+  transition: all 0.3s;
+  appearance: none;       /* Remove default arrow */
+  background-image: url(http://127.0.0.1:5500/dist/assets/images/arrow-select.png);
+  background-repeat: no-repeat;
+  background-size: 24px;
+  background-position: 190px;
+  box-shadow: 2px 2px 4px rgba(255, 255, 255, 0.23);
+  cursor: pointer;
+}
+
+.description_lot_input {
+  width: 300px;
+  height: 150px;
+  background: #c4c4c4;
+  border-radius: 5px;
+  font-size: 16px;
+  font-family: 'Quicksand';
+  font-weight: 500;
+  padding: 5px;
+  outline: none;
+  border: 0px;
+  box-shadow: 2px 2px 4px rgba(255, 255, 255, 0.23);
+  transition: all 0.3s;
+}
+
+.karma_count_lot_input {
+  width: 145px;
+  height: 30px;
+}
+
+.lot_submit {
+  width: 440px;
+  height: 50px;
+  background-color: #25A432;
+  border-radius: 10px;
+  border: 0px;
+  outline: none;
+  font-size: 22px;
+  margin: 25px 0px;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.lot_submit:hover, .karma_count_lot_input:hover, .description_lot_input:hover {
+  transform: scale(1.05);
+}
