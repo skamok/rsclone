@@ -30,13 +30,20 @@ header {
   align-items: center;
 }
 
+.header_entered {
+  justify-content: space-between;
+  max-width: 1200px;
+  margin: 0 auto
+}
+
 .logo {
   font-family: 'Zhi Mang Xing', sans-serif;
   font-size: 48px;
 }
 
-.logo-entered {
+.logo_entered {
   font-size: 36px;
+  margin-left: 20px;
 }
 
 main {
@@ -57,6 +64,11 @@ main {
   justify-content: center;
   align-items: center;
   row-gap: 5px;
+}
+
+.signIn_error {
+  color: red;
+  font-size: 1.2rem;  
 }
 
 .authorization-buttons {
@@ -142,6 +154,70 @@ footer {
   font-weight: 300;
 }
 
+.profile_container {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  margin-right: 20px;
+}
+
+.profile_image {
+  width: 50px;
+}
+
+.profile_subcontainer {
+  display: flex;
+  flex-direction: column;
+  font-size: 1.2rem;
+  color: #65FFAC;
+}
+
+.username_header {
+  font-family: 'Quicksand', sans-serif;
+  font-size: 1.4rem;
+}
+
+/* _____________________________________________main page */
+
+.main_container {
+  width: 100%;
+  max-width: 1200px;
+  height: 100%;
+  display: flex;
+  justify-content: space-evenly;
+  margin: 0 auto;
+}
+
+.burger_menu {
+  width: 27%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  row-gap: 23px;
+}
+
+.lots_container {
+  width: 70%;
+  height: 100%;
+}
+
+.burger_menu_element {
+  display: flex;
+  width: 70%;
+  align-items: center;
+  column-gap: 20px;
+  transition: 0.3s ease-out;
+}
+
+.add_lot_img {
+  width: 50px;
+}
+
+.add_lot_text {
+  font-size: 1.4rem;
+}
 /* _____________________________________________hover effects */
 
 .authorization-buttons:hover, .gh_link:hover, .rss_logo:hover {
@@ -163,6 +239,13 @@ footer {
 
 .authorization-buttons:active, .gh_link:active, .rss_logo:active {
   opacity: .7;
+}
+
+.burger_menu_element:hover {
+  transition: 0.3s ease-out;
+  cursor: pointer;
+  background-color: rgba(255, 255, 255, 0.5);
+  border-radius: 5px;
 }
 
 /* _____________________________________________media */
@@ -198,4 +281,11 @@ footer {
     width: 200px;
     height: 40px;
   }
+}
+
+/* _____________________________________________helpers */
+
+.zero_opacity {
+  /* display: none; */
+  opacity: 0;
 }
