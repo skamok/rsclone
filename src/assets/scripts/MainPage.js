@@ -57,7 +57,7 @@ export default class MainPage {
 
         this.burgerMenuAddLot = document.createElement('div');
         this.burgerMenuAddLot.classList.add('burger_menu_element');
-        this.burgerMenuAddLot.addEventListener('click', () => { new AddLotInPage(this.burgerMenuAddLot); });
+        this.burgerMenuAddLot.addEventListener('click', this.addLotClick);
 
         this.burgerMenuAddLotIcon = document.createElement('img');
         this.burgerMenuAddLotIcon.classList.add('add_lot_img');
@@ -131,5 +131,11 @@ export default class MainPage {
 
         this.burgerMenu.appendChild(this.burgerMenuSettings);
       });
+  }
+
+  addLotClick = (event) => {
+    event.preventDefault();
+    this.addLotPage = new AddLotInPage(this.lotsContainer, this.firebase);
+    this.addLotPage.createAddLotPage();
   }
 }

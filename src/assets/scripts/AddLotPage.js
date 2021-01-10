@@ -1,9 +1,9 @@
 import { resizeImagesForMiniature } from './resizeImages.js';
 
 export default class AddLotInPage {
-  constructor(сontainer) {
+  constructor(сontainer, firebase) {
     this.container = сontainer;
-    this.createAddLotPage();
+    this.firebase = firebase;
   }
 
   createAddLotPage() {
