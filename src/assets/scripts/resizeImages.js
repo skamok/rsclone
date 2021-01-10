@@ -1,11 +1,14 @@
 export function resizeImagesForMiniature() {
-  const MAX_WIDTH = 100;
-  const MAX_HEIGHT = 100;
+  const MAX_WIDTH = 150;
+  const MAX_HEIGHT = 150;
   for (let i = 0; i < this.files.length; i += 1) {
     const img = document.createElement('img');
     img.src = window.URL.createObjectURL(this.files[i]);
     const contain = document.createElement('div');
-    contain.classList.add('contain');
+    contain.classList.add('contain_photo');
+    const deleteBtn = document.createElement('div');
+    deleteBtn.classList.add('btn_delete_photo');
+    contain.appendChild(deleteBtn);
     const canvas = document.createElement('CANVAS');
     const ctx = canvas.getContext('2d');
     img.onload = () => {
@@ -25,10 +28,17 @@ export function resizeImagesForMiniature() {
         ctx.drawImage(img, -((width - 200) / 2), 0, width, height);
       }
     };
-    const main = document.querySelector('main');
-    main.appendChild(contain);
+    const wrapPhotos = document.querySelector('.wrap_photos');
+    wrapPhotos.appendChild(contain);
     contain.appendChild(canvas);
   }
+  const arrBtnDeletePhoto = document.querySelectorAll('.btn_delete_photo');
+  arrBtnDeletePhoto.forEach((elem) => {
+    elem.addEventListener('click', (e) => {
+      const containPhoto = e.target.closest('.contain_photo');
+      containPhoto.remove();
+    });
+  });
 }
 
 export function resizeImagesForServer() {
@@ -60,6 +70,5 @@ export function resizeImagesForServer() {
       arrImages.push(canvas);
     };
   }
-  console.log(arrImages);
   return arrImages;
 }
