@@ -26,12 +26,13 @@ export default class Firebase {
   }
 
   signUP(email, password, nick) {
-    const retPromice = this.auth.createUserWithEmailAndPassword(email, password)
+    return this.auth.createUserWithEmailAndPassword(email, password)
       .then((userCredential) => {
         // const user = new User(email);
         const user = {
           email,
-          nick
+          nick,
+          karmaCount: 3
         };
         Firebase.log('firebase.signUP OK', userCredential.user.uid);
         const id = userCredential.user.uid;
@@ -45,16 +46,15 @@ export default class Firebase {
         Firebase.log('firebase.signUP error', obj);
         throw error;
       });
-    return retPromice;
   }
 
   addUser(uid, user) {
     const newUser = this.usersNode.child(uid);
     Firebase.log('firebase.addUser Info =', user);
-    const retPromice = newUser.set(user)
+    return newUser.set(user)
       .then(() => {
         const obj = { email: 'ok' };
-        return obj;
+        return Promise.resolve(obj);
       })
       .catch((e) => {
         const obj = {
@@ -64,14 +64,13 @@ export default class Firebase {
         Firebase.log('firebase.addUser error', obj);
         throw e;
       });
-    return retPromice;
   }
 
   signIN(email, password) {
-    const retPromice = this.auth.signInWithEmailAndPassword(email, password)
+    return this.auth.signInWithEmailAndPassword(email, password)
       .then((userCredential) => {
         Firebase.log('firebase.signIN OK', userCredential.user.email, userCredential.user.uid);
-        return userCredential;
+        return Promise.resolve(userCredential);
       })
       .catch((e) => {
         const obj = {
@@ -81,7 +80,6 @@ export default class Firebase {
         Firebase.log('firebase.signIN error', obj);
         throw e;
       });
-    return retPromice;
   }
 
   signOUT() {

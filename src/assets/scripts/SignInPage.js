@@ -35,10 +35,7 @@ export default class SignInPage {
     this.buttonSubmit.setAttribute('type', 'submit');
     this.buttonSubmit.innerText = 'Submit';
     this.signInForm.appendChild(this.buttonSubmit);
-    this.buttonSubmit.addEventListener('click', () => {
-      const mainPage = new MainPage();
-      mainPage.createMainPage();
-    });
+    this.buttonSubmit.addEventListener('click', this.signIn);
 
     this.errorField = document.createElement('div');
     this.errorField.classList.add('signIn_error', 'zero_opacity');

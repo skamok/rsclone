@@ -9,8 +9,7 @@ export default class MainPage {
   createMainPage() {
     this.firebase.readCurrentUser()
       .then((userData) => {
-        // eslint-disable-next-line no-console
-        console.log(userData);
+        console.log('MainPage.createMainPage userData=', userData);
         this.main.innerHTML = '';
 
         this.header.classList.add('header_entered');
