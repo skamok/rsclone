@@ -1,5 +1,3 @@
-import change from './change.js';
-
 export default class MainPage {
   constructor(firebase) {
     this.main = document.querySelector('main');
@@ -58,7 +56,6 @@ export default class MainPage {
 
         this.burgerMenuAddLot = document.createElement('div');
         this.burgerMenuAddLot.classList.add('burger_menu_element');
-        this.burgerMenuAddLot.addEventListener('click', change);
 
         this.burgerMenuAddLotIcon = document.createElement('img');
         this.burgerMenuAddLotIcon.classList.add('add_lot_img');
