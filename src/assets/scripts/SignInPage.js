@@ -1,3 +1,5 @@
+import MainPage from './MainPage.js';
+
 export default class SignInPage {
   constructor(firebase) {
     this.main = document.querySelector('main');
@@ -33,6 +35,15 @@ export default class SignInPage {
     this.buttonSubmit.setAttribute('type', 'submit');
     this.buttonSubmit.innerText = 'Submit';
     this.signInForm.appendChild(this.buttonSubmit);
+    this.buttonSubmit.addEventListener('click', () => {
+      const mainPage = new MainPage();
+      mainPage.createMainPage();
+    });
+
+    this.errorField = document.createElement('div');
+    this.errorField.classList.add('signIn_error', 'zero_opacity');
+    this.errorField.innerText = 'No errors';
+    this.signInForm.appendChild(this.errorField);
 
     this.main.appendChild(this.signInContainer);
 
@@ -42,9 +53,13 @@ export default class SignInPage {
   signIn = (event) => {
     event.preventDefault();
     this.firebase.signIN(this.emailField.value, this.passwordField.value)
-      .then((obj) => {
-        alert(obj.user.email);
+      .then(() => {
+        const mainPage = new MainPage(this.firebase);
+        mainPage.createMainPage();
       })
-      .catch((e) => alert(e.message));
+      .catch((e) => {
+        this.errorField.innerText = `${e.message}`;
+        this.errorField.classList.remove('zero_opacity');
+      });
   }
 }
