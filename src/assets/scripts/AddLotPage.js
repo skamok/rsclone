@@ -1,5 +1,3 @@
-import { resizeImagesForMiniature } from './resizeImages.js';
-
 export default class AddLotInPage {
   constructor(сontainer, firebase) {
     this.container = сontainer;
@@ -44,7 +42,7 @@ export default class AddLotInPage {
     this.wrapPhotos.classList.add('wrap_photos');
     this.formLot.appendChild(this.wrapPhotos);
 
-    this.inputPhotos.addEventListener('change', resizeImagesForMiniature);
+    this.inputPhotos.addEventListener('change', this.resizeImagesForMiniature);
 
     this.lotName = document.createElement('span');
     this.lotName.classList.add('name_lot');
@@ -115,7 +113,7 @@ export default class AddLotInPage {
     e.preventDefault();
     const listMessage = document.querySelectorAll('.message_err');
     listMessage.forEach((elem) => { elem.remove(); });
-    if (this.formLot.file.files.length === 0) {
+    if (this.wrapPhotos.children.length === 0) {
       this.labelBtnAddPhotos.after(this.createMessageError('add photos'));
     }
     if (this.formLot.nameLot.value.length === 0) {
@@ -134,5 +132,73 @@ export default class AddLotInPage {
     this.messageError.classList.add('message_err');
     this.messageError.innerText = str;
     return this.messageError;
+  }
+
+  resizeImagesForMiniature = (e) => {
+    const MAX_WIDTH = 150;
+    const MAX_HEIGHT = 150;
+    for (let i = 0; i < e.target.files.length; i += 1) {
+      const img = document.createElement('img');
+      img.src = window.URL.createObjectURL(e.target.files[i]);
+      this.contain = document.createElement('div');
+      this.contain.classList.add('contain_photo');
+      const deleteBtn = document.createElement('div');
+      deleteBtn.classList.add('btn_delete_photo');
+      this.contain.appendChild(deleteBtn);
+      deleteBtn.addEventListener('click', (e) => { e.target.parentElement.remove(); });
+      const canvas = document.createElement('CANVAS');
+      const ctx = canvas.getContext('2d');
+      img.onload = () => {
+        let { width } = img;
+        let { height } = img;
+        height *= MAX_WIDTH / width;
+        width = MAX_WIDTH;
+        if (height < MAX_HEIGHT) {
+          width *= MAX_HEIGHT / height;
+          height = MAX_HEIGHT;
+        }
+        canvas.width = width;
+        canvas.height = height;
+        if (height > MAX_HEIGHT) {
+          ctx.drawImage(img, 0, -((height - 200) / 2), width, height);
+        } else {
+          ctx.drawImage(img, -((width - 200) / 2), 0, width, height);
+        }
+      };
+      this.wrapPhotos.appendChild(this.contain);
+      this.contain.appendChild(canvas);
+    }
+  }
+
+  resizeImagesForServer() {
+    const arrImages = [];
+    const MAX_WIDTH = 800;
+    const MAX_HEIGHT = 600;
+    for (let i = 0; i < this.files.length; i += 1) {
+      const img = document.createElement('img');
+      img.src = window.URL.createObjectURL(this.files[i]);
+      const contain = document.createElement('div');
+      contain.classList.add('contain');
+      const canvas = document.createElement('CANVAS');
+      const ctx = canvas.getContext('2d');
+      img.onload = () => {
+        let { width } = img;
+        let { height } = img;
+        if (width > height) {
+          if (width > MAX_WIDTH) {
+            height *= MAX_WIDTH / width;
+            width = MAX_WIDTH;
+          }
+        } else if (height > MAX_HEIGHT) {
+          width *= MAX_HEIGHT / height;
+          height = MAX_HEIGHT;
+        }
+        canvas.width = width;
+        canvas.height = height;
+        ctx.drawImage(img, 0, 0, width, height);
+        arrImages.push(canvas);
+      };
+    }
+    return arrImages;
   }
 }
