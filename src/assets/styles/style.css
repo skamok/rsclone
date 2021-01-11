@@ -472,6 +472,14 @@ footer {
   color: red;
   font-size: 16px;
   font-weight: 400;
-  display: inline-block;
-  margin-top: 10px;
+  display: block;
+  margin-top: 5px;
+}
+
+/* _____________________________________________media */
+
+@media screen and (max-width: 640px) {
+  .lot_submit {
+    width: 320px;
+  }
 }
