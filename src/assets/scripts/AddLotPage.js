@@ -14,8 +14,8 @@ export default class AddLotInPage {
 
     this.formLot = document.createElement('form');
     this.formLot.setAttribute('name', 'form_lot');
-    this.formLot.setAttribute('submit', this.formLotValidation);
     this.container.appendChild(this.formLot);
+    this.formLot.addEventListener('submit', this.formLotValidation);
 
     this.inputPhotos = document.createElement('input');
     this.inputPhotos.setAttribute('type', 'file');
@@ -50,10 +50,10 @@ export default class AddLotInPage {
     this.lotName.classList.add('name_lot');
     this.lotName.innerText = 'Lot name';
     this.formLot.appendChild(this.lotName);
-    // this.lotName.addEventListener('change', () => { console.log('ok')});
 
     this.inputLotName = document.createElement('input');
     this.inputLotName.setAttribute('type', 'text');
+    this.inputLotName.setAttribute('name', 'nameLot');
     this.inputLotName.setAttribute('class', 'name_lot_input');
     this.inputLotName.setAttribute('placeholder', 'For example, phone');
     this.formLot.appendChild(this.inputLotName);
@@ -98,6 +98,7 @@ export default class AddLotInPage {
     this.formLot.appendChild(this.karmaCount);
 
     this.inputKarmaCount = document.createElement('input');
+    this.inputKarmaCount.setAttribute('name', 'karma');
     this.inputKarmaCount.setAttribute('type', 'text');
     this.inputKarmaCount.setAttribute('class', 'karma_count_lot_input');
     this.inputKarmaCount.setAttribute('placeholder', '0');
@@ -108,12 +109,30 @@ export default class AddLotInPage {
     this.btnSubmit.setAttribute('value', 'Add an advert');
     this.btnSubmit.classList.add('lot_submit');
     this.formLot.appendChild(this.btnSubmit);
-    // this.btnSubmit.addEventListener('click', this.formLotValidation);
   }
 
-  /* formLotValidation() {
-    //e.preventDefault()
-    //const form = document.forms["form_lot"].[];
-    //console.log(form);
-  } */
+  formLotValidation = (e) => {
+    e.preventDefault();
+    const listMessage = document.querySelectorAll('.message_err');
+    listMessage.forEach((elem) => { elem.remove(); });
+    if (this.formLot.file.files.length === 0) {
+      this.labelBtnAddPhotos.after(this.createMessageError('add photos'));
+    }
+    if (this.formLot.nameLot.value.length === 0) {
+      this.formLot.nameLot.after(this.createMessageError('add lot name'));
+    }
+    if (this.formLot.descriptionLot.value.length < 20) {
+      this.formLot.descriptionLot.after(this.createMessageError('describe the lot in more detail'));
+    }
+    if (this.formLot.karma.value < 0 || this.formLot.karma.value === '') {
+      this.formLot.karma.after(this.createMessageError('enter a positive number'));
+    }
+  }
+
+  createMessageError(str) {
+    this.messageError = document.createElement('span');
+    this.messageError.classList.add('message_err');
+    this.messageError.innerText = str;
+    return this.messageError;
+  }
 }

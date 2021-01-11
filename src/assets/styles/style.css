@@ -331,7 +331,6 @@ footer {
   white-space:nowrap;
   padding:0 10px;
   cursor:pointer;
-  margin-bottom: 15px;
 }
 
 .input-file + .js-labelFile .icon:before{
@@ -467,4 +466,12 @@ footer {
 
 .lot_submit:hover, .karma_count_lot_input:hover, .description_lot_input:hover {
   transform: scale(1.05);
+}
+
+.message_err {
+  color: red;
+  font-size: 16px;
+  font-weight: 400;
+  display: inline-block;
+  margin-top: 10px;
 }
