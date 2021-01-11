@@ -9,7 +9,6 @@ export default class MainPageLots {
     this.firebase.readLots()
       .then((data) => {
         const keys = Object.keys(data);
-        console.log(keys);
         for (let i = 0; i < keys.length; i++) {
           this.lotCard = document.createElement('div');
           this.lotCard.classList.add('lot_card');

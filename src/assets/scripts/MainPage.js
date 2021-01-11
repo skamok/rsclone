@@ -13,7 +13,6 @@ export default class MainPage {
   createMainPage() {
     this.firebase.readCurrentUser()
       .then((userData) => {
-        console.log('MainPage.createMainPage userData=', userData);
         this.main.innerHTML = '';
 
         this.header.classList.add('header_entered');

@@ -1,6 +1,6 @@
 export default class RegistrationPage {
-  constructor(firebase) {
-    this.main = document.querySelector('main');
+  constructor(firebase, mainSection) {
+    this.main = mainSection;
     this.firebase = firebase;
   }
 
