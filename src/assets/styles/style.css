@@ -201,6 +201,13 @@ footer {
 .lots_container {
   width: 70%;
   height: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  row-gap: 50px;
+  column-gap: 50px;
+  overflow-y: scroll;
+  border-radius: 5px;
+  justify-content: center;
 }
 
 .burger_menu_element {
@@ -217,6 +224,52 @@ footer {
 
 .add_lot_text {
   font-size: 1.4rem;
+}
+
+.lot_card {
+  width: 240px;
+  height: 240px;
+  background-color: #DCC29B;
+  border-radius: 10px;
+}
+
+.lot_card_header {
+  height: 10%;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding-right: 10px;
+  background: #CDCDCD;
+  border-radius: 10px 10px 0 0;
+  color: #031700;
+  font-size: 1.4rem;
+  font-weight: 500;
+}
+
+.lot_card_image {
+  width: 100%;
+  height: 100%;
+}
+
+.lot_card_main {
+  height: 70%;
+}
+
+.lot_card_footer {
+  height: 20%;
+  border-radius: 0 0 10px 10px;
+  background: #CDCDCD;
+  font-size: 1.4rem;
+  font-weight: 500;
+  color: #031700;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+}
+
+.to_wishes_button {
+  width: 25px;
 }
 /* _____________________________________________hover effects */
 
@@ -246,6 +299,12 @@ footer {
   cursor: pointer;
   background-color: rgba(255, 255, 255, 0.5);
   border-radius: 5px;
+}
+
+.lot_card:hover {
+  opacity: .7;
+  transition: 0.3s ease-out;
+  cursor: pointer;
 }
 
 /* _____________________________________________media */
@@ -280,6 +339,49 @@ footer {
   .submit_button {
     width: 200px;
     height: 40px;
+  }
+
+  .main_container {
+    width: 100%;
+    max-width: 1200px;
+    height: 100%;
+    display: flex;
+    flex-direction: column-reverse;
+    justify-content: space-evenly;
+    margin: 0 auto;
+    align-items: center;
+  }
+
+.lots_container {
+    width: 70%;
+    height: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    row-gap: 50px;
+    column-gap: 50px;
+    overflow-y: scroll;
+    border-radius: 5px;
+    justify-content: center;
+  }
+
+.burger_menu {
+    width: 100%;
+    height: 20%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    /* row-gap: 23px; */
+    /* column-gap: 10px; */
+  }
+
+.burger_menu_element {
+    display: flex;
+    width: 70%;
+    align-items: center;
+    column-gap: 20px;
+    transition: 0.3s ease-out;
+    flex-direction: column;
   }
 }
 

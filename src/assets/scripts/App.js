@@ -11,10 +11,14 @@ const firebaseConfig = {
   appId: '1:1085006089053:web:c2224f43e082b9475736b4'
 };
 
+const headerSection = document.querySelector('header');
+const mainSection = document.querySelector('main');
+const logo = document.querySelector('.logo');
+
 export default class App {
   constructor() {
     this.firebase = new Firebase(firebaseConfig, true);
-    this.authorizationPage = new AuthorizationPage(this.firebase);
+    this.authorizationPage = new AuthorizationPage(this.firebase, headerSection, mainSection, logo);
   }
 
   init() {

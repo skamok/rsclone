@@ -1,15 +1,18 @@
+/* eslint-disable no-console */
+
+import MainPageLots from './MainPageLots.js';
+
 export default class MainPage {
-  constructor(firebase) {
-    this.main = document.querySelector('main');
-    this.header = document.querySelector('header');
-    this.logo = document.querySelector('.logo');
+  constructor(firebase, mainSection, headerSection, logo) {
+    this.main = mainSection;
+    this.header = headerSection;
+    this.logo = logo;
     this.firebase = firebase;
   }
 
   createMainPage() {
     this.firebase.readCurrentUser()
       .then((userData) => {
-        console.log('MainPage.createMainPage userData=', userData);
         this.main.innerHTML = '';
 
         this.header.classList.add('header_entered');
@@ -127,6 +130,9 @@ export default class MainPage {
         this.burgerMenuSettings.appendChild(this.burgerMenuSettingsText);
 
         this.burgerMenu.appendChild(this.burgerMenuSettings);
+
+        const mainPageLots = new MainPageLots(this.firebase, this.lotsContainer);
+        mainPageLots.createMainPageLots();
       });
   }
 }
