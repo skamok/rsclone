@@ -1,9 +1,10 @@
 import MainPage from './MainPage.js';
-import MainPageLots from './MainPageLots.js';
 
 export default class SignInPage {
-  constructor(firebase) {
-    this.main = document.querySelector('main');
+  constructor(firebase, mainSection, headerSection, logo) {
+    this.main = mainSection;
+    this.header = headerSection;
+    this.logo = logo;
     this.firebase = firebase;
   }
 
@@ -52,10 +53,8 @@ export default class SignInPage {
     event.preventDefault();
     this.firebase.signIN(this.emailField.value, this.passwordField.value)
       .then(() => {
-        const mainPage = new MainPage(this.firebase);
+        const mainPage = new MainPage(this.firebase, this.main, this.header, this.logo);
         mainPage.createMainPage();
-        const mainPageLots = new MainPageLots(this.firebase);
-        mainPageLots.createMainPageLots();
       })
       .catch((e) => {
         this.errorField.innerText = `${e.message}`;

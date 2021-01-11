@@ -2,9 +2,10 @@ import SignInPage from './SignInPage.js';
 import RegistrationPage from './RegistrationPage.js';
 
 export default class AuthorizationPage {
-  constructor(firebase) {
-    this.header = document.querySelector('header');
-    this.main = document.querySelector('main');
+  constructor(firebase, header, main, logo) {
+    this.header = header;
+    this.main = main;
+    this.logo = logo;
     this.firebase = firebase;
   }
 
@@ -23,7 +24,7 @@ export default class AuthorizationPage {
     this.buttonSignIn.classList.add('sign-in-button', 'authorization-buttons');
     this.buttonSignIn.innerText = 'Sign in';
     this.buttonSignIn.addEventListener('click', () => {
-      const signInPage = new SignInPage(this.firebase);
+      const signInPage = new SignInPage(this.firebase, this.main, this.header, this.logo);
       signInPage.createSignInPage();
     });
 
