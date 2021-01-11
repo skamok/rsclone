@@ -131,7 +131,7 @@ export default class MainPage {
 
         this.burgerMenu.appendChild(this.burgerMenuSettings);
 
-        const mainPageLots = new MainPageLots(this.firebase, this.lotsContainer);
+        const mainPageLots = new MainPageLots(this.firebase, this.lotsContainer, this.main, this.header);
         mainPageLots.createMainPageLots();
       });
   }
