@@ -1,8 +1,9 @@
 export default class CurrentLotPage {
-  constructor(lotInfo, header, main) {
+  constructor(lotInfo, header, main, firebase) {
     this.lotInfo = lotInfo;
     this.main = main;
     this.header = header;
+    this.firebase = firebase;
   }
 
   createCurrentLotPage() {
@@ -87,5 +88,13 @@ export default class CurrentLotPage {
     this.closeButton.addEventListener('click', () => {
       this.popUpContainer.parentNode.removeChild(this.popUpContainer);
     });
+
+    this.popupMessageAction.addEventListener('click', this.writeMessage);
+  }
+
+  writeMessage = (event) => {
+    event.preventDefault();
+    // console.log(this.lotInfo);
+    this.firebase.addMessageFromLot(this.lotInfo.lotID, this.lotInfo.userID, 'message form firstUser').then(() => alert('added'));
   }
 }
