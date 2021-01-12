@@ -2,6 +2,7 @@ export default class AddLotInPage {
   constructor(сontainer, firebase) {
     this.container = сontainer;
     this.firebase = firebase;
+    this.container.innerHTML = '';
   }
 
   createAddLotPage() {
@@ -12,6 +13,7 @@ export default class AddLotInPage {
 
     this.formLot = document.createElement('form');
     this.formLot.setAttribute('name', 'form_lot');
+    this.formLot.classList.add('form_lot');
     this.container.appendChild(this.formLot);
     this.formLot.addEventListener('submit', this.formLotValidation);
 
@@ -144,6 +146,7 @@ export default class AddLotInPage {
       const deleteBtn = document.createElement('div');
       deleteBtn.classList.add('btn_delete_photo');
       this.contain.appendChild(deleteBtn);
+      // eslint-disable-next-line no-shadow
       deleteBtn.addEventListener('click', (e) => { e.target.parentElement.remove(); });
       const canvas = document.createElement('CANVAS');
       const ctx = canvas.getContext('2d');

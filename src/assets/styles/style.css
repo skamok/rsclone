@@ -688,6 +688,10 @@ footer {
   margin-top: 5px;
 }
 
+.form_lot {
+  width: 100%;
+}
+
 /* _____________________________________________media */
 
 @media screen and (max-width: 640px) {
