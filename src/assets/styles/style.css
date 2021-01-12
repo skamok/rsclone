@@ -48,6 +48,7 @@ header {
 
 main {
   height: 80%;
+  position: relative;
 }
 
 .authorization {
@@ -271,9 +272,100 @@ footer {
 .to_wishes_button {
   width: 25px;
 }
+
+/* _____________________________________________lot popup */
+
+.popup_container {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-color: #3030309e;
+  display: flex;
+  z-index: 10;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+
+}
+
+.popup_window {
+  width: 50%;
+  min-height: 500px;
+  background-color: #CDCDCD;
+  display: flex;
+  border-radius: 10px;
+}
+
+.slider_container {
+  width: 50%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.main_lot_info_container {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-radius: 10px;
+}
+
+.close_popup_button {
+  position: absolute;
+  top: 0;
+  right: 8px;
+  width: 35px;
+}
+
+.lot_title_popup {
+  font-size: 24px;
+  font-weight: 500;
+  color: #031700;
+  padding-top: 10px;
+}
+
+.lot_popup_description {
+  color: #031700;
+  padding: 20px 0;
+  font-size: 1.4rem;
+}
+
+.test_image {
+  max-width: 90%;
+}
+
+.popup_actions_container {
+  display: flex;
+  justify-content: space-evenly;
+  column-gap: 40px;
+  padding-top: 30px;
+}
+
+.popup_action {
+  display: flex;
+  flex-direction: column;
+  row-gap: 3px;
+  align-items: center;
+}
+
+.popup_action_image {
+  width: 60px;
+}
+
+.popup_action_text {
+  color: #031700;
+  font-size: 1.2rem;
+}
+
 /* _____________________________________________hover effects */
 
-.authorization-buttons:hover, .gh_link:hover, .rss_logo:hover {
+.authorization-buttons:hover, .gh_link:hover, .rss_logo:hover, .close_popup_button:hover, .popup_action:hover {
   transform: scale(1.05);
   transition: 0.3s ease-out;
   cursor: pointer;
@@ -308,6 +400,12 @@ footer {
 }
 
 /* _____________________________________________media */
+
+@media screen and (max-width: 1024px) {
+  .popup_window {
+    width: 70%;
+  }
+}
 
 @media screen and (max-width: 540px) {
   .authorization {
@@ -383,6 +481,14 @@ footer {
     transition: 0.3s ease-out;
     flex-direction: column;
   }
+
+  .popup_window {
+    width: 95%;
+  }
+
+  .popup_actions_container {
+    column-gap: 30px;
+  }
 }
 
 /* _____________________________________________helpers */
@@ -390,4 +496,8 @@ footer {
 .zero_opacity {
   /* display: none; */
   opacity: 0;
+}
+
+.hidden {
+  display: none;
 }
