@@ -1,6 +1,5 @@
 /* eslint-disable no-console */
 import MainPageLots from './MainPageLots.js';
-// eslint-disable-next-line import/no-named-as-default
 import AddLotInPage from './AddLotPage.js';
 
 export default class MainPage {
