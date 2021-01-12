@@ -23,6 +23,7 @@ export default class Firebase {
     this.storageLotsRef = this.storageRef.child('lots');
     this.usersNode = this.database.ref('users');
     this.lotsNode = this.database.ref('lots');
+    this.chatsNode = this.database.ref('chats');
   }
 
   signUP(email, password, nick) {
@@ -89,8 +90,8 @@ export default class Firebase {
   addLotSinglePic(lot) {
     const imgsArray = [];
     const userID = this.auth.currentUser.uid;
-    const lotId = this.lotsNode.push().key;
-    const lotStorageRef = this.storageLotsRef.child(lotId);
+    const lotID = this.lotsNode.push().key;
+    const lotStorageRef = this.storageLotsRef.child(lotID);
     const imgRef = lotStorageRef.child(lot.imgFiles[0].name);
     return imgRef.put(lot.imgFiles[0])
       .then((snapshot) => {
@@ -101,13 +102,14 @@ export default class Firebase {
         imgsArray.push(downloadURL);
         const newLot = {
           userID,
+          lotID,
           title: lot.title,
           description: lot.description,
           dtCreate: (new Date()).toJSON(),
           imgURLs: imgsArray
         };
-        const lotRef = this.lotsNode.child(lotId);
-        Firebase.log('firebase.addLotSinglePic lot =', lotId, newLot);
+        const lotRef = this.lotsNode.child(lotID);
+        Firebase.log('firebase.addLotSinglePic lot =', lotID, newLot);
         return lotRef.set(newLot);
       })
       .then(() => {
@@ -117,9 +119,9 @@ export default class Firebase {
       .then((dataSnapshot) => {
         let userLotsArray = dataSnapshot.val();
         if (userLotsArray === null) {
-          userLotsArray = [lotId];
+          userLotsArray = [lotID];
         } else {
-          userLotsArray.push(lotId);
+          userLotsArray.push(lotID);
         }
         Firebase.log('firebase.addLotSinglePic userLots =', userLotsArray);
         return dataSnapshot.ref.set(userLotsArray);
@@ -136,19 +138,20 @@ export default class Firebase {
 
   addLotMultiPic(lot) {
     const userID = this.auth.currentUser.uid;
-    const lotId = this.lotsNode.push().key;
-    const lotStorageRef = this.storageLotsRef.child(lotId);
+    const lotID = this.lotsNode.push().key;
+    const lotStorageRef = this.storageLotsRef.child(lotID);
     return Firebase.loadFiles(lotStorageRef, lot.imgFiles)
       .then((imgURLsArray) => {
         const newLot = {
           userID,
+          lotID,
           title: lot.title,
           description: lot.description,
           dtCreate: (new Date()).toJSON(),
           imgURLs: imgURLsArray
         };
-        const lotRef = this.lotsNode.child(lotId);
-        Firebase.log('firebase.addLotMultiPic lot =', lotId, newLot);
+        const lotRef = this.lotsNode.child(lotID);
+        Firebase.log('firebase.addLotMultiPic lot =', lotID, newLot);
         return lotRef.set(newLot);
       })
       .then(() => {
@@ -158,9 +161,9 @@ export default class Firebase {
       .then((dataSnapshot) => {
         let userLotsArray = dataSnapshot.val();
         if (userLotsArray === null) {
-          userLotsArray = [lotId];
+          userLotsArray = [lotID];
         } else {
-          userLotsArray.push(lotId);
+          userLotsArray.push(lotID);
         }
         Firebase.log('firebase.LotMultiPic userLots =', userLotsArray);
         return dataSnapshot.ref.set(userLotsArray);
@@ -216,6 +219,143 @@ export default class Firebase {
         Firebase.log('firebase.readUsers error', obj);
         throw e;
       });
+  }
+
+  addMessageFromLot(lotID, lotOwner, message) {
+    const currentUserID = this.auth.currentUser.uid;
+    if (currentUserID === lotOwner) {
+      return Promise.reject(new Error('Yoy can not write to myself'));
+    }
+    let chatID;
+    let chatRef;
+    let messagesRef;
+    let messageID;
+    const userFirstChatsRef = this.usersNode.child(currentUserID).child('chats');
+    const userSecondChatsRef = this.usersNode.child(lotOwner).child('chats');
+    const chatsUserFirst = [];
+    const chatsUserSecond = [];
+    // check if chat exist
+    return this.chatsNode.orderByChild('lotID').equalTo(lotID).once('value')
+      .then((lotsTable) => {
+        const chatsArray = Object.values(lotsTable.val());
+        const exist = chatsArray.find((chat) => chat.userFirst === currentUserID);
+        if (exist === undefined) {
+          Firebase.log('firebase.addMessageFromLot need new chat');
+          chatID = this.chatsNode.push().key;
+          chatRef = this.chatsNode.child(chatID);
+          const chatObj = {
+            chatID,
+            lotID,
+            userFirst: currentUserID,
+            userSecond: lotOwner
+          };
+          return chatRef.set(chatObj)
+            .then(() => {
+              messagesRef = chatRef.child('messages');
+              messageID = messagesRef.push().key;
+              const messageObj = {
+                messageID,
+                message,
+                userID: currentUserID,
+                dtCreate: (new Date()).toJSON()
+              };
+              return messagesRef.child(messageID).set(messageObj);
+            })
+            .then(() => userFirstChatsRef.once('value'))
+            .then((dataSnapshot) => {
+              if (dataSnapshot.val() === null) {
+                chatsUserFirst.push(chatID);
+              } else {
+                Array.prototype.push.apply(chatsUserFirst, dataSnapshot.val());
+                chatsUserFirst.push(chatID);
+              }
+              return userSecondChatsRef.once('value');
+            })
+            .then((dataSnapshot) => {
+              if (dataSnapshot.val() === null) {
+                chatsUserSecond.push(chatID);
+              } else {
+                Array.prototype.push.apply(chatsUserSecond, dataSnapshot.val());
+                chatsUserSecond.push(chatID);
+              }
+              const updates = {};
+              updates[`/users/${currentUserID}/chats`] = chatsUserFirst;
+              updates[`/users/${lotOwner}/chats`] = chatsUserSecond;
+              this.database.ref().update(updates);
+            })
+            .then(() => {
+              Firebase.log('firebase.addMessageFromLot new chatID = ', chatID);
+              return Promise.resolve(chatID);
+            });
+        }
+        Firebase.log('firebase.addMessageFromLot chat exist');
+        chatID = exist.chatID;
+        chatRef = this.chatsNode.child(chatID);
+        messagesRef = chatRef.child('messages');
+        messageID = messagesRef.push().key;
+        const messageObj = {
+          messageID,
+          message,
+          userID: currentUserID,
+          dtCreate: (new Date()).toJSON()
+        };
+        Firebase.log('firebase.addMessageFromLot new messageID = ', messageID);
+        return messagesRef.child(messageID).set(messageObj);
+      })
+      .catch((e) => {
+        const obj = {
+          code: e.code,
+          message: e.message
+        };
+        Firebase.log('firebase.addMessageFromLot error', obj);
+        throw e;
+      });
+    /*
+    return chatRef.set(chatObj)
+      .then(() => {
+        const messageObj = {
+          messageID,
+          message,
+          userID: currentUserID,
+          dtCreate: (new Date()).toJSON()
+        };
+        return messagesRef.child(messageID).set(messageObj);
+      })
+      .then(() => userFirstChatsRef.once('value'))
+      .then((dataSnapshot) => {
+        if (dataSnapshot.val() === null) {
+          chatsUserFirst.push(chatID);
+        } else {
+          Array.prototype.push.apply(chatsUserFirst, dataSnapshot.val());
+          chatsUserFirst.push(chatID);
+        }
+        return userSecondChatsRef.once('value');
+      })
+      .then((dataSnapshot) => {
+        if (dataSnapshot.val() === null) {
+          chatsUserSecond.push(chatID);
+        } else {
+          Array.prototype.push.apply(chatsUserSecond, dataSnapshot.val());
+          chatsUserSecond.push(chatID);
+        }
+        const updates = {};
+        updates[`/users/${currentUserID}/chats`] = chatsUserFirst;
+        updates[`/users/${lotOwner}/chats`] = chatsUserSecond;
+        this.database.ref().update(updates);
+      })
+      .then(() => {
+        Firebase.log('firebase.addMessageFromLot lotID = ', chatID);
+        return Promise.resolve(chatID);
+      })
+      .catch((e) => {
+        const obj = {
+          code: e.code,
+          message: e.message
+        };
+        Firebase.log('firebase.addMessageFromLot error', obj);
+        throw e;
+      });
+    */
   }
 
   static log(val, ...rest) {
