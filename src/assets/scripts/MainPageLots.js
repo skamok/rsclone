@@ -17,7 +17,7 @@ export default class MainPageLots {
           this.lotCard = document.createElement('div');
           this.lotCard.classList.add('lot_card');
           this.lotCard.addEventListener('click', () => {
-            const lotPage = new CurrentLotPage(data[keys[i]], this.header, this.main);
+            const lotPage = new CurrentLotPage(data[keys[i]], this.header, this.main, this.firebase);
             lotPage.createCurrentLotPage();
           });
 
