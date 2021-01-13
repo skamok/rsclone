@@ -199,7 +199,8 @@ export default class AddLotInPage {
         canvas.width = width;
         canvas.height = height;
         ctx.drawImage(img, 0, 0, width, height);
-        arrImages.push(canvas);
+        const dataurl = canvas.toDataURL('image/png', 0.99);
+        arrImages.push(dataurl);
       };
     }
     return arrImages;
