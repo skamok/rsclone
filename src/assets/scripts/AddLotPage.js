@@ -1,3 +1,5 @@
+// import MainPageLots from './MainPageLots.js';
+
 export default class AddLotInPage {
   constructor(сontainer, firebase) {
     this.container = сontainer;
@@ -127,6 +129,11 @@ export default class AddLotInPage {
     if (this.formLot.karma.value < 0 || this.formLot.karma.value === '') {
       this.formLot.karma.after(this.createMessageError('enter a positive number'));
     }
+    console.log(this.resizeImagesForServer());
+    /* if (listMessage.length === 0) {
+      const mainPageLots = new MainPageLots(this.firebase, this.lotsContainer, this.main, this.header);
+      mainPageLots.createMainPageLots();
+    } */
   }
 
   createMessageError(str) {
@@ -177,9 +184,9 @@ export default class AddLotInPage {
     const arrImages = [];
     const MAX_WIDTH = 800;
     const MAX_HEIGHT = 600;
-    for (let i = 0; i < this.files.length; i += 1) {
+    for (let i = 0; i < this.inputPhotos.files.length; i += 1) {
       const img = document.createElement('img');
-      img.src = window.URL.createObjectURL(this.files[i]);
+      img.src = window.URL.createObjectURL(this.inputPhotos.files[i]);
       const contain = document.createElement('div');
       contain.classList.add('contain');
       const canvas = document.createElement('CANVAS');
@@ -199,9 +206,9 @@ export default class AddLotInPage {
         canvas.width = width;
         canvas.height = height;
         ctx.drawImage(img, 0, 0, width, height);
-        const dataurl = canvas.toDataURL('image/png', 0.99);
-        arrImages.push(dataurl);
       };
+      const dataurl = canvas.toDataURL('image/png', 0.99);
+      arrImages.push(dataurl);
     }
     return arrImages;
   }
