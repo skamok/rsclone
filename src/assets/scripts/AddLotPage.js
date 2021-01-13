@@ -135,9 +135,9 @@ export default class AddLotPage {
       this.formLot.karma.after(this.createMessageError('enter a positive number'));
     }
     if (inputError === false) {
+      const imgDataURLs = this.inputPhotos.files;// AddLotPage.resizeImagesForServer(this.inputPhotos.files);
       const lotObj = RealDatabase.createLotObj(this.formLot.nameLot.value, this.formLot.descriptionLot.value,
-        this.formLot.karma.value, this.listCategory.selectedIndex,
-        this.inputPhotos.files, this.firebase.auth.currentUser.uid);
+        this.formLot.karma.value, this.listCategory.selectedIndex, imgDataURLs, this.firebase.auth.currentUser.uid);
       this.firebase.addLotMultiPic(lotObj).then(() => alert('ok'));
     }
   }
@@ -186,13 +186,13 @@ export default class AddLotPage {
     }
   }
 
-  resizeImagesForServer() {
+  static resizeImagesForServer(files) {
     const arrImages = [];
     const MAX_WIDTH = 800;
     const MAX_HEIGHT = 600;
-    for (let i = 0; i < this.files.length; i += 1) {
+    for (let i = 0; i < files.length; i += 1) {
       const img = document.createElement('img');
-      img.src = window.URL.createObjectURL(this.files[i]);
+      img.src = window.URL.createObjectURL(files[i]);
       const contain = document.createElement('div');
       contain.classList.add('contain');
       const canvas = document.createElement('CANVAS');
@@ -212,7 +212,8 @@ export default class AddLotPage {
         canvas.width = width;
         canvas.height = height;
         ctx.drawImage(img, 0, 0, width, height);
-        arrImages.push(canvas);
+        const dataurl = canvas.toDataURL('image/png', 0.99);
+        arrImages.push(dataurl);
       };
     }
     return arrImages;
