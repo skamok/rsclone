@@ -137,25 +137,22 @@ export default class Firebase {
   }
 
   addLotMultiPic(lot) {
-    const userID = this.auth.currentUser.uid;
+    // const userID = this.auth.currentUser.uid;
     const lotID = this.lotsNode.push().key;
     const lotStorageRef = this.storageLotsRef.child(lotID);
     return Firebase.loadFiles(lotStorageRef, lot.imgFiles)
       .then((imgURLsArray) => {
-        const newLot = {
-          userID,
+        const newLot1 = {
           lotID,
-          title: lot.title,
-          description: lot.description,
-          dtCreate: (new Date()).toJSON(),
           imgURLs: imgURLsArray
         };
+        const newLot = Object.assign(newLot1, lot);
         const lotRef = this.lotsNode.child(lotID);
         Firebase.log('firebase.addLotMultiPic lot =', lotID, newLot);
         return lotRef.set(newLot);
       })
       .then(() => {
-        const userLotsRef = this.usersNode.child(`${userID}/lots`);
+        const userLotsRef = this.usersNode.child(`${lot.userID}/lots`);
         return userLotsRef.once('value');
       })
       .then((dataSnapshot) => {
@@ -217,6 +214,46 @@ export default class Firebase {
           message: e.message
         };
         Firebase.log('firebase.readUsers error', obj);
+        throw e;
+      });
+  }
+
+  toggleWishLots(lotInfo) {
+    const lot = lotInfo.lotID;
+    const currentUserID = this.auth.currentUser.uid;
+    if (currentUserID === lotInfo.userID) {
+      return Promise.reject(new Error('Error. It is your lot'));
+    }
+    const refUserWishLots = this.usersNode.child(`${currentUserID}/wishLots`);
+    let ret;
+    return refUserWishLots.once('value')
+      .then((dataSnapshot) => {
+        const lotsArray = dataSnapshot.val();
+        if (lotsArray === null) {
+          const newArray = [lot];
+          ret = `add ${lot}`;
+          return refUserWishLots.set(newArray);
+        }
+        const pos = lotsArray.indexOf(lot);
+        if (pos === -1) {
+          lotsArray.push(lot);
+          ret = `add ${lot}`;
+        } else {
+          lotsArray.splice(pos, 1);
+          ret = `delete ${lot}`;
+        }
+        return refUserWishLots.set(lotsArray);
+      })
+      .then(() => {
+        Firebase.log('firebase.toggleWish ', ret);
+        return Promise.resolve(ret);
+      })
+      .catch((e) => {
+        const obj = {
+          code: e.code,
+          message: e.message
+        };
+        Firebase.log('firebase.toggleWish error', obj);
         throw e;
       });
   }

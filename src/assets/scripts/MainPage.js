@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
 import MainPageLots from './MainPageLots.js';
-import AddLotInPage from './AddLotPage.js';
+import AddLotPage from './AddLotPage.js';
 
 export default class MainPage {
   constructor(firebase, mainSection, headerSection, logo) {
@@ -139,7 +139,7 @@ export default class MainPage {
 
   addLotClick = (event) => {
     event.preventDefault();
-    this.addLotPage = new AddLotInPage(this.lotsContainer, this.firebase);
+    this.addLotPage = new AddLotPage(this.lotsContainer, this.firebase);
     this.addLotPage.createAddLotPage();
   }
 }
