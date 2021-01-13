@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
-
 import MainPageLots from './MainPageLots.js';
+import AddLotInPage from './AddLotPage.js';
 
 export default class MainPage {
   constructor(firebase, mainSection, headerSection, logo) {
@@ -58,6 +58,7 @@ export default class MainPage {
 
         this.burgerMenuAddLot = document.createElement('div');
         this.burgerMenuAddLot.classList.add('burger_menu_element');
+        this.burgerMenuAddLot.addEventListener('click', this.addLotClick);
 
         this.burgerMenuAddLotIcon = document.createElement('img');
         this.burgerMenuAddLotIcon.classList.add('add_lot_img');
@@ -134,5 +135,11 @@ export default class MainPage {
         const mainPageLots = new MainPageLots(this.firebase, this.lotsContainer, this.main, this.header);
         mainPageLots.createMainPageLots();
       });
+  }
+
+  addLotClick = (event) => {
+    event.preventDefault();
+    this.addLotPage = new AddLotInPage(this.lotsContainer, this.firebase);
+    this.addLotPage.createAddLotPage();
   }
 }
