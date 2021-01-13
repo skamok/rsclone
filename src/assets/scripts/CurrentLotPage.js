@@ -1,0 +1,106 @@
+export default class CurrentLotPage {
+  constructor(lotInfo, header, main, firebase) {
+    this.lotInfo = lotInfo;
+    this.main = main;
+    this.header = header;
+    this.firebase = firebase;
+  }
+
+  createCurrentLotPage() {
+    this.popUpContainer = document.createElement('div');
+    this.popUpContainer.classList.add('popup_container');
+    this.main.appendChild(this.popUpContainer);
+
+    this.popUpWindow = document.createElement('div');
+    this.popUpWindow.classList.add('popup_window');
+    this.popUpContainer.appendChild(this.popUpWindow);
+
+    this.mainLotInfoContainer = document.createElement('div');
+    this.mainLotInfoContainer.classList.add('main_lot_info_container');
+    this.popUpWindow.appendChild(this.mainLotInfoContainer);
+
+    this.closeButton = document.createElement('img');
+    this.closeButton.src = './assets/images/close.png';
+    this.closeButton.classList.add('close_popup_button');
+    this.mainLotInfoContainer.appendChild(this.closeButton);
+
+    this.lotTitlePopup = document.createElement('div');
+    this.lotTitlePopup.classList.add('lot_title_popup');
+    this.lotTitlePopup.innerText = this.lotInfo.title;
+    this.mainLotInfoContainer.appendChild(this.lotTitlePopup);
+
+    this.lotPopupDescription = document.createElement('div');
+    this.lotPopupDescription.classList.add('lot_popup_description');
+    this.lotPopupDescription.innerText = this.lotInfo.description;
+    this.mainLotInfoContainer.appendChild(this.lotPopupDescription);
+
+    this.testImage = document.createElement('img');
+    this.testImage.src = `${this.lotInfo.imgURLs[0]}`;
+    this.testImage.classList.add('test_image');
+    this.mainLotInfoContainer.appendChild(this.testImage);
+
+    this.popupActionsContainer = document.createElement('div');
+    this.popupActionsContainer.classList.add('popup_actions_container');
+    this.mainLotInfoContainer.appendChild(this.popupActionsContainer);
+    // take action
+    this.popupTakeAction = document.createElement('div');
+    this.popupTakeAction.classList.add('popup_action');
+    this.popupActionsContainer.appendChild(this.popupTakeAction);
+
+    this.popupTakeActionImage = document.createElement('img');
+    this.popupTakeActionImage.src = './assets/images/take.png';
+    this.popupTakeActionImage.classList.add('popup_action_image');
+    this.popupTakeAction.appendChild(this.popupTakeActionImage);
+
+    this.popupTakeActionText = document.createElement('div');
+    this.popupTakeActionText.classList.add('popup_action_text');
+    this.popupTakeActionText.innerText = 'Take';
+    this.popupTakeAction.appendChild(this.popupTakeActionText);
+    // message action
+    this.popupMessageAction = document.createElement('div');
+    this.popupMessageAction.classList.add('popup_action');
+    this.popupActionsContainer.appendChild(this.popupMessageAction);
+
+    this.popupMessageActionImage = document.createElement('img');
+    this.popupMessageActionImage.src = './assets/images/messages.png';
+    this.popupMessageActionImage.classList.add('popup_action_image');
+    this.popupMessageAction.appendChild(this.popupMessageActionImage);
+
+    this.popupMessageActionText = document.createElement('div');
+    this.popupMessageActionText.classList.add('popup_action_text');
+    this.popupMessageActionText.innerText = 'Message to owner';
+    this.popupMessageAction.appendChild(this.popupMessageActionText);
+    // to wishes action
+    this.popupWishesAction = document.createElement('div');
+    this.popupWishesAction.classList.add('popup_action');
+    this.popupActionsContainer.appendChild(this.popupWishesAction);
+
+    this.popupWishesActionImage = document.createElement('img');
+    this.popupWishesActionImage.src = './assets/images/wishes.png';
+    this.popupWishesActionImage.classList.add('popup_action_image');
+    this.popupWishesAction.appendChild(this.popupWishesActionImage);
+
+    this.popupWishesActionText = document.createElement('div');
+    this.popupWishesActionText.classList.add('popup_action_text');
+    this.popupWishesActionText.innerText = 'To wishes';
+    this.popupWishesAction.appendChild(this.popupWishesActionText);
+
+    this.closeButton.addEventListener('click', () => {
+      this.popUpContainer.parentNode.removeChild(this.popUpContainer);
+    });
+
+    this.popupMessageAction.addEventListener('click', this.writeMessage);
+    this.popupWishesAction.addEventListener('click', this.toggleWishes);
+  }
+
+  toggleWishes = (event) => {
+    event.preventDefault();
+    this.firebase.toggleWishLots(this.lotInfo).then((message) => alert(message));
+  }
+
+  writeMessage = (event) => {
+    event.preventDefault();
+    this.firebase.addMessageFromLot(this.lotInfo.lotID, this.lotInfo.userID, 'message form firstUser')
+      .then(() => alert('added'));
+  }
+}

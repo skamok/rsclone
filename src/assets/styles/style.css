@@ -30,17 +30,25 @@ header {
   align-items: center;
 }
 
+.header_entered {
+  justify-content: space-between;
+  max-width: 1200px;
+  margin: 0 auto
+}
+
 .logo {
   font-family: 'Zhi Mang Xing', sans-serif;
   font-size: 48px;
 }
 
-.logo-entered {
+.logo_entered {
   font-size: 36px;
+  margin-left: 20px;
 }
 
 main {
   height: 80%;
+  position: relative;
 }
 
 .authorization {
@@ -57,6 +65,11 @@ main {
   justify-content: center;
   align-items: center;
   row-gap: 5px;
+}
+
+.signIn_error {
+  color: red;
+  font-size: 1.2rem;  
 }
 
 .authorization-buttons {
@@ -142,9 +155,217 @@ footer {
   font-weight: 300;
 }
 
+.profile_container {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  margin-right: 20px;
+}
+
+.profile_image {
+  width: 50px;
+}
+
+.profile_subcontainer {
+  display: flex;
+  flex-direction: column;
+  font-size: 1.2rem;
+  color: #65FFAC;
+}
+
+.username_header {
+  font-family: 'Quicksand', sans-serif;
+  font-size: 1.4rem;
+}
+
+/* _____________________________________________main page */
+
+.main_container {
+  width: 100%;
+  max-width: 1200px;
+  height: 100%;
+  display: flex;
+  justify-content: space-evenly;
+  margin: 0 auto;
+}
+
+.burger_menu {
+  width: 27%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  row-gap: 23px;
+}
+
+.lots_container {
+  width: 70%;
+  height: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  row-gap: 50px;
+  column-gap: 50px;
+  overflow-y: scroll;
+  border-radius: 5px;
+  justify-content: center;
+}
+
+.burger_menu_element {
+  display: flex;
+  width: 70%;
+  align-items: center;
+  column-gap: 20px;
+  transition: 0.3s ease-out;
+}
+
+.add_lot_img {
+  width: 50px;
+}
+
+.add_lot_text {
+  font-size: 1.4rem;
+}
+
+.lot_card {
+  width: 240px;
+  height: 240px;
+  background-color: #DCC29B;
+  border-radius: 10px;
+}
+
+.lot_card_header {
+  height: 10%;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding-right: 10px;
+  background: #CDCDCD;
+  border-radius: 10px 10px 0 0;
+  color: #031700;
+  font-size: 1.4rem;
+  font-weight: 500;
+}
+
+.lot_card_image {
+  width: 100%;
+  height: 100%;
+}
+
+.lot_card_main {
+  height: 70%;
+}
+
+.lot_card_footer {
+  height: 20%;
+  border-radius: 0 0 10px 10px;
+  background: #CDCDCD;
+  font-size: 1.4rem;
+  font-weight: 500;
+  color: #031700;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+}
+
+.to_wishes_button {
+  width: 25px;
+}
+
+/* _____________________________________________lot popup */
+
+.popup_container {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-color: #3030309e;
+  display: flex;
+  z-index: 10;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+
+}
+
+.popup_window {
+  width: 50%;
+  min-height: 500px;
+  background-color: #CDCDCD;
+  display: flex;
+  border-radius: 10px;
+}
+
+.slider_container {
+  width: 50%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.main_lot_info_container {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-radius: 10px;
+}
+
+.close_popup_button {
+  position: absolute;
+  top: 0;
+  right: 8px;
+  width: 35px;
+}
+
+.lot_title_popup {
+  font-size: 24px;
+  font-weight: 500;
+  color: #031700;
+  padding-top: 10px;
+}
+
+.lot_popup_description {
+  color: #031700;
+  padding: 20px 0;
+  font-size: 1.4rem;
+}
+
+.test_image {
+  max-width: 90%;
+}
+
+.popup_actions_container {
+  display: flex;
+  justify-content: space-evenly;
+  column-gap: 40px;
+  padding-top: 30px;
+}
+
+.popup_action {
+  display: flex;
+  flex-direction: column;
+  row-gap: 3px;
+  align-items: center;
+}
+
+.popup_action_image {
+  width: 60px;
+}
+
+.popup_action_text {
+  color: #031700;
+  font-size: 1.2rem;
+}
+
 /* _____________________________________________hover effects */
 
-.authorization-buttons:hover, .gh_link:hover, .rss_logo:hover {
+.authorization-buttons:hover, .gh_link:hover, .rss_logo:hover, .close_popup_button:hover, .popup_action:hover {
   transform: scale(1.05);
   transition: 0.3s ease-out;
   cursor: pointer;
@@ -165,7 +386,26 @@ footer {
   opacity: .7;
 }
 
+.burger_menu_element:hover {
+  transition: 0.3s ease-out;
+  cursor: pointer;
+  background-color: rgba(255, 255, 255, 0.5);
+  border-radius: 5px;
+}
+
+.lot_card:hover {
+  opacity: .7;
+  transition: 0.3s ease-out;
+  cursor: pointer;
+}
+
 /* _____________________________________________media */
+
+@media screen and (max-width: 1024px) {
+  .popup_window {
+    width: 70%;
+  }
+}
 
 @media screen and (max-width: 540px) {
   .authorization {
@@ -197,5 +437,265 @@ footer {
   .submit_button {
     width: 200px;
     height: 40px;
+  }
+
+  .main_container {
+    width: 100%;
+    max-width: 1200px;
+    height: 100%;
+    display: flex;
+    flex-direction: column-reverse;
+    justify-content: space-evenly;
+    margin: 0 auto;
+    align-items: center;
+  }
+
+.lots_container {
+    width: 70%;
+    height: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    row-gap: 50px;
+    column-gap: 50px;
+    overflow-y: scroll;
+    border-radius: 5px;
+    justify-content: center;
+  }
+
+.burger_menu {
+    width: 100%;
+    height: 20%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    /* row-gap: 23px; */
+    /* column-gap: 10px; */
+  }
+
+.burger_menu_element {
+    display: flex;
+    width: 70%;
+    align-items: center;
+    column-gap: 20px;
+    transition: 0.3s ease-out;
+    flex-direction: column;
+  }
+
+  .popup_window {
+    width: 95%;
+  }
+
+  .popup_actions_container {
+    column-gap: 30px;
+  }
+}
+
+/* _____________________________________________helpers */
+
+.zero_opacity {
+  /* display: none; */
+  opacity: 0;
+}
+
+.hidden {
+  display: none;
+}
+
+/*______________________________________________adding lot */
+
+.lots_container > span {
+  display: block;
+}
+
+.btn-tertiary{
+  padding: 0;
+  line-height: 40px;
+  width: 180px;
+  display: block;
+  background: #C4C4C4;
+  color: black;
+  font-size: 22px;
+  border-radius: 10px;
+  font-weight: 500;
+  transition: all 0.3s;
+  box-shadow: 2px 2px 4px rgba(255, 255, 255, 0.23);
+}
+
+.btn-tertiary:hover,.btn-tertiary:focus{
+  color:#888;
+  border-color:#888;
+  transform: scale(1.05);
+}
+
+.input-file{
+  width:.1px;
+  height:.1px;
+  opacity:0;
+  overflow:hidden;
+  position:absolute;
+  z-index:-1
+}
+
+.input-file + .js-labelFile{
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+  padding:0 10px;
+  cursor:pointer;
+}
+
+.input-file + .js-labelFile .icon:before{
+  content: " ";
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  background: url(../images/iconAddPhotos.png) no-repeat;
+  background-size: contain;
+  margin-right: 10px;
+}
+
+.input-file + .js-labelFile.has-file .icon:before{
+  content:"\f00c";
+  color:#5AAC7B
+}
+
+.add_lot {
+  font-size: 30px;
+  font-weight: 600;
+  color: white;
+  margin-bottom: 15px;
+}
+
+.wrap_photos {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.contain_photo {
+  width: 150px;
+  height: 150px;
+  overflow: hidden;
+  border-radius: 10px;
+  margin: 10px;
+  position: relative;
+}
+
+.btn_delete_photo {
+  position: absolute;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: url(../images/delete_btn_photo.png) no-repeat;
+  right: 5px;
+  top: 5px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn_delete_photo:hover {
+  transform: scale(1.1);
+}
+
+
+.name_lot, .category_lot, .description_lot, .karma_count_lot, .region_lot {
+  display: block;
+  font-size: 18px;
+  font-weight: 500;
+  margin: 15px 0px;
+}
+
+.name_lot_input, .karma_count_lot_input {
+  display: block;
+  margin-top: 15px;
+  width: 220px;
+  height: 30px;
+  border-radius: 5px;
+  background: #C4C4C4;
+  border: 0px;
+  outline: none;
+  transition: all 0.3s;
+  font-size: 16px;
+  padding: 0px 7px;
+  box-shadow: 2px 2px 4px rgba(255, 255, 255, 0.23);
+}
+
+.name_lot_input:hover {
+  transform: scale(1.05);
+}
+
+.select_category {
+  width: 220px;
+  height: 30px;
+  border: 0px;
+  outline: none;
+  border-radius: 5px;
+  background: #c4c4c4;
+  font-size: 16px;
+  padding: 0px 7px;
+  transition: all 0.3s;
+  appearance: none;       /* Remove default arrow */
+  background-image: url(http://127.0.0.1:5500/dist/assets/images/arrow-select.png);
+  background-repeat: no-repeat;
+  background-size: 24px;
+  background-position: 190px;
+  box-shadow: 2px 2px 4px rgba(255, 255, 255, 0.23);
+  cursor: pointer;
+}
+
+.description_lot_input {
+  width: 300px;
+  height: 150px;
+  background: #c4c4c4;
+  border-radius: 5px;
+  font-size: 16px;
+  font-family: 'Quicksand';
+  font-weight: 500;
+  padding: 5px;
+  outline: none;
+  border: 0px;
+  box-shadow: 2px 2px 4px rgba(255, 255, 255, 0.23);
+  transition: all 0.3s;
+}
+
+.karma_count_lot_input {
+  width: 145px;
+  height: 30px;
+}
+
+.lot_submit {
+  width: 440px;
+  height: 50px;
+  background-color: #25A432;
+  border-radius: 10px;
+  border: 0px;
+  outline: none;
+  font-size: 22px;
+  margin: 25px 0px;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.lot_submit:hover, .karma_count_lot_input:hover, .description_lot_input:hover {
+  transform: scale(1.05);
+}
+
+.message_err {
+  color: red;
+  font-size: 16px;
+  font-weight: 400;
+  display: block;
+  margin-top: 5px;
+}
+
+.form_lot {
+  width: 100%;
+}
+
+/* _____________________________________________media */
+
+@media screen and (max-width: 640px) {
+  .lot_submit {
+    width: 320px;
   }
 }
