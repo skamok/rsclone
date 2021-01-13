@@ -90,11 +90,17 @@ export default class CurrentLotPage {
     });
 
     this.popupMessageAction.addEventListener('click', this.writeMessage);
+    this.popupWishesAction.addEventListener('click', this.toggleWishes);
+  }
+
+  toggleWishes = (event) => {
+    event.preventDefault();
+    this.firebase.toggleWishLots(this.lotInfo).then((message) => alert(message));
   }
 
   writeMessage = (event) => {
     event.preventDefault();
-    // console.log(this.lotInfo);
-    this.firebase.addMessageFromLot(this.lotInfo.lotID, this.lotInfo.userID, 'message form firstUser').then(() => alert('added'));
+    this.firebase.addMessageFromLot(this.lotInfo.lotID, this.lotInfo.userID, 'message form firstUser')
+      .then(() => alert('added'));
   }
 }
