@@ -6,16 +6,16 @@ export default class AddLotInPage {
   }
 
   createAddLotPage() {
-    this.headForm = document.createElement('h2');
-    this.headForm.classList.add('add_lot');
-    this.headForm.innerText = 'Adding lot';
-    this.container.appendChild(this.headForm);
-
     this.formLot = document.createElement('form');
     this.formLot.setAttribute('name', 'form_lot');
     this.formLot.classList.add('form_lot');
     this.container.appendChild(this.formLot);
     this.formLot.addEventListener('submit', this.formLotValidation);
+
+    this.headForm = document.createElement('h2');
+    this.headForm.classList.add('add_lot');
+    this.headForm.innerText = 'Adding lot';
+    this.formLot.appendChild(this.headForm);
 
     this.inputPhotos = document.createElement('input');
     this.inputPhotos.setAttribute('type', 'file');
@@ -137,8 +137,8 @@ export default class AddLotInPage {
   }
 
   resizeImagesForMiniature = (e) => {
-    const MAX_WIDTH = 150;
-    const MAX_HEIGHT = 150;
+    const MAX_WIDTH = 100;
+    const MAX_HEIGHT = 100;
     for (let i = 0; i < e.target.files.length; i += 1) {
       const img = document.createElement('img');
       img.src = window.URL.createObjectURL(e.target.files[i]);
@@ -163,9 +163,9 @@ export default class AddLotInPage {
         canvas.width = width;
         canvas.height = height;
         if (height > MAX_HEIGHT) {
-          ctx.drawImage(img, 0, -((height - 200) / 2), width, height);
+          ctx.drawImage(img, 0, -((height - 100) / 2), width, height);
         } else {
-          ctx.drawImage(img, -((width - 200) / 2), 0, width, height);
+          ctx.drawImage(img, -((width - 100) / 2), 0, width, height);
         }
       };
       this.wrapPhotos.appendChild(this.contain);

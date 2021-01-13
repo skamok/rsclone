@@ -573,8 +573,8 @@ footer {
 }
 
 .contain_photo {
-  width: 150px;
-  height: 150px;
+  width: 100px;
+  height: 100px;
   overflow: hidden;
   border-radius: 10px;
   margin: 10px;
@@ -690,6 +690,7 @@ footer {
 
 .form_lot {
   width: 100%;
+  padding-left: 10px;
 }
 
 /* _____________________________________________media */
