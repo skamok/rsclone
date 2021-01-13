@@ -175,6 +175,45 @@ export default class Firebase {
       });
   }
 
+  addLotMultiPicURL(lot) {
+    // const userID = this.auth.currentUser.uid;
+    const lotID = this.lotsNode.push().key;
+    const lotStorageRef = this.storageLotsRef.child(lotID);
+    return Firebase.loadFilesURL(lotStorageRef, lot.imgFiles)
+      .then((imgURLsArray) => {
+        const newLot1 = {
+          lotID,
+          imgURLs: imgURLsArray
+        };
+        const newLot = Object.assign(newLot1, lot);
+        const lotRef = this.lotsNode.child(lotID);
+        Firebase.log('firebase.addLotMultiPic lot =', lotID, newLot);
+        return lotRef.set(newLot);
+      })
+      .then(() => {
+        const userLotsRef = this.usersNode.child(`${lot.userID}/lots`);
+        return userLotsRef.once('value');
+      })
+      .then((dataSnapshot) => {
+        let userLotsArray = dataSnapshot.val();
+        if (userLotsArray === null) {
+          userLotsArray = [lotID];
+        } else {
+          userLotsArray.push(lotID);
+        }
+        Firebase.log('firebase.LotMultiPic userLots =', userLotsArray);
+        return dataSnapshot.ref.set(userLotsArray);
+      })
+      .catch((e) => {
+        const obj = {
+          code: e.code,
+          message: e.message
+        };
+        Firebase.log('firebase.LotMultiPic error', obj);
+        throw e;
+      });
+  }
+
   readLots() {
     const retPromise = this.lotsNode.once('value').then((snapshot) => {
       const data = snapshot.val();
@@ -412,6 +451,22 @@ export default class Firebase {
       const imgRef = lotStorageRef.child(file.name);
       // eslint-disable-next-line no-await-in-loop
       await imgRef.put(file)
+        .then((uploadTaskSnapshot) => uploadTaskSnapshot.ref.getDownloadURL())
+        .then((downloadURL) => {
+          imgURLs.push(downloadURL);
+          Firebase.log('firebase.loadFiles downloadURL = ', downloadURL);
+        });
+    }
+    return imgURLs;
+  }
+
+  static async loadFilesURL(lotStorageRef, files) {
+    const imgURLs = [];
+    // eslint-disable-next-line no-restricted-syntax
+    for (const file of files) {
+      const imgRef = lotStorageRef.child(file.name);
+      // eslint-disable-next-line no-await-in-loop
+      await imgRef.putString(file, 'data_url')
         .then((uploadTaskSnapshot) => uploadTaskSnapshot.ref.getDownloadURL())
         .then((downloadURL) => {
           imgURLs.push(downloadURL);
