@@ -34,15 +34,64 @@ export default class CurrentLotPage {
     this.lotPopupDescription.innerText = this.lotInfo.description;
     this.mainLotInfoContainer.appendChild(this.lotPopupDescription);
 
-    this.testImage = document.createElement('img');
-    this.testImage.src = `${this.lotInfo.imgURLs[0]}`;
-    this.testImage.classList.add('test_image');
-    this.mainLotInfoContainer.appendChild(this.testImage);
+    // Slider
+    this.currentSlide = 0;
+
+    this.sliderContainer = document.createElement('div');
+    this.sliderContainer.classList.add('slider_container');
+    this.mainLotInfoContainer.appendChild(this.sliderContainer);
+
+    this.sliderControlLeft = document.createElement('img');
+    this.sliderControlLeft.classList.add('slider_controls');
+    this.sliderControlLeft.src = './assets/images/left-arrow.svg';
+    this.sliderContainer.appendChild(this.sliderControlLeft);
+    this.sliderControlLeft.addEventListener('click', () => {
+      this.allImagesArray = document.querySelectorAll('.test_image');
+      this.currentSlide -= 1;
+      if (this.currentSlide < 0) {
+        this.currentSlide += 1;
+        return;
+      }
+      for (let i = 0; i < this.allImagesArray.length; i++) {
+        this.allImagesArray[i].style.transform = `translateX(${(-100) * this.currentSlide}%)`;
+      }
+    });
+
+    this.sliderImageContainer = document.createElement('div');
+    this.sliderImageContainer.classList.add('slider_image_container');
+    this.sliderContainer.appendChild(this.sliderImageContainer);
+
+    for (let i = 0; i < this.lotInfo.imgURLs.length; i++) {
+      this.testImage = document.createElement('img');
+      this.testImage.src = `${this.lotInfo.imgURLs[i]}`;
+      this.testImage.classList.add('test_image');
+      this.sliderImageContainer.appendChild(this.testImage);
+    }
+
+    this.sliderControlRight = document.createElement('img');
+    this.sliderControlRight.classList.add('slider_controls');
+    this.sliderControlRight.src = './assets/images/right-arrow.svg';
+    this.sliderContainer.appendChild(this.sliderControlRight);
+    this.sliderControlRight.addEventListener('click', () => {
+      this.allImagesArray = document.querySelectorAll('.test_image');
+      this.currentSlide += 1;
+      if (this.currentSlide >= this.lotInfo.imgURLs.length) {
+        this.currentSlide -= 1;
+        return;
+      }
+      for (let i = 0; i < this.allImagesArray.length; i++) {
+        this.allImagesArray[i].style.transform = `translateX(${(-100) * this.currentSlide}%)`;
+      }
+    });
+
+    // actions
 
     this.popupActionsContainer = document.createElement('div');
     this.popupActionsContainer.classList.add('popup_actions_container');
     this.mainLotInfoContainer.appendChild(this.popupActionsContainer);
+
     // take action
+
     this.popupTakeAction = document.createElement('div');
     this.popupTakeAction.classList.add('popup_action');
     this.popupActionsContainer.appendChild(this.popupTakeAction);
@@ -56,7 +105,9 @@ export default class CurrentLotPage {
     this.popupTakeActionText.classList.add('popup_action_text');
     this.popupTakeActionText.innerText = 'Take';
     this.popupTakeAction.appendChild(this.popupTakeActionText);
+
     // message action
+
     this.popupMessageAction = document.createElement('div');
     this.popupMessageAction.classList.add('popup_action');
     this.popupActionsContainer.appendChild(this.popupMessageAction);
@@ -70,7 +121,9 @@ export default class CurrentLotPage {
     this.popupMessageActionText.classList.add('popup_action_text');
     this.popupMessageActionText.innerText = 'Message to owner';
     this.popupMessageAction.appendChild(this.popupMessageActionText);
+
     // to wishes action
+
     this.popupWishesAction = document.createElement('div');
     this.popupWishesAction.classList.add('popup_action');
     this.popupActionsContainer.appendChild(this.popupWishesAction);

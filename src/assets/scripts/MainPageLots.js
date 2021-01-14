@@ -49,7 +49,6 @@ export default class MainPageLots {
           this.toWishesButton.classList.add('to_wishes_button');
 
           this.container.appendChild(this.lotCard);
-          console.log(data[keys[i]].title);
         }
       });
   }
