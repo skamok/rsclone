@@ -181,13 +181,18 @@ export default class Firebase {
     const lotStorageRef = this.storageLotsRef.child(lotID);
     return Firebase.loadFilesURL(lotStorageRef, lot.imgFiles)
       .then((imgURLsArray) => {
-        const newLot1 = {
+        const newLot = {
+          title: lot.title,
+          description: lot.description,
+          price: lot.price,
+          category: lot.category,
+          dtCreate: (new Date()).toJSON(),
+          userID: lot.userID,
           lotID,
           imgURLs: imgURLsArray
         };
-        const newLot = Object.assign(newLot1, lot);
         const lotRef = this.lotsNode.child(lotID);
-        Firebase.log('firebase.addLotMultiPic lot =', lotID, newLot);
+        Firebase.log('firebase.addLotMultiPicURL lot =', lotID, newLot);
         return lotRef.set(newLot);
       })
       .then(() => {
@@ -201,7 +206,7 @@ export default class Firebase {
         } else {
           userLotsArray.push(lotID);
         }
-        Firebase.log('firebase.LotMultiPic userLots =', userLotsArray);
+        Firebase.log('firebase.addLotMultiPicURL userLots =', userLotsArray);
         return dataSnapshot.ref.set(userLotsArray);
       })
       .catch((e) => {
@@ -209,7 +214,7 @@ export default class Firebase {
           code: e.code,
           message: e.message
         };
-        Firebase.log('firebase.LotMultiPic error', obj);
+        Firebase.log('firebase.addLotMultiPicURL error', obj);
         throw e;
       });
   }
@@ -464,7 +469,7 @@ export default class Firebase {
     const imgURLs = [];
     // eslint-disable-next-line no-restricted-syntax
     for (const file of files) {
-      const imgRef = lotStorageRef.child(file.name);
+      const imgRef = lotStorageRef.child(Firebase.makeid());
       // eslint-disable-next-line no-await-in-loop
       await imgRef.putString(file, 'data_url')
         .then((uploadTaskSnapshot) => uploadTaskSnapshot.ref.getDownloadURL())
@@ -474,5 +479,14 @@ export default class Firebase {
         });
     }
     return imgURLs;
+  }
+
+  static makeid() {
+    let text = '';
+    const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    for (let i = 0; i < 5; i++) {
+      text += possible.charAt(Math.floor(Math.random() * possible.length));
+    }
+    return text;
   }
 }
