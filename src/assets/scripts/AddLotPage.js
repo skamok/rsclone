@@ -1,6 +1,6 @@
-// import MainPageLots from './MainPageLots.js';
+import RealDatabase from './RealDatabase.js';
 
-export default class AddLotInPage {
+export default class AddLotPage {
   constructor(сontainer, firebase) {
     this.container = сontainer;
     this.firebase = firebase;
@@ -116,24 +116,33 @@ export default class AddLotInPage {
   formLotValidation = (e) => {
     e.preventDefault();
     const listMessage = document.querySelectorAll('.message_err');
+    let inputError = false;
     listMessage.forEach((elem) => { elem.remove(); });
     if (this.wrapPhotos.children.length === 0) {
+      inputError = true;
       this.labelBtnAddPhotos.after(this.createMessageError('add photos'));
     }
     if (this.formLot.nameLot.value.length === 0) {
+      inputError = true;
       this.formLot.nameLot.after(this.createMessageError('add lot name'));
     }
     if (this.formLot.descriptionLot.value.length < 20) {
+      inputError = true;
       this.formLot.descriptionLot.after(this.createMessageError('describe the lot in more detail'));
     }
     if (this.formLot.karma.value < 0 || this.formLot.karma.value === '') {
+      inputError = true;
       this.formLot.karma.after(this.createMessageError('enter a positive number'));
     }
-    console.log(this.resizeImagesForServer());
-    /* if (listMessage.length === 0) {
-      const mainPageLots = new MainPageLots(this.firebase, this.lotsContainer, this.main, this.header);
-      mainPageLots.createMainPageLots();
-    } */
+    if (inputError === false) {
+      const imgDataURLs = this.inputPhotos.files;
+      // const imgDataURLs = AddLotPage.resizeImagesForServer(this.inputPhotos.files);
+      const lotObj = RealDatabase.createLotObj(this.formLot.nameLot.value, this.formLot.descriptionLot.value,
+        this.formLot.karma.value, this.listCategory.selectedIndex, imgDataURLs, this.firebase.auth.currentUser.uid);
+      // console.log(lotObj);
+      this.firebase.addLotMultiPic(lotObj).then(() => alert('ok'));
+      // this.firebase.addLotMultiPicURL(lotObj).then(() => alert('ok'));
+    }
   }
 
   createMessageError(str) {

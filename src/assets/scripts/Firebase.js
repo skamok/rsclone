@@ -137,25 +137,22 @@ export default class Firebase {
   }
 
   addLotMultiPic(lot) {
-    const userID = this.auth.currentUser.uid;
+    // const userID = this.auth.currentUser.uid;
     const lotID = this.lotsNode.push().key;
     const lotStorageRef = this.storageLotsRef.child(lotID);
     return Firebase.loadFiles(lotStorageRef, lot.imgFiles)
       .then((imgURLsArray) => {
-        const newLot = {
-          userID,
+        const newLot1 = {
           lotID,
-          title: lot.title,
-          description: lot.description,
-          dtCreate: (new Date()).toJSON(),
           imgURLs: imgURLsArray
         };
+        const newLot = Object.assign(newLot1, lot);
         const lotRef = this.lotsNode.child(lotID);
         Firebase.log('firebase.addLotMultiPic lot =', lotID, newLot);
         return lotRef.set(newLot);
       })
       .then(() => {
-        const userLotsRef = this.usersNode.child(`${userID}/lots`);
+        const userLotsRef = this.usersNode.child(`${lot.userID}/lots`);
         return userLotsRef.once('value');
       })
       .then((dataSnapshot) => {
@@ -174,6 +171,73 @@ export default class Firebase {
           message: e.message
         };
         Firebase.log('firebase.LotMultiPic error', obj);
+        throw e;
+      });
+  }
+
+  addLotMultiPicURL(lot) {
+    // const userID = this.auth.currentUser.uid;
+    const lotID = this.lotsNode.push().key;
+    const lotStorageRef = this.storageLotsRef.child(lotID);
+    return Firebase.loadFilesURL(lotStorageRef, lot.imgFiles)
+      .then((imgURLsArray) => {
+        const newLot = {
+          title: lot.title,
+          description: lot.description,
+          price: lot.price,
+          category: lot.category,
+          dtCreate: (new Date()).toJSON(),
+          userID: lot.userID,
+          lotID,
+          imgURLs: imgURLsArray
+        };
+        const lotRef = this.lotsNode.child(lotID);
+        Firebase.log('firebase.addLotMultiPicURL lot =', lotID, newLot);
+        return lotRef.set(newLot);
+      })
+      .then(() => {
+        const userLotsRef = this.usersNode.child(`${lot.userID}/lots`);
+        return userLotsRef.once('value');
+      })
+      .then((dataSnapshot) => {
+        let userLotsArray = dataSnapshot.val();
+        if (userLotsArray === null) {
+          userLotsArray = [lotID];
+        } else {
+          userLotsArray.push(lotID);
+        }
+        Firebase.log('firebase.addLotMultiPicURL userLots =', userLotsArray);
+        return dataSnapshot.ref.set(userLotsArray);
+      })
+      .catch((e) => {
+        const obj = {
+          code: e.code,
+          message: e.message
+        };
+        Firebase.log('firebase.addLotMultiPicURL error', obj);
+        throw e;
+      });
+  }
+
+  readCurrentUserWishLots() {
+    const userID = this.auth.currentUser.uid;
+    const refUser = this.usersNode.child(userID);
+    return refUser.once('value')
+      .then((dataSnapshot) => {
+        const user = dataSnapshot.val();
+        const lots = user.wishLots;
+        return Firebase.readNodesByID(lots, this.lotsNode);
+      })
+      .then((data) => {
+        Firebase.log('firebase.readCurrentUserWishLots', data);
+        return Promise.resolve(data);
+      })
+      .catch((e) => {
+        const obj = {
+          code: e.code,
+          message: e.message
+        };
+        Firebase.log('firebase.readCurrentUserWishLots error', obj);
         throw e;
       });
   }
@@ -217,6 +281,46 @@ export default class Firebase {
           message: e.message
         };
         Firebase.log('firebase.readUsers error', obj);
+        throw e;
+      });
+  }
+
+  toggleWishLots(lotInfo) {
+    const lot = lotInfo.lotID;
+    const currentUserID = this.auth.currentUser.uid;
+    if (currentUserID === lotInfo.userID) {
+      return Promise.reject(new Error('Error. It is your lot'));
+    }
+    const refUserWishLots = this.usersNode.child(`${currentUserID}/wishLots`);
+    let ret;
+    return refUserWishLots.once('value')
+      .then((dataSnapshot) => {
+        const lotsArray = dataSnapshot.val();
+        if (lotsArray === null) {
+          const newArray = [lot];
+          ret = `add ${lot}`;
+          return refUserWishLots.set(newArray);
+        }
+        const pos = lotsArray.indexOf(lot);
+        if (pos === -1) {
+          lotsArray.push(lot);
+          ret = `add ${lot}`;
+        } else {
+          lotsArray.splice(pos, 1);
+          ret = `delete ${lot}`;
+        }
+        return refUserWishLots.set(lotsArray);
+      })
+      .then(() => {
+        Firebase.log('firebase.toggleWish ', ret);
+        return Promise.resolve(ret);
+      })
+      .catch((e) => {
+        const obj = {
+          code: e.code,
+          message: e.message
+        };
+        Firebase.log('firebase.toggleWish error', obj);
         throw e;
       });
   }
@@ -382,5 +486,44 @@ export default class Firebase {
         });
     }
     return imgURLs;
+  }
+
+  static async loadFilesURL(lotStorageRef, files) {
+    const imgURLs = [];
+    // eslint-disable-next-line no-restricted-syntax
+    for (const file of files) {
+      const imgRef = lotStorageRef.child(Firebase.makeid());
+      // eslint-disable-next-line no-await-in-loop
+      await imgRef.putString(file, 'data_url')
+        .then((uploadTaskSnapshot) => uploadTaskSnapshot.ref.getDownloadURL())
+        .then((downloadURL) => {
+          imgURLs.push(downloadURL);
+          Firebase.log('firebase.loadFiles downloadURL = ', downloadURL);
+        });
+    }
+    return imgURLs;
+  }
+
+  static makeid() {
+    let text = '';
+    const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    for (let i = 0; i < 5; i++) {
+      text += possible.charAt(Math.floor(Math.random() * possible.length));
+    }
+    return text;
+  }
+
+  static async readNodesByID(nodeIDs, ref) { // nodeIDs: Array
+    const nodes = [];
+    // eslint-disable-next-line no-restricted-syntax
+    for (const nodeID of nodeIDs) {
+      // eslint-disable-next-line no-await-in-loop
+      await ref.child(nodeID).once('value')
+        .then((dataSnapshot) => {
+          const obj = dataSnapshot.val();
+          nodes.push(obj);
+        });
+    }
+    return nodes;
   }
 }
