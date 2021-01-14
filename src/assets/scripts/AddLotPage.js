@@ -180,36 +180,43 @@ export default class AddLotInPage {
     }
   }
 
-  resizeImagesForServer() {
-    const arrImages = [];
+  async resizeImagesForServer() {
+    this.arrImages = [];
     const MAX_WIDTH = 800;
     const MAX_HEIGHT = 600;
-    for (let i = 0; i < this.inputPhotos.files.length; i += 1) {
+    // eslint-disable-next-line no-restricted-syntax
+    for (const elem of this.inputPhotos.files) {
       const img = document.createElement('img');
-      img.src = window.URL.createObjectURL(this.inputPhotos.files[i]);
+      img.src = window.URL.createObjectURL(elem);
       const contain = document.createElement('div');
       contain.classList.add('contain');
       const canvas = document.createElement('CANVAS');
       const ctx = canvas.getContext('2d');
-      img.onload = () => {
-        let { width } = img;
-        let { height } = img;
-        if (width > height) {
-          if (width > MAX_WIDTH) {
-            height *= MAX_WIDTH / width;
-            width = MAX_WIDTH;
+      const promise = new Promise((res, rej) => {
+        img.onload = () => {
+          let { width } = img;
+          let { height } = img;
+          if (width > height) {
+            if (width > MAX_WIDTH) {
+              height *= MAX_WIDTH / width;
+              width = MAX_WIDTH;
+            }
+          } else if (height > MAX_HEIGHT) {
+            width *= MAX_HEIGHT / height;
+            height = MAX_HEIGHT;
           }
-        } else if (height > MAX_HEIGHT) {
-          width *= MAX_HEIGHT / height;
-          height = MAX_HEIGHT;
-        }
-        canvas.width = width;
-        canvas.height = height;
-        ctx.drawImage(img, 0, 0, width, height);
-      };
-      const dataurl = canvas.toDataURL('image/png', 0.99);
-      arrImages.push(dataurl);
+          canvas.width = width;
+          canvas.height = height;
+          ctx.drawImage(img, 0, 0, width, height);
+          const dataurl = canvas.toDataURL('image/png', 0.99);
+          res(dataurl);
+          rej(new Error('Photo do not add'));
+        };
+      });
+      // eslint-disable-next-line no-await-in-loop
+      const result = await promise;
+      this.arrImages.push(result);
     }
-    return arrImages;
+    return this.arrImages;
   }
 }
