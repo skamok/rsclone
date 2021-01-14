@@ -219,6 +219,29 @@ export default class Firebase {
       });
   }
 
+  readCurrentUserWishLots() {
+    const userID = this.auth.currentUser.uid;
+    const refUser = this.usersNode.child(userID);
+    return refUser.once('value')
+      .then((dataSnapshot) => {
+        const user = dataSnapshot.val();
+        const lots = user.wishLots;
+        return Firebase.readNodesByID(lots, this.lotsNode);
+      })
+      .then((data) => {
+        Firebase.log('firebase.readCurrentUserWishLots', data);
+        return Promise.resolve(data);
+      })
+      .catch((e) => {
+        const obj = {
+          code: e.code,
+          message: e.message
+        };
+        Firebase.log('firebase.readCurrentUserWishLots error', obj);
+        throw e;
+      });
+  }
+
   readLots() {
     const retPromise = this.lotsNode.once('value').then((snapshot) => {
       const data = snapshot.val();
@@ -488,5 +511,19 @@ export default class Firebase {
       text += possible.charAt(Math.floor(Math.random() * possible.length));
     }
     return text;
+  }
+
+  static async readNodesByID(nodeIDs, ref) { // nodeIDs: Array
+    const nodes = [];
+    // eslint-disable-next-line no-restricted-syntax
+    for (const nodeID of nodeIDs) {
+      // eslint-disable-next-line no-await-in-loop
+      await ref.child(nodeID).once('value')
+        .then((dataSnapshot) => {
+          const obj = dataSnapshot.val();
+          nodes.push(obj);
+        });
+    }
+    return nodes;
   }
 }
