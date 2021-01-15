@@ -68,8 +68,8 @@ main {
 }
 
 .signIn_error {
-  color: red;
-  font-size: 1.2rem;  
+  color: #ffa09e;
+  font-size: 1.4rem;
 }
 
 .authorization-buttons {
@@ -330,8 +330,9 @@ footer {
 
 .lot_popup_description {
   color: #031700;
-  padding: 20px 0;
+  padding: 20px;
   font-size: 1.4rem;
+  text-align: center;
 }
 
 .popup_actions_container {
@@ -370,7 +371,7 @@ footer {
 }
 
 .slider_image_container {
-  max-width: 500px;
+  max-width: 400px;
   max-height: 500px;
   width: 85%;
   display: flex;
@@ -426,109 +427,6 @@ footer {
   opacity: .7;
   transition: 0.3s ease-out;
   cursor: pointer;
-}
-
-/* _____________________________________________media */
-
-@media screen and (max-width: 1024px) {
-  .popup_window {
-    width: 70%;
-  }
-}
-
-@media screen and (max-width: 540px) {
-  .authorization {
-    flex-direction: column;
-    row-gap: 10%;
-  }
-
-  footer {
-    flex-direction: column;
-    row-gap: 5px;
-  }
-
-  .gh-links {
-    column-gap: 5px;
-  }
-
-  .gh_link {
-    font-size: 1.2rem;
-  }
-
-  .powered_by, .for {
-    display: none;
-  }
-
-  .inputs {
-    width: 300px;
-  }
-
-  .submit_button {
-    width: 200px;
-    height: 40px;
-  }
-
-  .main_container {
-    width: 100%;
-    max-width: 1200px;
-    height: 100%;
-    display: flex;
-    flex-direction: column-reverse;
-    justify-content: space-evenly;
-    margin: 0 auto;
-    align-items: center;
-  }
-
-.lots_container {
-    width: 70%;
-    height: 100%;
-    display: flex;
-    flex-wrap: wrap;
-    row-gap: 50px;
-    column-gap: 50px;
-    overflow-y: scroll;
-    border-radius: 5px;
-    justify-content: center;
-  }
-
-.burger_menu {
-    width: 100%;
-    height: 20%;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-    /* row-gap: 23px; */
-    /* column-gap: 10px; */
-  }
-
-.burger_menu_element {
-    display: flex;
-    width: 70%;
-    align-items: center;
-    column-gap: 20px;
-    transition: 0.3s ease-out;
-    flex-direction: column;
-  }
-
-  .popup_window {
-    width: 95%;
-  }
-
-  .popup_actions_container {
-    column-gap: 30px;
-  }
-}
-
-/* _____________________________________________helpers */
-
-.zero_opacity {
-  /* display: none; */
-  opacity: 0;
-}
-
-.hidden {
-  display: none;
 }
 
 /*______________________________________________adding lot */
@@ -719,10 +617,147 @@ footer {
 
 .form_lot {
   width: 100%;
-  padding-left: 10px;
+  padding: 30px;
+}
+
+/* _____________________________________________helpers */
+
+.zero_opacity {
+  /* display: none; */
+  opacity: 0;
+}
+
+.hidden {
+  display: none;
+}
+
+.error_block {
+  height: 40px;
+  width: 300px;
+  position: absolute;
+  top: 0;
+  left: calc(50% - 150px);
+  background: #cdcdcd;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #c30a0a;
+  font-size: 1.4rem;
+  font-weight: 400;
+  border-radius: 0 0 10px 10px;
+}
+
+.error_block_hidden {
+  transform: translateY(-100%);
+  transition: 0.3s ease-out;
+}
+
+.error_block_shown{
+  transition: 0.5s ease-out;
+  animation-name: showError; 
+  animation-duration: 0.5s;
+}
+
+@keyframes showError {
+  from {
+    transform: translateY(-100%);
+  }
+  to {
+    transform: translateX(0%);
+  }
 }
 
 /* _____________________________________________media */
+
+@media screen and (max-width: 1024px) {
+  .popup_window {
+    width: 70%;
+  }
+}
+
+@media screen and (max-width: 540px) {
+  .authorization {
+    flex-direction: column;
+    row-gap: 10%;
+  }
+
+  footer {
+    flex-direction: column;
+    row-gap: 5px;
+  }
+
+  .gh-links {
+    column-gap: 5px;
+  }
+
+  .gh_link {
+    font-size: 1.2rem;
+  }
+
+  .powered_by, .for {
+    display: none;
+  }
+
+  .inputs {
+    width: 300px;
+  }
+
+  .submit_button {
+    width: 200px;
+    height: 40px;
+  }
+
+  .main_container {
+    width: 100%;
+    max-width: 1200px;
+    height: 100%;
+    display: flex;
+    flex-direction: column-reverse;
+    justify-content: space-evenly;
+    margin: 0 auto;
+    align-items: center;
+  }
+
+.lots_container {
+    width: 70%;
+    height: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    row-gap: 50px;
+    column-gap: 50px;
+    overflow-y: scroll;
+    border-radius: 5px;
+    justify-content: center;
+  }
+
+.burger_menu {
+    width: 100%;
+    height: 20%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    /* row-gap: 23px; */
+    /* column-gap: 10px; */
+  }
+
+.burger_menu_element {
+    display: flex;
+    width: 70%;
+    align-items: center;
+    column-gap: 20px;
+    transition: 0.3s ease-out;
+    flex-direction: column;
+  }
+
+  .popup_window {
+    width: 95%;
+  }
+
+  .popup_actions_container {
+    column-gap: 30px;
+  }
+}
 
 @media screen and (max-width: 640px) {
   .lot_submit {
