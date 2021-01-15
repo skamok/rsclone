@@ -1,9 +1,12 @@
 import RealDatabase from './RealDatabase.js';
+import MainPageLots from './MainPageLots.js';
 
 export default class AddLotPage {
-  constructor(сontainer, firebase) {
+  constructor(сontainer, firebase, header, main) {
     this.container = сontainer;
     this.firebase = firebase;
+    this.header = header;
+    this.main = main;
     this.container.innerHTML = '';
   }
 
@@ -143,12 +146,9 @@ export default class AddLotPage {
           return this.firebase.addLotMultiPicURL(lotObj);
         })
         .then(() => alert('lot add'));
-      /*
-      const imgDataURLs = this.inputPhotos.files;
-      const lotObj = RealDatabase.createLotObj(this.formLot.nameLot.value, this.formLot.descriptionLot.value,
-        this.formLot.karma.value, this.listCategory.selectedIndex, imgDataURLs, this.firebase.auth.currentUser.uid);
-      this.firebase.addLotMultiPic(lotObj).then(() => alert('ok'));
-      */
+      const mainPageLots = new MainPageLots(this.firebase, this.container, this.main, this.header,
+        this.errorBlock);
+      mainPageLots.createMainPageLots();
     }
   }
 
