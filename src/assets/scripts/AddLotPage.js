@@ -135,21 +135,20 @@ export default class AddLotPage {
       this.formLot.karma.after(this.createMessageError('enter a positive number'));
     }
     if (inputError === false) {
-      // const imgDataURLs = this.inputPhotos.files;
       this.resizeImagesForServer()
         .then((dataURLs) => {
           const imgDataURLs = dataURLs;
           const lotObj = RealDatabase.createLotObj(this.formLot.nameLot.value, this.formLot.descriptionLot.value,
             this.formLot.karma.value, this.listCategory.selectedIndex, imgDataURLs, this.firebase.auth.currentUser.uid);
-          console.log(lotObj);
-          //return this.firebase.addLotMultiPicURL(lotObj);
+          return this.firebase.addLotMultiPicURL(lotObj);
         })
         .then(() => alert('lot add'));
       /*
+      const imgDataURLs = this.inputPhotos.files;
       const lotObj = RealDatabase.createLotObj(this.formLot.nameLot.value, this.formLot.descriptionLot.value,
         this.formLot.karma.value, this.listCategory.selectedIndex, imgDataURLs, this.firebase.auth.currentUser.uid);
+      this.firebase.addLotMultiPic(lotObj).then(() => alert('ok'));
       */
-      // this.firebase.addLotMultiPic(lotObj).then(() => alert('ok'));
     }
   }
 
@@ -199,18 +198,33 @@ export default class AddLotPage {
 
   async resizeImagesForServer() {
     this.arrImages = [];
-    const MAX_WIDTH = 800;
-    const MAX_HEIGHT = 600;
+    let MAX_WIDTH = 1024;
+    let MAX_HEIGHT = 768;
+    let i = 0;
+    const arr = [];
+    arr.push(this.inputPhotos.files[0]);
+    for (let index = 0; index < this.inputPhotos.files.length; index++) {
+      arr.push(this.inputPhotos.files[index]);
+    }
     // eslint-disable-next-line no-restricted-syntax
-    for (const elem of this.inputPhotos.files) {
+    for (const elem of arr) {
       const img = document.createElement('img');
       img.src = window.URL.createObjectURL(elem);
       const contain = document.createElement('div');
       contain.classList.add('contain');
       const canvas = document.createElement('CANVAS');
       const ctx = canvas.getContext('2d');
+      // eslint-disable-next-line no-loop-func
       const promise = new Promise((res, rej) => {
         img.onload = () => {
+          if (i === 0) {
+            MAX_WIDTH = 210;
+            MAX_HEIGHT = 210;
+          } else {
+            MAX_WIDTH = 1024;
+            MAX_HEIGHT = 768;
+          }
+          i += 1;
           let { width } = img;
           let { height } = img;
           if (width > height) {
@@ -225,7 +239,7 @@ export default class AddLotPage {
           canvas.width = width;
           canvas.height = height;
           ctx.drawImage(img, 0, 0, width, height);
-          const dataurl = canvas.toDataURL('image/png', 0.9);
+          const dataurl = canvas.toDataURL('image/jpeg', 0.9);
           res(dataurl);
           rej(new Error('Photo do not add'));
         };
