@@ -7,7 +7,8 @@ export default class RealDatabase {
       category,
       imgFiles,
       dtCreate: (new Date()).toJSON(),
-      userID
+      userID,
+      state: 10 // 10 for sell 70 winned 100 completed
       // after load to servere
       // lotID, after load to servere
       // imgURLs: imgURLsArray

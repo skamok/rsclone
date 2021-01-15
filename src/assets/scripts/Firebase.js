@@ -142,11 +142,17 @@ export default class Firebase {
     const lotStorageRef = this.storageLotsRef.child(lotID);
     return Firebase.loadFiles(lotStorageRef, lot.imgFiles)
       .then((imgURLsArray) => {
-        const newLot1 = {
+        const newLot = {
+          title: lot.title,
+          description: lot.description,
+          price: lot.price,
+          category: lot.category,
+          dtCreate: (new Date()).toJSON(),
+          userID: lot.userID,
           lotID,
-          imgURLs: imgURLsArray
+          imgURLs: imgURLsArray,
+          state: lot.state
         };
-        const newLot = Object.assign(newLot1, lot);
         const lotRef = this.lotsNode.child(lotID);
         Firebase.log('firebase.addLotMultiPic lot =', lotID, newLot);
         return lotRef.set(newLot);
@@ -189,7 +195,8 @@ export default class Firebase {
           dtCreate: (new Date()).toJSON(),
           userID: lot.userID,
           lotID,
-          imgURLs: imgURLsArray
+          imgURLs: imgURLsArray,
+          state: lot.state
         };
         const lotRef = this.lotsNode.child(lotID);
         Firebase.log('firebase.addLotMultiPicURL lot =', lotID, newLot);
@@ -323,6 +330,11 @@ export default class Firebase {
         Firebase.log('firebase.toggleWish error', obj);
         throw e;
       });
+  }
+
+  lotStateUpdate(lot, newState) {
+    const currentUserID = this.auth.currentUser.uid;
+    const currentLotState = lot.state;
   }
 
   addMessageFromLot(lotID, lotOwner, message) {

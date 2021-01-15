@@ -144,6 +144,11 @@ export default class CurrentLotPage {
 
     this.popupMessageAction.addEventListener('click', this.writeMessage);
     this.popupWishesAction.addEventListener('click', this.toggleWishes);
+    this.popupTakeAction.addEventListener('click', this.takeLot);
+  }
+
+  takeLot = (event) => {
+    event.preventDefault();
   }
 
   toggleWishes = (event) => {
