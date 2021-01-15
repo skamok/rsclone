@@ -1,25 +1,23 @@
 /* eslint-disable no-console */
 import CurrentLotPage from './CurrentLotPage.js';
 
-export default class MainPageLots {
-  constructor(firebase, lotsContainer, main, header, errorBlock) {
-    this.firebase = firebase;
+export default class WishListLots {
+  constructor(firebase, lotsContainer, header, main) {
     this.container = lotsContainer;
-    this.main = main;
+    this.firebase = firebase;
     this.header = header;
-    this.errorBlock = errorBlock;
+    this.main = main;
   }
 
-  createMainPageLots() {
+  createWishList() {
     this.container.innerHTML = '';
-    this.firebase.readLots()
+    this.firebase.readCurrentUserWishLots()
       .then((data) => {
-        const keys = Object.keys(data);
-        for (let i = 0; i < keys.length; i++) {
+        for (let i = 0; i < data.length; i++) {
           this.lotCard = document.createElement('div');
           this.lotCard.classList.add('lot_card');
           this.lotCard.addEventListener('click', () => {
-            const lotPage = new CurrentLotPage(data[keys[i]], this.header, this.main, this.firebase, this.errorBlock);
+            const lotPage = new CurrentLotPage(data[i], this.header, this.main, this.firebase);
             lotPage.createCurrentLotPage();
           });
 
@@ -34,7 +32,7 @@ export default class MainPageLots {
 
           this.lotCardImage = document.createElement('img');
           this.lotCardImage.classList.add('lot_card_image');
-          this.lotCardImage.src = `${data[keys[i]].imgURLs[0]}`;
+          this.lotCardImage.src = `${data[i].imgURLs[0]}`;
           this.lotCardMain.appendChild(this.lotCardImage);
 
           this.lotCardFooter = document.createElement('div');
@@ -42,7 +40,7 @@ export default class MainPageLots {
           this.lotCard.appendChild(this.lotCardFooter);
 
           this.lotTitle = document.createElement('div');
-          this.lotTitle.innerText = data[keys[i]].title;
+          this.lotTitle.innerText = data[i].title;
           this.lotCardFooter.appendChild(this.lotTitle);
 
           this.toWishesButton = document.createElement('img');

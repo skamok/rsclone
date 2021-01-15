@@ -1,9 +1,13 @@
+/* eslint-disable no-console */
+import NotificationBlock from './NotificationBlock.js';
+
 export default class CurrentLotPage {
-  constructor(lotInfo, header, main, firebase) {
+  constructor(lotInfo, header, main, firebase, errorBlock) {
     this.lotInfo = lotInfo;
     this.main = main;
     this.header = header;
     this.firebase = firebase;
+    this.errorBlock = errorBlock;
   }
 
   createCurrentLotPage() {
@@ -61,7 +65,7 @@ export default class CurrentLotPage {
     this.sliderImageContainer.classList.add('slider_image_container');
     this.sliderContainer.appendChild(this.sliderImageContainer);
 
-    for (let i = 0; i < this.lotInfo.imgURLs.length; i++) {
+    for (let i = 1; i < this.lotInfo.imgURLs.length; i++) {
       this.testImage = document.createElement('img');
       this.testImage.src = `${this.lotInfo.imgURLs[i]}`;
       this.testImage.classList.add('test_image');
@@ -75,7 +79,7 @@ export default class CurrentLotPage {
     this.sliderControlRight.addEventListener('click', () => {
       this.allImagesArray = document.querySelectorAll('.test_image');
       this.currentSlide += 1;
-      if (this.currentSlide >= this.lotInfo.imgURLs.length) {
+      if (this.currentSlide >= this.lotInfo.imgURLs.length - 1) {
         this.currentSlide -= 1;
         return;
       }
@@ -83,6 +87,9 @@ export default class CurrentLotPage {
         this.allImagesArray[i].style.transform = `translateX(${(-100) * this.currentSlide}%)`;
       }
     });
+
+    this.errorBlock = document.createElement('div');
+    this.errorBlock.classList.add('ErrorBlock');
 
     // actions
 
@@ -153,12 +160,29 @@ export default class CurrentLotPage {
 
   toggleWishes = (event) => {
     event.preventDefault();
-    this.firebase.toggleWishLots(this.lotInfo).then((message) => alert(message));
+    this.firebase.toggleWishLots(this.lotInfo)
+      .then((message) => {
+        let notificationMessage = '';
+        if (message.includes('delete')) {
+          notificationMessage = 'Lot deleted from wishlist';
+        } else {
+          notificationMessage = 'Lot added to wishlist';
+        }
+        const wishNotification = new NotificationBlock(this.header, notificationMessage, false);
+        wishNotification.showNotification();
+      })
+      .catch((error) => {
+        const wishError = new NotificationBlock(this.header, error, true);
+        wishError.showNotification();
+      });
   }
 
   writeMessage = (event) => {
     event.preventDefault();
     this.firebase.addMessageFromLot(this.lotInfo.lotID, this.lotInfo.userID, 'message form firstUser')
-      .then(() => alert('added'));
+      .then(() => {
+        const message = new NotificationBlock(this.header, 'Added', false);
+        message.showNotification();
+      });
   }
 }
