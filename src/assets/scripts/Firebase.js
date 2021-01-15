@@ -289,7 +289,7 @@ export default class Firebase {
     const lot = lotInfo.lotID;
     const currentUserID = this.auth.currentUser.uid;
     if (currentUserID === lotInfo.userID) {
-      return Promise.reject(new Error('Error. It is your lot'));
+      return Promise.reject(new Error('It is your lot'));
     }
     const refUserWishLots = this.usersNode.child(`${currentUserID}/wishLots`);
     let ret;
