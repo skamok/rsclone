@@ -33,7 +33,8 @@ export default class Firebase {
         const user = {
           email,
           nick,
-          karmaCount: 3
+          karmaCount: 3,
+          userID: userCredential.user.uid
         };
         this.log('firebase.signUP OK', userCredential.user.uid);
         const id = userCredential.user.uid;
@@ -244,15 +245,15 @@ export default class Firebase {
           code: e.code,
           message: e.message
         };
-        Firebase.log('firebase.readCurrentUserWishLots error', obj);
+        this.log('firebase.readCurrentUserWishLots error', obj);
         throw e;
       });
   }
 
   readLots() {
-    const retPromise = this.lotsNode.once('value').then((snapshot) => {
+    const retPromise = this.lotsNode.orderByChild('state').equalTo(10).once('value').then((snapshot) => {
       const data = snapshot.val();
-      Firebase.log('firebase.readLots', data);
+      this.log('firebase.readLots', data);
       return data;
     });
     return retPromise;
@@ -269,7 +270,7 @@ export default class Firebase {
           code: e.code,
           message: e.message
         };
-        Firebase.log('firebase.readUsers error', obj);
+        this.log('firebase.readUsers error', obj);
         throw e;
       });
   }
@@ -287,7 +288,7 @@ export default class Firebase {
           code: e.code,
           message: e.message
         };
-        Firebase.log('firebase.readUsers error', obj);
+        this.log('firebase.readUsers error', obj);
         throw e;
       });
   }
@@ -319,7 +320,7 @@ export default class Firebase {
         return refUserWishLots.set(lotsArray);
       })
       .then(() => {
-        Firebase.log('firebase.toggleWish ', ret);
+        this.log('firebase.toggleWish ', ret);
         return Promise.resolve(ret);
       })
       .catch((e) => {
@@ -327,7 +328,7 @@ export default class Firebase {
           code: e.code,
           message: e.message
         };
-        Firebase.log('firebase.toggleWish error', obj);
+        this.log('firebase.toggleWish error', obj);
         throw e;
       });
   }
@@ -360,7 +361,7 @@ export default class Firebase {
                 updates[`/users/${currentUserID}/karmaCount`] = buyerKarmaCount;
                 updates[`/users/${lot.userID}/karmaCount`] = sellerKarmaCount;
                 updates[`/users/${currentUserID}/winLots`] = arr;
-                Firebase.log('firebase.lotStateUpdate updates = ', updates);
+                this.log('firebase.lotStateUpdate updates = ', updates);
                 this.database.ref().update(updates);
               });
           }
@@ -372,7 +373,7 @@ export default class Firebase {
             code: e.code,
             message: e.message
           };
-          Firebase.log('firebase.lotStateUpdate error', obj);
+          this.log('firebase.lotStateUpdate error', obj);
           throw e;
         });
     }
@@ -398,7 +399,7 @@ export default class Firebase {
         const chatsArray = Object.values(lotsTable.val());
         const exist = chatsArray.find((chat) => chat.userFirst === currentUserID);
         if (exist === undefined) {
-          Firebase.log('firebase.addMessageFromLot need new chat');
+          this.log('firebase.addMessageFromLot need new chat');
           chatID = this.chatsNode.push().key;
           chatRef = this.chatsNode.child(chatID);
           const chatObj = {
@@ -442,11 +443,11 @@ export default class Firebase {
               this.database.ref().update(updates);
             })
             .then(() => {
-              Firebase.log('firebase.addMessageFromLot new chatID = ', chatID);
+              this.log('firebase.addMessageFromLot new chatID = ', chatID);
               return Promise.resolve(chatID);
             });
         }
-        Firebase.log('firebase.addMessageFromLot chat exist');
+        this.log('firebase.addMessageFromLot chat exist');
         chatID = exist.chatID;
         chatRef = this.chatsNode.child(chatID);
         messagesRef = chatRef.child('messages');
@@ -457,7 +458,7 @@ export default class Firebase {
           userID: currentUserID,
           dtCreate: (new Date()).toJSON()
         };
-        Firebase.log('firebase.addMessageFromLot new messageID = ', messageID);
+        this.log('firebase.addMessageFromLot new messageID = ', messageID);
         return messagesRef.child(messageID).set(messageObj);
       })
       .catch((e) => {
@@ -465,7 +466,7 @@ export default class Firebase {
           code: e.code,
           message: e.message
         };
-        Firebase.log('firebase.addMessageFromLot error', obj);
+        this.log('firebase.addMessageFromLot error', obj);
         throw e;
       });
     /*
@@ -538,7 +539,7 @@ export default class Firebase {
         .then((uploadTaskSnapshot) => uploadTaskSnapshot.ref.getDownloadURL())
         .then((downloadURL) => {
           imgURLs.push(downloadURL);
-          Firebase.log('firebase.loadFiles downloadURL = ', downloadURL);
+          this.log('firebase.loadFiles downloadURL = ', downloadURL);
         });
     }
     return imgURLs;
@@ -554,7 +555,7 @@ export default class Firebase {
         .then((uploadTaskSnapshot) => uploadTaskSnapshot.ref.getDownloadURL())
         .then((downloadURL) => {
           imgURLs.push(downloadURL);
-          Firebase.log('firebase.loadFiles downloadURL = ', downloadURL);
+          this.log('firebase.loadFiles downloadURL = ', downloadURL);
         });
     }
     return imgURLs;
