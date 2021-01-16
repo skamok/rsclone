@@ -42,7 +42,7 @@ export default class AuthorizationPage {
     this.buttonRegistration.classList.add('registration-button', 'authorization-buttons');
     this.buttonRegistration.innerText = 'Registration';
     this.buttonRegistration.addEventListener('click', () => {
-      const registrationPage = new RegistrationPage(this.firebase, this.main);
+      const registrationPage = new RegistrationPage(this.firebase, this.main, this.header, this.logo);
       registrationPage.createRegistrationPage();
     });
 

@@ -155,6 +155,19 @@ footer {
   font-weight: 300;
 }
 
+.link_registration {
+  cursor: pointer;
+  font-size: 14px;
+  margin: 0px;
+  position: relative;
+  top: -15px;
+  transition: all 0.3s;
+}
+
+.link_registration:hover {
+  transform: scale(1.05);
+}
+
 .profile_container {
   display: flex;
   justify-content: space-evenly;
@@ -500,8 +513,8 @@ footer {
 }
 
 .contain_photo {
-  width: 150px;
-  height: 150px;
+  width: 100px;
+  height: 100px;
   overflow: hidden;
   border-radius: 10px;
   margin: 10px;
@@ -763,4 +776,16 @@ footer {
   .lot_submit {
     width: 320px;
   }
+}
+
+.avatar {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  background-color: gray;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 18px;
+  font-weight: 500;
 }
