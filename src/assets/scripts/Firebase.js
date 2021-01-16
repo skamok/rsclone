@@ -8,13 +8,13 @@ export default class Firebase {
   constructor(firebaseConfig, debug) {
     this.debug = debug;
     this.fireapp = firebase.initializeApp(firebaseConfig);
-    Firebase.log('firebase.initializeApp');
+    this.log('firebase.initializeApp');
     this.auth = this.fireapp.auth();
     this.auth.onAuthStateChanged((user) => {
       if (user) {
-        Firebase.log('firebase.onAuthStateChanged User is signed IN', user.email, user.uid);
+        this.log('firebase.onAuthStateChanged User is signed IN', user.email, user.uid);
       } else {
-        Firebase.log('firebase.onAuthStateChanged User is signed out');
+        this.log('firebase.onAuthStateChanged User is signed out');
       }
     });
     this.database = this.fireapp.database();
@@ -35,7 +35,7 @@ export default class Firebase {
           nick,
           karmaCount: 3
         };
-        Firebase.log('firebase.signUP OK', userCredential.user.uid);
+        this.log('firebase.signUP OK', userCredential.user.uid);
         const id = userCredential.user.uid;
         return this.addUser(id, user);
       })
@@ -44,14 +44,14 @@ export default class Firebase {
           code: error.code,
           message: error.message
         };
-        Firebase.log('firebase.signUP error', obj);
+        this.log('firebase.signUP error', obj);
         throw error;
       });
   }
 
   addUser(uid, user) {
     const newUser = this.usersNode.child(uid);
-    Firebase.log('firebase.addUser Info =', user);
+    this.log('firebase.addUser Info =', user);
     return newUser.set(user)
       .then(() => {
         const obj = { email: 'ok' };
@@ -62,7 +62,7 @@ export default class Firebase {
           code: e.code,
           message: e.message
         };
-        Firebase.log('firebase.addUser error', obj);
+        this.log('firebase.addUser error', obj);
         throw e;
       });
   }
@@ -70,7 +70,7 @@ export default class Firebase {
   signIN(email, password) {
     return this.auth.signInWithEmailAndPassword(email, password)
       .then((userCredential) => {
-        Firebase.log('firebase.signIN OK', userCredential.user.email, userCredential.user.uid);
+        this.log('firebase.signIN OK', userCredential.user.email, userCredential.user.uid);
         return Promise.resolve(userCredential);
       })
       .catch((e) => {
@@ -78,7 +78,7 @@ export default class Firebase {
           code: e.code,
           message: e.message
         };
-        Firebase.log('firebase.signIN error', obj);
+        this.log('firebase.signIN error', obj);
         throw e;
       });
   }
@@ -95,7 +95,7 @@ export default class Firebase {
     const imgRef = lotStorageRef.child(lot.imgFiles[0].name);
     return imgRef.put(lot.imgFiles[0])
       .then((snapshot) => {
-        Firebase.log('firebase.addLotSinglePic image loaded ');
+        this.log('firebase.addLotSinglePic image loaded ');
         return snapshot.ref.getDownloadURL();
       })
       .then((downloadURL) => {
@@ -109,7 +109,7 @@ export default class Firebase {
           imgURLs: imgsArray
         };
         const lotRef = this.lotsNode.child(lotID);
-        Firebase.log('firebase.addLotSinglePic lot =', lotID, newLot);
+        this.log('firebase.addLotSinglePic lot =', lotID, newLot);
         return lotRef.set(newLot);
       })
       .then(() => {
@@ -123,7 +123,7 @@ export default class Firebase {
         } else {
           userLotsArray.push(lotID);
         }
-        Firebase.log('firebase.addLotSinglePic userLots =', userLotsArray);
+        this.log('firebase.addLotSinglePic userLots =', userLotsArray);
         return dataSnapshot.ref.set(userLotsArray);
       })
       .catch((e) => {
@@ -131,7 +131,7 @@ export default class Firebase {
           code: e.code,
           message: e.message
         };
-        Firebase.log('firebase.addLotSinglePic error', obj);
+        this.log('firebase.addLotSinglePic error', obj);
         throw e;
       });
   }
@@ -154,7 +154,7 @@ export default class Firebase {
           state: lot.state
         };
         const lotRef = this.lotsNode.child(lotID);
-        Firebase.log('firebase.addLotMultiPic lot =', lotID, newLot);
+        this.log('firebase.addLotMultiPic lot =', lotID, newLot);
         return lotRef.set(newLot);
       })
       .then(() => {
@@ -168,7 +168,7 @@ export default class Firebase {
         } else {
           userLotsArray.push(lotID);
         }
-        Firebase.log('firebase.LotMultiPic userLots =', userLotsArray);
+        this.log('firebase.LotMultiPic userLots =', userLotsArray);
         return dataSnapshot.ref.set(userLotsArray);
       })
       .catch((e) => {
@@ -176,7 +176,7 @@ export default class Firebase {
           code: e.code,
           message: e.message
         };
-        Firebase.log('firebase.LotMultiPic error', obj);
+        this.log('firebase.LotMultiPic error', obj);
         throw e;
       });
   }
@@ -199,7 +199,7 @@ export default class Firebase {
           state: lot.state
         };
         const lotRef = this.lotsNode.child(lotID);
-        Firebase.log('firebase.addLotMultiPicURL lot =', lotID, newLot);
+        this.log('firebase.addLotMultiPicURL lot =', lotID, newLot);
         return lotRef.set(newLot);
       })
       .then(() => {
@@ -213,7 +213,7 @@ export default class Firebase {
         } else {
           userLotsArray.push(lotID);
         }
-        Firebase.log('firebase.addLotMultiPicURL userLots =', userLotsArray);
+        this.log('firebase.addLotMultiPicURL userLots =', userLotsArray);
         return dataSnapshot.ref.set(userLotsArray);
       })
       .catch((e) => {
@@ -221,7 +221,7 @@ export default class Firebase {
           code: e.code,
           message: e.message
         };
-        Firebase.log('firebase.addLotMultiPicURL error', obj);
+        this.log('firebase.addLotMultiPicURL error', obj);
         throw e;
       });
   }
@@ -236,8 +236,8 @@ export default class Firebase {
         return Firebase.readNodesByID(lots, this.lotsNode);
       })
       .then((data) => {
-        Firebase.log('firebase.readCurrentUserWishLots', data);
-        return Promise.resolve(data);
+        this.log('firebase.readCurrentUserWishLots', data);
+        return this.resolve(data);
       })
       .catch((e) => {
         const obj = {
@@ -332,9 +332,51 @@ export default class Firebase {
       });
   }
 
-  lotStateUpdate(lot, newState) {
+  lotStateUpdate(lot, newState, buyer) {
     const currentUserID = this.auth.currentUser.uid;
     const currentLotState = lot.state;
+    if (currentLotState === 10) {
+      return this.lotsNode.child(lot.lotID).child('state').set(newState)
+        .then(() => this.usersNode.child(currentUserID).once('value'))
+        .then((dataSnapshot) => {
+          const userData = dataSnapshot.val();
+          const userWinLots = userData.winLots;
+          const arr = [];
+          let upd = false;
+          if (userWinLots === undefined) {
+            arr.push(lot.lotID);
+            upd = true;
+          } else if (userWinLots.includes(lot.lotID) === false) {
+            userWinLots.forEach((element) => arr.push(element));
+            arr.push(lot.lotID);
+            upd = true;
+          }
+          if (upd === true) {
+            return this.usersNode.child(lot.userID).once('value')
+              .then((dataSnapshot1) => {
+                const sellerKarmaCount = dataSnapshot1.val().karmaCount + lot.price;
+                const buyerKarmaCount = buyer.karmaCount - lot.price;
+                const updates = {};
+                updates[`/users/${currentUserID}/karmaCount`] = buyerKarmaCount;
+                updates[`/users/${lot.userID}/karmaCount`] = sellerKarmaCount;
+                updates[`/users/${currentUserID}/winLots`] = arr;
+                Firebase.log('firebase.lotStateUpdate updates = ', updates);
+                this.database.ref().update(updates);
+              });
+          }
+          // eslint-disable-next-line prefer-promise-reject-errors
+          return Promise.reject({ code: -1, message: 'Already winned' });
+        })
+        .catch((e) => {
+          const obj = {
+            code: e.code,
+            message: e.message
+          };
+          Firebase.log('firebase.lotStateUpdate error', obj);
+          throw e;
+        });
+    }
+    throw new Error('error');
   }
 
   addMessageFromLot(lotID, lotOwner, message) {
@@ -474,13 +516,15 @@ export default class Firebase {
     */
   }
 
-  static log(val, ...rest) {
-    if (rest.length > 0) {
-      // eslint-disable-next-line no-console
-      console.log(val, ...rest);
-    } else {
-      // eslint-disable-next-line no-console
-      console.log(val);
+  log(val, ...rest) {
+    if (this.debug === true) {
+      if (rest.length > 0) {
+        // eslint-disable-next-line no-console
+        console.log(val, ...rest);
+      } else {
+        // eslint-disable-next-line no-console
+        console.log(val);
+      }
     }
   }
 

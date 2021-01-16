@@ -156,6 +156,14 @@ export default class CurrentLotPage {
 
   takeLot = (event) => {
     event.preventDefault();
+    this.firebase.readCurrentUser()
+      .then((user) => {
+        if ((user.userID !== this.lotInfo.userID) && (user.karmaCount >= this.lotInfo.price)) {
+          return this.firebase.lotStateUpdate(this.lotInfo, 70, user);
+        }
+        throw new Error('error');
+      })
+      .then(() => alert('you win')).catch((e) => alert(e.message));
   }
 
   toggleWishes = (event) => {

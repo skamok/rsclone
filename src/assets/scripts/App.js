@@ -17,7 +17,7 @@ const logo = document.querySelector('.logo');
 
 export default class App {
   constructor() {
-    this.firebase = new Firebase(firebaseConfig, false);
+    this.firebase = new Firebase(firebaseConfig, true);
     this.authorizationPage = new AuthorizationPage(this.firebase, headerSection, mainSection, logo);
   }
 
