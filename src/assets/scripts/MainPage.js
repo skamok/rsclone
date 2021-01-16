@@ -2,6 +2,7 @@
 import MainPageLots from './MainPageLots.js';
 import AddLotPage from './AddLotPage.js';
 import WishListLots from './WishListLots.js';
+import SettingsPage from './SettingsPage.js';
 
 export default class MainPage {
   constructor(firebase, mainSection, headerSection, logo) {
@@ -139,6 +140,7 @@ export default class MainPage {
         this.burgerMenuSettingsText.classList.add('add_lot_text');
         this.burgerMenuSettingsText.innerText = 'Settings';
         this.burgerMenuSettings.appendChild(this.burgerMenuSettingsText);
+        this.burgerMenuSettings.addEventListener('click', this.goToSettings);
 
         this.burgerMenu.appendChild(this.burgerMenuSettings);
 
@@ -150,7 +152,13 @@ export default class MainPage {
 
   addLotClick = (event) => {
     event.preventDefault();
-    this.addLotPage = new AddLotPage(this.lotsContainer, this.firebase);
+    this.addLotPage = new AddLotPage(this.lotsContainer, this.firebase, this.header, this.main);
     this.addLotPage.createAddLotPage();
+  }
+
+  goToSettings = (event) => {
+    event.preventDefault();
+    const settings = new SettingsPage(this.lotsContainer, this.firebase, this.header, this.main);
+    settings.changeSettings();
   }
 }

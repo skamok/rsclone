@@ -1,23 +1,26 @@
 import RealDatabase from './RealDatabase.js';
+import MainPageLots from './MainPageLots.js';
 
 export default class AddLotPage {
-  constructor(сontainer, firebase) {
+  constructor(сontainer, firebase, header, main) {
     this.container = сontainer;
     this.firebase = firebase;
+    this.header = header;
+    this.main = main;
     this.container.innerHTML = '';
   }
 
   createAddLotPage() {
-    this.headForm = document.createElement('h2');
-    this.headForm.classList.add('add_lot');
-    this.headForm.innerText = 'Adding lot';
-    this.container.appendChild(this.headForm);
-
     this.formLot = document.createElement('form');
     this.formLot.setAttribute('name', 'form_lot');
     this.formLot.classList.add('form_lot');
     this.container.appendChild(this.formLot);
     this.formLot.addEventListener('submit', this.formLotValidation);
+
+    this.headForm = document.createElement('h2');
+    this.headForm.classList.add('add_lot');
+    this.headForm.innerText = 'Adding lot';
+    this.formLot.appendChild(this.headForm);
 
     this.inputPhotos = document.createElement('input');
     this.inputPhotos.setAttribute('type', 'file');
@@ -144,12 +147,9 @@ export default class AddLotPage {
           return this.firebase.addLotMultiPicURL(lotObj);
         })
         .then(() => alert('lot add'));
-      /*
-      const imgDataURLs = this.inputPhotos.files;
-      const lotObj = RealDatabase.createLotObj(this.formLot.nameLot.value, this.formLot.descriptionLot.value,
-        this.formLot.karma.value, this.listCategory.selectedIndex, imgDataURLs, this.firebase.auth.currentUser.uid);
-      this.firebase.addLotMultiPic(lotObj).then(() => alert('ok'));
-      */
+      const mainPageLots = new MainPageLots(this.firebase, this.container, this.main, this.header,
+        this.errorBlock);
+      mainPageLots.createMainPageLots();
     }
   }
 
@@ -161,8 +161,8 @@ export default class AddLotPage {
   }
 
   resizeImagesForMiniature = (e) => {
-    const MAX_WIDTH = 150;
-    const MAX_HEIGHT = 150;
+    const MAX_WIDTH = 100;
+    const MAX_HEIGHT = 100;
     for (let i = 0; i < e.target.files.length; i += 1) {
       const img = document.createElement('img');
       img.src = window.URL.createObjectURL(e.target.files[i]);
@@ -187,9 +187,9 @@ export default class AddLotPage {
         canvas.width = width;
         canvas.height = height;
         if (height > MAX_HEIGHT) {
-          ctx.drawImage(img, 0, -((height - 200) / 2), width, height);
+          ctx.drawImage(img, 0, -((height - 100) / 2), width, height);
         } else {
-          ctx.drawImage(img, -((width - 200) / 2), 0, width, height);
+          ctx.drawImage(img, -((width - 100) / 2), 0, width, height);
         }
       };
       this.wrapPhotos.appendChild(this.contain);
