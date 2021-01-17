@@ -142,7 +142,8 @@ export default class AddLotPage {
         .then((dataURLs) => {
           const imgDataURLs = dataURLs;
           const lotObj = RealDatabase.createLotObj(this.formLot.nameLot.value, this.formLot.descriptionLot.value,
-            this.formLot.karma.value, this.listCategory.selectedIndex, imgDataURLs, this.firebase.auth.currentUser.uid);
+            Number.parseInt(this.formLot.karma.value, 10), this.listCategory.selectedIndex, imgDataURLs,
+            this.firebase.auth.currentUser.uid);
           return this.firebase.addLotMultiPicURL(lotObj);
         })
         .then(() => alert('lot add'));
