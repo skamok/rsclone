@@ -14,18 +14,19 @@ export default class MainPageLots {
     this.container.innerHTML = '';
     this.firebase.readLots()
       .then((data) => {
+        console.log(data);
         const keys = Object.keys(data);
         for (let i = 0; i < keys.length; i++) {
           this.lotCard = document.createElement('div');
           this.lotCard.classList.add('lot_card');
           this.lotCard.addEventListener('click', () => {
-            const lotPage = new CurrentLotPage(data[keys[i]], this.header, this.main, this.firebase, this.errorBlock);
+            const lotPage = new CurrentLotPage(data[keys[i]], this.header, this.main, this.firebase);
             lotPage.createCurrentLotPage();
           });
 
           this.lotCardHeader = document.createElement('div');
           this.lotCardHeader.classList.add('lot_card_header');
-          this.lotCardHeader.innerText = '15 Karma';
+          this.lotCardHeader.innerText = `${data[keys[i]].price} Karma`;
           this.lotCard.appendChild(this.lotCardHeader);
 
           this.lotCardMain = document.createElement('div');

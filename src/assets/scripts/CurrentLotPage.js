@@ -2,12 +2,11 @@
 import NotificationBlock from './NotificationBlock.js';
 
 export default class CurrentLotPage {
-  constructor(lotInfo, header, main, firebase, errorBlock) {
+  constructor(lotInfo, header, main, firebase) {
     this.lotInfo = lotInfo;
     this.main = main;
     this.header = header;
     this.firebase = firebase;
-    this.errorBlock = errorBlock;
   }
 
   createCurrentLotPage() {
