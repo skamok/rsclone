@@ -795,6 +795,8 @@ footer {
   align-items: center;
   font-size: 18px;
   font-weight: 500;
+  overflow: hidden;
+  margin-bottom: 15px;
 }
 
 .select_avatar {
