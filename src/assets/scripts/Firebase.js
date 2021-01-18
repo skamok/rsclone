@@ -234,11 +234,40 @@ export default class Firebase {
       .then((dataSnapshot) => {
         const user = dataSnapshot.val();
         const lots = user.wishLots;
+        if (lots === undefined) {
+          return Promise.resolve([]);
+        }
         return Firebase.readNodesByID(lots, this.lotsNode);
       })
       .then((data) => {
         this.log('firebase.readCurrentUserWishLots', data);
-        return this.resolve(data);
+        return Promise.resolve(data);
+      })
+      .catch((e) => {
+        const obj = {
+          code: e.code,
+          message: e.message
+        };
+        this.log('firebase.readCurrentUserWishLots error', obj);
+        throw e;
+      });
+  }
+
+  readCurrentUserWinLots() {
+    const userID = this.auth.currentUser.uid;
+    const refUser = this.usersNode.child(userID);
+    return refUser.once('value')
+      .then((dataSnapshot) => {
+        const user = dataSnapshot.val();
+        const lots = user.winLots;
+        if (lots === undefined) {
+          return Promise.resolve([]);
+        }
+        return Firebase.readNodesByID(lots, this.lotsNode);
+      })
+      .then((data) => {
+        this.log('firebase.readCurrentUserWishLots', data);
+        return Promise.resolve(data);
       })
       .catch((e) => {
         const obj = {
