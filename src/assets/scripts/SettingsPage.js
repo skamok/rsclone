@@ -141,7 +141,6 @@ export default class SettingsPage {
       });
   }
 
-  // eslint-disable-next-line class-methods-use-this
   changeAvatar(e) {
     this.avatar.innerHTML = '';
     const MAX_WIDTH = 150;
