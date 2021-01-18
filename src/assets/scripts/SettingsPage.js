@@ -8,64 +8,264 @@ export default class SettingsPage {
   }
 
   changeSettings() {
-    this.formSetting = document.createElement('form');
-    this.formSetting.setAttribute('name', 'form_setting');
-    this.formSetting.classList.add('form_setting');
-    this.container.appendChild(this.formSetting);
-    this.formSetting.addEventListener('submit', this.formLotValidation);
+    this.firebase.readCurrentUser()
+      .then((data) => {
+        this.formSetting = document.createElement('form');
+        this.formSetting.setAttribute('name', 'form_setting');
+        this.formSetting.classList.add('form_setting');
+        this.container.appendChild(this.formSetting);
+        this.formSetting.addEventListener('submit', this.formUserValidation);
 
-    this.headForm = document.createElement('h2');
-    this.headForm.classList.add('add_lot');
-    this.headForm.innerText = 'Settings';
-    this.formSetting.appendChild(this.headForm);
+        this.headForm = document.createElement('h2');
+        this.headForm.classList.add('add_lot');
+        this.headForm.innerText = 'Settings';
+        this.formSetting.appendChild(this.headForm);
 
-    this.avatar = document.createElement('div');
-    this.avatar.classList.add('avatar');
-    this.avatar.innerText = 'No photo';
-    this.formSetting.appendChild(this.avatar);
+        this.avatar = document.createElement('div');
+        this.avatar.classList.add('avatar-photo');
+        this.formSetting.appendChild(this.avatar);
 
-    this.inputPhotos = document.createElement('input');
-    this.inputPhotos.setAttribute('type', 'file');
-    this.inputPhotos.setAttribute('class', 'input-file');
-    this.inputPhotos.setAttribute('id', 'file');
-    this.inputPhotos.setAttribute('name', 'file');
-    this.inputPhotos.setAttribute('multiple', 'false');
-    this.formSetting.appendChild(this.inputPhotos);
+        this.inputPhotos = document.createElement('input');
+        this.inputPhotos.setAttribute('type', 'file');
+        this.inputPhotos.setAttribute('class', 'input-file');
+        this.inputPhotos.setAttribute('id', 'file');
+        this.inputPhotos.setAttribute('name', 'file');
+        this.inputPhotos.setAttribute('multiple', 'false');
+        this.formSetting.appendChild(this.inputPhotos);
 
-    this.labelBtnAddPhotos = document.createElement('label');
-    this.labelBtnAddPhotos.setAttribute('for', 'file');
-    this.labelBtnAddPhotos.classList.add('btn');
-    this.labelBtnAddPhotos.classList.add('btn-tertiary');
-    this.labelBtnAddPhotos.classList.add('js-labelFile');
-    this.formSetting.appendChild(this.labelBtnAddPhotos);
-    this.iconBtnPhotos = document.createElement('i');
-    this.iconBtnPhotos.classList.add('icon');
-    this.iconBtnPhotos.classList.add('fa');
-    this.iconBtnPhotos.classList.add('fa-check');
-    this.labelBtnAddPhotos.appendChild(this.iconBtnPhotos);
-    this.contentBthPhotos = document.createElement('span');
-    this.contentBthPhotos.classList.add('js-fileName');
-    this.contentBthPhotos.innerText = 'change avatar';
-    this.labelBtnAddPhotos.appendChild(this.contentBthPhotos);
-    this.wrapPhotos = document.createElement('div');
-    this.wrapPhotos.classList.add('wrap_photos');
-    this.formSetting.appendChild(this.wrapPhotos);
+        this.labelBtnAddPhotos = document.createElement('label');
+        this.labelBtnAddPhotos.setAttribute('for', 'file');
+        this.labelBtnAddPhotos.classList.add('btn');
+        this.labelBtnAddPhotos.classList.add('btn-tertiary-photo');
+        this.labelBtnAddPhotos.classList.add('js-labelFile');
+        this.formSetting.appendChild(this.labelBtnAddPhotos);
+        this.iconBtnPhotos = document.createElement('i');
+        this.iconBtnPhotos.classList.add('icon');
+        this.iconBtnPhotos.classList.add('fa');
+        this.iconBtnPhotos.classList.add('fa-check');
+        this.labelBtnAddPhotos.appendChild(this.iconBtnPhotos);
+        this.contentBthPhotos = document.createElement('span');
+        this.contentBthPhotos.classList.add('js-fileName');
+        this.contentBthPhotos.innerText = 'change avatar';
+        this.labelBtnAddPhotos.appendChild(this.contentBthPhotos);
+        this.wrapPhotos = document.createElement('div');
+        this.wrapPhotos.classList.add('wrap_photos');
+        this.formSetting.appendChild(this.wrapPhotos);
 
-    this.inputPhotos.addEventListener('change', this.changeAvatar.bind(this));
+        this.inputPhotos.addEventListener('change', this.changeAvatar.bind(this));
 
-    this.btnSubmit = document.createElement('input');
-    this.btnSubmit.setAttribute('type', 'submit');
-    this.btnSubmit.setAttribute('value', 'Change settings');
-    this.btnSubmit.classList.add('lot_submit');
-    this.formSetting.appendChild(this.btnSubmit);
+        this.nickName = document.createElement('span');
+        this.nickName.classList.add('name_lot');
+        this.nickName.innerText = 'Your name';
+        this.formSetting.appendChild(this.nickName);
+
+        this.inputNickName = document.createElement('input');
+        this.inputNickName.setAttribute('type', 'text');
+        this.inputNickName.setAttribute('name', 'nickName');
+        this.inputNickName.setAttribute('class', 'name_lot_input');
+        this.inputNickName.setAttribute('value', `${data.nick}`);
+        this.formSetting.appendChild(this.inputNickName);
+
+        this.email = document.createElement('span');
+        this.email.classList.add('name_lot');
+        this.email.innerText = 'Your email';
+        this.formSetting.appendChild(this.email);
+
+        this.inputEmail = document.createElement('input');
+        this.inputEmail.setAttribute('type', 'text');
+        this.inputEmail.setAttribute('name', 'email');
+        this.inputEmail.setAttribute('class', 'name_lot_input');
+        this.inputEmail.setAttribute('value', `${data.email}`);
+        this.inputEmail.setAttribute('placeholder', 'john@mail.com');
+        this.formSetting.appendChild(this.inputEmail);
+
+        this.password = document.createElement('span');
+        this.password.classList.add('name_lot');
+        this.password.innerText = 'New password';
+        this.formSetting.appendChild(this.password);
+
+        this.inputPassword = document.createElement('input');
+        this.inputPassword.setAttribute('type', 'text');
+        this.inputPassword.setAttribute('name', 'password');
+        this.inputPassword.setAttribute('class', 'name_lot_input');
+        this.inputPassword.setAttribute('placeholder', 'password');
+        this.formSetting.appendChild(this.inputPassword);
+
+        this.passwordRepeat = document.createElement('span');
+        this.passwordRepeat.classList.add('name_lot');
+        this.passwordRepeat.innerText = 'Repeat new password';
+        this.formSetting.appendChild(this.passwordRepeat);
+
+        this.inputPasswordRepeat = document.createElement('input');
+        this.inputPasswordRepeat.setAttribute('type', 'text');
+        this.inputPasswordRepeat.setAttribute('name', 'passwordRepeat');
+        this.inputPasswordRepeat.setAttribute('class', 'name_lot_input');
+        this.inputPasswordRepeat.setAttribute('placeholder', 'password');
+        this.formSetting.appendChild(this.inputPasswordRepeat);
+
+        this.phone = document.createElement('span');
+        this.phone.classList.add('name_lot');
+        this.phone.innerText = 'Your phone number';
+        this.formSetting.appendChild(this.phone);
+
+        this.inputPhone = document.createElement('input');
+        this.inputPhone.setAttribute('type', 'text');
+        this.inputPhone.setAttribute('name', 'phone');
+        this.inputPhone.setAttribute('class', 'name_lot_input');
+        if (data.phone !== undefined) {
+          this.inputPhone.setAttribute('value', `${data.phone}`);
+        }
+        this.inputPhone.setAttribute('placeholder', '+375 XX XXXXXXX');
+        this.formSetting.appendChild(this.inputPhone);
+
+        this.location = document.createElement('span');
+        this.location.classList.add('name_lot');
+        this.location.innerText = 'Your location';
+        this.formSetting.appendChild(this.location);
+
+        this.inputLocation = document.createElement('input');
+        this.inputLocation.setAttribute('type', 'text');
+        this.inputLocation.setAttribute('name', 'location');
+        this.inputLocation.setAttribute('class', 'name_lot_input');
+        if (data.location !== undefined) {
+          this.inputLocation.setAttribute('value', `${data.location}`);
+        }
+        this.inputLocation.setAttribute('placeholder', 'Homyel');
+        this.formSetting.appendChild(this.inputLocation);
+
+        this.btnSubmit = document.createElement('input');
+        this.btnSubmit.setAttribute('type', 'submit');
+        this.btnSubmit.setAttribute('value', 'Change settings');
+        this.btnSubmit.classList.add('lot_submit');
+        this.formSetting.appendChild(this.btnSubmit);
+      });
   }
 
-  // eslint-disable-next-line class-methods-use-this
   changeAvatar(e) {
-    if (e.target.files.length !== 0) {
+    this.avatar.innerHTML = '';
+    const MAX_WIDTH = 150;
+    const MAX_HEIGHT = 150;
+    const img = document.createElement('img');
+    img.src = window.URL.createObjectURL(e.target.files[0]);
+    img.onload = () => {
+      let { width } = img;
+      let { height } = img;
+      height *= MAX_WIDTH / width;
+      width = MAX_WIDTH;
+      if (height < MAX_HEIGHT) {
+        width *= MAX_HEIGHT / height;
+        height = MAX_HEIGHT;
+      }
+      img.width = width;
+      img.height = height;
+      this.avatar.appendChild(img);
+    };
+  }
 
-      console.log(this.inputPhotos.file);
-      this.avatar.style.backgroundImage = `url(${this.inputPhotos.file})`;
+  formUserValidation = (e) => {
+    e.preventDefault();
+    const listMessage = document.querySelectorAll('.message_err');
+    let inputError = false;
+    listMessage.forEach((elem) => { elem.remove(); });
+    /* if (this.wrapPhotos.children.length === 0) {
+      inputError = true;
+      // this.labelBtnAddPhotos.after(this.createMessageError('add photos'));
+    } */
+    if (this.formSetting.nickName.value.length === 0) {
+      inputError = true;
+      this.formSetting.nickName.after(this.createMessageError('add your name'));
     }
+
+    if (this.formSetting.email.value.length > 0) {
+      if (!(/@/.test(this.formSetting.email.value))) {
+        inputError = true;
+        this.formSetting.email.after(this.createMessageError('email must contain @'));
+      }
+    } else {
+      inputError = true;
+      this.formSetting.email.after(this.createMessageError('add email'));
+    }
+
+    if (this.formSetting.password.value.length !== 0) {
+      if (this.formSetting.passwordRepeat.value.length === 0) {
+        inputError = true;
+        this.formSetting.passwordRepeat.after(this.createMessageError('repeat new password'));
+      } if (this.formSetting.passwordRepeat.value.length !== 0
+        && this.formSetting.passwordRepeat.value !== this.formSetting.password.value) {
+        inputError = true;
+        this.formSetting.passwordRepeat.after(this.createMessageError('passwords do not match'));
+      }
+      inputError = true;
+      this.formSetting.nickName.after(this.createMessageError('add your name'));
+    }
+
+    if (!(/^[+][\d]{3} [\d]{2} [\d]{2,3}[\d]{2,3}[\d]{2,3}$/.test(this.formSetting.phone.value))) {
+      inputError = true;
+      this.formSetting.phone.after(this.createMessageError('enter phone number format +XXX XX XXXXXXX'));
+    }
+
+    if (this.formSetting.location.value.length === 0) {
+      inputError = true;
+      this.formSetting.location.after(this.createMessageError('add your location'));
+    }
+
+    /* if (inputError === false) {
+      this.resizePhotoForServer()
+        .then((dataURLs) => {
+          const imgDataURLs = dataURLs;
+          const lotObj = RealDatabase.createLotObj(this.formLot.nameLot.value, this.formLot.descriptionLot.value,
+            Number.parseInt(this.formLot.karma.value, 10), this.listCategory.selectedIndex, imgDataURLs,
+            this.firebase.auth.currentUser.uid);
+          return this.firebase.addLotMultiPicURL(lotObj);
+        })
+        .then(() => alert('lot add'));
+      const mainPageLots = new MainPageLots(this.firebase, this.container, this.main, this.header,
+        this.errorBlock);
+      mainPageLots.createMainPageLots();
+    } */
+  }
+
+  createMessageError(str) {
+    this.messageError = document.createElement('span');
+    this.messageError.classList.add('message_err');
+    this.messageError.innerText = str;
+    return this.messageError;
+  }
+
+  async resizePhotoForServer() {
+    const MAX_WIDTH = 150;
+    const MAX_HEIGHT = 150;
+
+    const img = document.createElement('img');
+    img.src = window.URL.createObjectURL(this.inputPhotos.files[0]);
+    const contain = document.createElement('div');
+    contain.classList.add('contain');
+    const canvas = document.createElement('CANVAS');
+    const ctx = canvas.getContext('2d');
+    // eslint-disable-next-line no-loop-func
+    const promise = new Promise((res, rej) => {
+      img.onload = () => {
+        let { width } = img;
+        let { height } = img;
+        if (width > height) {
+          if (width > MAX_WIDTH) {
+            height *= MAX_WIDTH / width;
+            width = MAX_WIDTH;
+          }
+        } else if (height > MAX_HEIGHT) {
+          width *= MAX_HEIGHT / height;
+          height = MAX_HEIGHT;
+        }
+        canvas.width = width;
+        canvas.height = height;
+        ctx.drawImage(img, 0, 0, width, height);
+        const dataurl = canvas.toDataURL('image/jpeg', 0.9);
+        res(dataurl);
+        rej(new Error('Photo do not add'));
+      };
+    });
+    // eslint-disable-next-line no-await-in-loop
+    const result = await promise;
+    return result;
   }
 }
