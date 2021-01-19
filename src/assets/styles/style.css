@@ -1,14 +1,827 @@
 @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Zhi+Mang+Xing&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap');
 
 html {
   box-sizing: border-box;
   font-size: 10px;
-  font-family: 'Open Sans', sans-serif;
+  font-family: 'Quicksand', sans-serif;
   font-weight: 300;
   color: #d2d2d2;
+}
+
+body {
+  height: 100vh;
+  background-color: #5A5C59;
 }
 
 *, *::before, *::after {
   box-sizing: inherit;
 }
 
+button {
+  transition: 0.3s ease-out;
+}
+
+header {
+  height: 10%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.header_entered {
+  justify-content: space-between;
+  max-width: 1200px;
+  margin: 0 auto
+}
+
+.logo {
+  font-family: 'Zhi Mang Xing', sans-serif;
+  font-size: 48px;
+}
+
+.logo_entered {
+  font-size: 36px;
+  margin-left: 20px;
+}
+
+main {
+  height: 80%;
+  position: relative;
+}
+
+.authorization {
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  column-gap: 10%;
+}
+
+.sign-in-block, .registration-block {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  row-gap: 5px;
+}
+
+.signIn_error {
+  color: #ffa09e;
+  font-size: 1.4rem;
+}
+
+.authorization-buttons {
+  width: 230px;
+  height: 61px;
+  background: #DDDDDD;
+  box-shadow: 4px 3px 4px rgba(255, 255, 255, 0.23);
+  border-radius: 15px;
+  outline: none;
+  border: none;
+  font-family: 'Quicksand', sans-serif;
+  font-size: 24px;
+  font-weight: 400;
+  color: #6D6D6D;
+}
+
+.hints {
+  font-weight: 400;
+  font-size: 16px;
+  color: #DCC29B;
+}
+
+footer {
+  height: 10%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  column-gap: 8px;
+}
+
+.gh_link {
+  font-family: 'Quicksand', sans-serif;
+  font-size: 14px;
+  color: #DCC29B;
+}
+
+.gh-links {
+  display: flex;
+  align-items: center;
+  column-gap: 8px;
+}
+
+.powered_by, .for {
+  color: #fff;
+  font-size: 1.4rem;
+}
+
+.rss_logo {
+  width: 80px;
+}
+
+.inputs {
+  width: 375px;
+  height: 40px;
+  background: #DDDDDD;
+  box-shadow: 4px 3px 4px rgba(255, 255, 255, 0.25);
+  border-radius: 10px;
+  outline: none;
+  font-family: 'Quicksand', sans-serif;
+  padding: 5px;
+}
+
+.sign_in_form {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  row-gap: 5%;
+}
+
+.submit_button {
+  width: 230px;
+  height: 50px;
+  background: #DCC29B;
+  box-shadow: 4px 3px 4px rgba(255, 255, 255, 0.25);
+  border-radius: 15px;
+  border: none;
+  outline: none;
+  font-family: 'Quicksand', sans-serif;
+  font-size: 2.4rem;
+  font-weight: 300;
+}
+
+.link_registration {
+  cursor: pointer;
+  font-size: 14px;
+  margin: 0px;
+  position: relative;
+  top: -15px;
+  transition: all 0.3s;
+}
+
+.link_registration:hover {
+  transform: scale(1.05);
+}
+
+.profile_container {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  margin-right: 20px;
+}
+
+.profile_image {
+  width: 50px;
+}
+
+.profile_subcontainer {
+  display: flex;
+  flex-direction: column;
+  font-size: 1.2rem;
+  color: #65FFAC;
+}
+
+.username_header {
+  font-family: 'Quicksand', sans-serif;
+  font-size: 1.4rem;
+}
+
+/* _____________________________________________main page */
+
+.main_container {
+  width: 100%;
+  max-width: 1200px;
+  height: 100%;
+  display: flex;
+  justify-content: space-evenly;
+  margin: 0 auto;
+}
+
+.burger_menu {
+  width: 27%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  row-gap: 23px;
+}
+
+.lots_container {
+  width: 70%;
+  height: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  row-gap: 50px;
+  column-gap: 50px;
+  overflow-y: scroll;
+  border-radius: 5px;
+  justify-content: center;
+}
+
+.burger_menu_element {
+  display: flex;
+  width: 70%;
+  align-items: center;
+  column-gap: 20px;
+  transition: 0.3s ease-out;
+}
+
+.add_lot_img {
+  width: 50px;
+}
+
+.add_lot_text {
+  font-size: 1.4rem;
+}
+
+.lot_card {
+  width: 210px;
+  height: 240px;
+  background-color: #DCC29B;
+  border-radius: 10px;
+}
+
+.lot_card_header {
+  height: 10%;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding-right: 10px;
+  background: #CDCDCD;
+  border-radius: 10px 10px 0 0;
+  color: #031700;
+  font-size: 1.4rem;
+  font-weight: 500;
+}
+
+.lot_card_image {
+  width: 100%;
+}
+
+.lot_card_main {
+  height: 70%;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #cdcdcd;
+}
+
+.lot_card_footer {
+  height: 20%;
+  border-radius: 0 0 10px 10px;
+  background: #CDCDCD;
+  font-size: 1.4rem;
+  font-weight: 500;
+  color: #031700;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+}
+
+.to_wishes_button {
+  width: 25px;
+}
+
+/* _____________________________________________lot popup */
+
+.popup_container {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-color: #3030309e;
+  display: flex;
+  z-index: 10;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+
+}
+
+.popup_window {
+  width: 50%;
+  max-width: 700px;
+  min-height: 500px;
+  background-color: #CDCDCD;
+  display: flex;
+  border-radius: 10px;
+  padding-bottom: 20px;
+}
+
+.main_lot_info_container {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-radius: 10px;
+}
+
+.close_popup_button {
+  position: absolute;
+  top: 0;
+  right: 8px;
+  width: 35px;
+}
+
+.lot_title_popup {
+  font-size: 24px;
+  font-weight: 500;
+  color: #031700;
+  padding-top: 10px;
+}
+
+.lot_popup_description {
+  color: #031700;
+  padding: 20px;
+  font-size: 1.4rem;
+  text-align: center;
+}
+
+.popup_actions_container {
+  display: flex;
+  justify-content: space-evenly;
+  column-gap: 40px;
+  padding-top: 30px;
+}
+
+.popup_action {
+  display: flex;
+  flex-direction: column;
+  row-gap: 3px;
+  align-items: center;
+}
+
+.popup_action_image {
+  width: 60px;
+}
+
+.popup_action_text {
+  color: #031700;
+  font-size: 1.2rem;
+}
+/* _____________________________________________slider */
+
+.slider_container {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.slider_controls {
+  width: 35px;
+}
+
+.slider_image_container {
+  max-width: 400px;
+  max-height: 500px;
+  width: 85%;
+  display: flex;
+  overflow: hidden;
+}
+
+.test_image {
+  width: 100%;
+  transition: 0.6s ease-in;
+}
+
+/* _____________________________________________hover effects */
+
+.authorization-buttons:hover, .gh_link:hover, .rss_logo:hover, .close_popup_button:hover, .popup_action:hover, .slider_controls:hover {
+  transform: scale(1.05);
+  transition: 0.3s ease-out;
+  cursor: pointer;
+}
+
+.slider_controls:hover {
+  transform: scale(1.2);
+  transition: 0.3s ease-out;
+  cursor: pointer;
+}
+
+.slider_controls:active, .close_popup_button:active {
+  opacity: .4;
+}
+
+.inputs:hover {
+  transform: scale(1.05);
+  transition: 0.3s ease-out;
+}
+
+.submit_button:hover {
+  opacity: 0.5;
+  transition: 0.3s ease-out;
+  cursor: pointer;
+}
+
+.authorization-buttons:active, .gh_link:active, .rss_logo:active {
+  opacity: .7;
+}
+
+.burger_menu_element:hover {
+  transition: 0.3s ease-out;
+  cursor: pointer;
+  background-color: rgba(255, 255, 255, 0.5);
+  border-radius: 5px;
+}
+
+.lot_card:hover {
+  opacity: .7;
+  transition: 0.3s ease-out;
+  cursor: pointer;
+}
+
+/*______________________________________________adding lot */
+
+.lots_container > span {
+  display: block;
+}
+
+.btn-tertiary, .btn-tertiary-photo{
+  padding: 0;
+  line-height: 40px;
+  width: 180px;
+  display: block;
+  background: #C4C4C4;
+  color: black;
+  font-size: 22px;
+  border-radius: 10px;
+  font-weight: 500;
+  transition: all 0.3s;
+  box-shadow: 2px 2px 4px rgba(255, 255, 255, 0.23);
+}
+
+.btn-tertiary-photo {
+  font-size: 18px;
+}
+
+.btn-tertiary:hover,.btn-tertiary:focus, .btn-tertiary-photo:hover{
+  color:#888;
+  border-color:#888;
+  transform: scale(1.05);
+}
+
+.input-file{
+  width:.1px;
+  height:.1px;
+  opacity:0;
+  overflow:hidden;
+  position:absolute;
+  z-index:-1
+}
+
+.input-file + .js-labelFile{
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+  padding:0 10px;
+  cursor:pointer;
+}
+
+.input-file + .js-labelFile .icon:before{
+  content: " ";
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  background: url(../images/iconAddPhotos.png) no-repeat;
+  background-size: contain;
+  margin-right: 10px;
+}
+
+.input-file + .js-labelFile.has-file .icon:before{
+  content:"\f00c";
+  color:#5AAC7B
+}
+
+.add_lot {
+  font-size: 30px;
+  font-weight: 600;
+  color: white;
+  margin-bottom: 15px;
+}
+
+.wrap_photos {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.contain_photo {
+  width: 100px;
+  height: 100px;
+  overflow: hidden;
+  border-radius: 10px;
+  margin: 10px;
+  position: relative;
+}
+
+.btn_delete_photo {
+  position: absolute;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: url(../images/delete_btn_photo.png) no-repeat;
+  right: 5px;
+  top: 5px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn_delete_photo:hover {
+  transform: scale(1.1);
+}
+
+
+.name_lot, .category_lot, .description_lot, .karma_count_lot, .region_lot {
+  display: block;
+  font-size: 18px;
+  font-weight: 500;
+  margin: 15px 0px;
+}
+
+.name_lot_input, .karma_count_lot_input {
+  display: block;
+  margin-top: 15px;
+  width: 220px;
+  height: 30px;
+  border-radius: 5px;
+  background: #C4C4C4;
+  border: 0px;
+  outline: none;
+  transition: all 0.3s;
+  font-size: 16px;
+  padding: 0px 7px;
+  box-shadow: 2px 2px 4px rgba(255, 255, 255, 0.23);
+}
+
+.name_lot_input:hover {
+  transform: scale(1.05);
+}
+
+.select_category {
+  width: 220px;
+  height: 30px;
+  border: 0px;
+  outline: none;
+  border-radius: 5px;
+  background: #c4c4c4;
+  font-size: 16px;
+  padding: 0px 7px;
+  transition: all 0.3s;
+  appearance: none;       /* Remove default arrow */
+  background-image: url(http://127.0.0.1:5500/dist/assets/images/arrow-select.png);
+  background-repeat: no-repeat;
+  background-size: 24px;
+  background-position: 190px;
+  box-shadow: 2px 2px 4px rgba(255, 255, 255, 0.23);
+  cursor: pointer;
+}
+
+.description_lot_input {
+  width: 300px;
+  height: 150px;
+  background: #c4c4c4;
+  border-radius: 5px;
+  font-size: 16px;
+  font-family: 'Quicksand';
+  font-weight: 500;
+  padding: 5px;
+  outline: none;
+  border: 0px;
+  box-shadow: 2px 2px 4px rgba(255, 255, 255, 0.23);
+  transition: all 0.3s;
+}
+
+.karma_count_lot_input {
+  width: 145px;
+  height: 30px;
+}
+
+.lot_submit {
+  width: 70%;
+  height: 50px;
+  background-color: #31af92;
+  border-radius: 10px;
+  border: 0px;
+  outline: none;
+  font-size: 22px;
+  margin: 25px 0px;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.lot_submit:hover, .karma_count_lot_input:hover, .description_lot_input:hover {
+  transform: scale(1.05);
+}
+
+.message_err {
+  color: red;
+  font-size: 16px;
+  font-weight: 400;
+  display: block;
+  margin-top: 5px;
+}
+
+.form_lot {
+  width: 100%;
+  padding: 30px;
+}
+
+/* _____________________________________________helpers */
+
+.zero_opacity {
+  /* display: none; */
+  opacity: 0;
+}
+
+.hidden {
+  display: none;
+}
+
+.error_block {
+  height: 40px;
+  width: 300px;
+  position: absolute;
+  top: 0;
+  left: calc(50% - 150px);
+  background: #cdcdcd;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #c30a0a;
+  font-size: 1.4rem;
+  font-weight: 400;
+  border-radius: 0 0 10px 10px;
+}
+
+.error_block_hidden {
+  transform: translateY(-100%);
+  transition: 0.3s ease-out;
+}
+
+.error_block_shown{
+  transition: 0.5s ease-out;
+  animation-name: showError; 
+  animation-duration: 0.5s;
+}
+
+@keyframes showError {
+  from {
+    transform: translateY(-100%);
+  }
+  to {
+    transform: translateX(0%);
+  }
+}
+
+/* _____________________________________________media */
+
+@media screen and (max-width: 1024px) {
+  .popup_window {
+    width: 70%;
+  }
+}
+
+@media screen and (max-width: 540px) {
+  .authorization {
+    flex-direction: column;
+    row-gap: 10%;
+  }
+
+  footer {
+    flex-direction: column;
+    row-gap: 5px;
+  }
+
+  .gh-links {
+    column-gap: 5px;
+  }
+
+  .gh_link {
+    font-size: 1.2rem;
+  }
+
+  .powered_by, .for {
+    display: none;
+  }
+
+  .inputs {
+    width: 300px;
+  }
+
+  .submit_button {
+    width: 200px;
+    height: 40px;
+  }
+
+  .main_container {
+    width: 100%;
+    max-width: 1200px;
+    height: 100%;
+    display: flex;
+    flex-direction: column-reverse;
+    justify-content: space-evenly;
+    margin: 0 auto;
+    align-items: center;
+  }
+
+.lots_container {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    row-gap: 50px;
+    column-gap: 50px;
+    overflow-y: scroll;
+    border-radius: 5px;
+    justify-content: center;
+  }
+
+.burger_menu {
+    width: 100%;
+    height: 20%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    /* row-gap: 23px; */
+    /* column-gap: 10px; */
+  }
+
+.burger_menu_element {
+    display: flex;
+    width: 70%;
+    align-items: center;
+    column-gap: 20px;
+    transition: 0.3s ease-out;
+    flex-direction: column;
+  }
+
+  .popup_window {
+    width: 95%;
+  }
+
+  .popup_actions_container {
+    column-gap: 30px;
+  }
+
+  .add_lot_img {
+    width: 40px;
+  }
+
+  .add_lot_text {
+    font-size: 1.2rem;
+  }
+
+  .description_lot_input {
+    width: 100%;
+  }
+}
+
+@media screen and (max-width: 640px) {
+  .lot_submit {
+    width: 320px;
+  }
+}
+
+.avatar-photo {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  background-size: 100%;
+  background-image: url('../images/default-profile.png');
+  background-position: center;
+  background-repeat: no-repeat;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 18px;
+  font-weight: 500;
+  overflow: hidden;
+  margin-bottom: 15px;
+}
+
+.select_avatar {
+  overflow: auto;
+  margin: auto;
+}
+
+.wrap_s_a {
+  display: flex;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0px;
+  left: 0px;
+  background-color: gray;
+}
