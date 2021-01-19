@@ -2,11 +2,12 @@
 import CurrentLotPage from './CurrentLotPage.js';
 
 export default class WishListLots {
-  constructor(firebase, lotsContainer, header, main) {
+  constructor(firebase, lotsContainer, header, main, userData) {
     this.container = lotsContainer;
     this.firebase = firebase;
     this.header = header;
     this.main = main;
+    this.userData = userData;
   }
 
   createWishList() {
@@ -17,7 +18,7 @@ export default class WishListLots {
           this.lotCard = document.createElement('div');
           this.lotCard.classList.add('lot_card');
           this.lotCard.addEventListener('click', () => {
-            const lotPage = new CurrentLotPage(data[i], this.header, this.main, this.firebase);
+            const lotPage = new CurrentLotPage(data[i], this.header, this.main, this.firebase, false, this.userData);
             lotPage.createCurrentLotPage();
           });
 

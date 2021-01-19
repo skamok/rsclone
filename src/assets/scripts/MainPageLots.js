@@ -2,12 +2,13 @@
 import CurrentLotPage from './CurrentLotPage.js';
 
 export default class MainPageLots {
-  constructor(firebase, lotsContainer, main, header, errorBlock) {
+  constructor(firebase, lotsContainer, main, header, errorBlock, userData) {
     this.firebase = firebase;
     this.container = lotsContainer;
     this.main = main;
     this.header = header;
     this.errorBlock = errorBlock;
+    this.userData = userData;
   }
 
   createMainPageLots() {
@@ -21,7 +22,8 @@ export default class MainPageLots {
               this.lotCard = document.createElement('div');
               this.lotCard.classList.add('lot_card');
               this.lotCard.addEventListener('click', () => {
-                const lotPage = new CurrentLotPage(allLotsData[keys[i]], this.header, this.main, this.firebase, false);
+                const lotPage = new CurrentLotPage(allLotsData[keys[i]], this.header, this.main,
+                  this.firebase, false, userData);
                 lotPage.createCurrentLotPage();
               });
 

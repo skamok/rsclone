@@ -315,6 +315,9 @@ footer {
   display: flex;
   border-radius: 10px;
   padding-bottom: 20px;
+  animation-name: showPopup;
+  animation-duration: 1s;
+  transition: ease-in;
 }
 
 .main_lot_info_container {
@@ -394,52 +397,6 @@ footer {
 .test_image {
   width: 100%;
   transition: 0.6s ease-in;
-}
-
-/* _____________________________________________hover effects */
-
-.authorization-buttons:hover, .gh_link:hover, .rss_logo:hover, .close_popup_button:hover, .popup_action:hover, .slider_controls:hover {
-  transform: scale(1.05);
-  transition: 0.3s ease-out;
-  cursor: pointer;
-}
-
-.slider_controls:hover {
-  transform: scale(1.2);
-  transition: 0.3s ease-out;
-  cursor: pointer;
-}
-
-.slider_controls:active, .close_popup_button:active {
-  opacity: .4;
-}
-
-.inputs:hover {
-  transform: scale(1.05);
-  transition: 0.3s ease-out;
-}
-
-.submit_button:hover {
-  opacity: 0.5;
-  transition: 0.3s ease-out;
-  cursor: pointer;
-}
-
-.authorization-buttons:active, .gh_link:active, .rss_logo:active {
-  opacity: .7;
-}
-
-.burger_menu_element:hover {
-  transition: 0.3s ease-out;
-  cursor: pointer;
-  background-color: rgba(255, 255, 255, 0.5);
-  border-radius: 5px;
-}
-
-.lot_card:hover {
-  opacity: .7;
-  transition: 0.3s ease-out;
-  cursor: pointer;
 }
 
 /*______________________________________________adding lot */
@@ -608,7 +565,6 @@ footer {
 }
 
 .lot_submit {
-  width: 70%;
   height: 50px;
   background-color: #31af92;
   border-radius: 10px;
@@ -635,6 +591,158 @@ footer {
 .form_lot {
   width: 100%;
   padding: 30px;
+}
+
+/* _____________________________________________message popup */
+
+.message_popup_container {
+  width: 300px;
+  height: 400px;
+  background-color: #31af92;
+  position: absolute;
+  top: calc(50% - 200px);
+  left: calc(50% - 150px);
+  animation-name: slideInMessage;
+  animation-duration: 1s;
+  transition: ease-in;
+  border-radius: 10px;
+}
+
+.popup_message_block_header {
+  width: 100%;
+  height: 10%;
+}
+
+.close_popup_message_button {
+  width: 20px;
+  float: right;
+  margin: 10px 10px 0 0;
+  transition: 0.3s ease-out;
+}
+
+.hide_message_animation {
+  animation-name: hideMessage;
+  animation-duration: 1s;
+  transition: ease-in;
+  transform: translateX(100%);
+  opacity: 0;
+}
+
+.popup_message_block_main {
+  width: 100%;
+  height: 70%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.popup_message_textarea {
+  width: 90%;
+  height: 90%;
+  border-radius: 10px;
+  border: none;
+  outline: none;
+  resize: none;
+  padding: 10px;
+  font-family: 'Quicksand', sans-serif;
+  font-size: 1.4rem;
+}
+
+.message_blackout {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  border-radius: 10px;
+  background-color: #5a5c59a3;
+}
+
+.popup_message_block_footer {
+  width: 100%;
+  height: 20%;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.send_message_from_popup_button {
+  width: 50%;
+  height: 45%;
+  border: none;
+  outline: none;
+  border-radius: 10px;
+  background-color: #009688;
+  color: white;
+  font-family: 'Quicksand', sans-serif;
+  font-size: 1.4rem;
+  margin-right: 15px;
+  transition: 0.3s ease-out;
+}
+
+/* _____________________________________________scrollbar */
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 6px #504e4ef8; 
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  box-shadow: inset 0 0 6px rgb(175, 174, 174)
+}
+
+/* _____________________________________________hover effects */
+
+.authorization-buttons:hover, .gh_link:hover, .rss_logo:hover, .close_popup_button:hover, .popup_action:hover, .slider_controls:hover, 
+.send_message_from_popup_button:hover {
+  transform: scale(1.05);
+  transition: 0.3s ease-out;
+  cursor: pointer;
+}
+
+
+
+.slider_controls:hover, .close_popup_message_button:hover  {
+  transform: scale(1.2);
+  transition: 0.3s ease-out;
+  cursor: pointer;
+}
+
+.slider_controls:active, .close_popup_button:active, .close_popup_message_button:active, .send_message_from_popup_button:active  {
+  opacity: .4;
+}
+
+.inputs:hover {
+  transform: scale(1.05);
+  transition: 0.3s ease-out;
+}
+
+.submit_button:hover {
+  opacity: 0.5;
+  transition: 0.3s ease-out;
+  cursor: pointer;
+}
+
+.authorization-buttons:active, .gh_link:active, .rss_logo:active {
+  opacity: .7;
+}
+
+.burger_menu_element:hover {
+  transition: 0.3s ease-out;
+  cursor: pointer;
+  background-color: rgba(255, 255, 255, 0.5);
+  border-radius: 5px;
+}
+
+.lot_card:hover {
+  opacity: .7;
+  transition: 0.3s ease-out;
+  cursor: pointer;
 }
 
 /* _____________________________________________helpers */
@@ -675,12 +783,47 @@ footer {
   animation-duration: 0.5s;
 }
 
+/* _____________________________________________animations keyframes */
+
 @keyframes showError {
   from {
     transform: translateY(-100%);
   }
   to {
     transform: translateX(0%);
+  }
+}
+
+@keyframes slideInMessage {
+  from {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes hideMessage {
+  from {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+}
+
+@keyframes showPopup {
+  from {
+    opacity: 0;
+    transform: translateY(100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 
@@ -693,6 +836,7 @@ footer {
 }
 
 @media screen and (max-width: 540px) {
+
   .authorization {
     flex-direction: column;
     row-gap: 10%;
@@ -769,10 +913,16 @@ footer {
 
   .popup_window {
     width: 95%;
+    min-height: 430px;
   }
 
   .popup_actions_container {
     column-gap: 30px;
+    padding-top: 15px;
+  }
+
+  .popup_action_image {
+    width: 45px;
   }
 
   .add_lot_img {
@@ -785,6 +935,10 @@ footer {
 
   .description_lot_input {
     width: 100%;
+  }
+
+  .lot_popup_description {
+    padding: 7px;
   }
 }
 

@@ -1,13 +1,15 @@
 /* eslint-disable no-console */
+import MessageFromPopup from './MessageFromPopup.js';
 import NotificationBlock from './NotificationBlock.js';
 
 export default class CurrentLotPage {
-  constructor(lotInfo, header, main, firebase, isTaken) {
+  constructor(lotInfo, header, main, firebase, isTaken, userData) {
     this.lotInfo = lotInfo;
     this.main = main;
     this.header = header;
     this.firebase = firebase;
     this.isTaken = isTaken;
+    this.userData = userData;
   }
 
   createCurrentLotPage() {
@@ -199,10 +201,8 @@ export default class CurrentLotPage {
 
   writeMessage = (event) => {
     event.preventDefault();
-    this.firebase.addMessageFromLot(this.lotInfo.lotID, this.lotInfo.userID, 'message form firstUser')
-      .then(() => {
-        const message = new NotificationBlock(this.header, 'Added', false);
-        message.showNotification();
-      });
+    const message = new MessageFromPopup(this.header, this.main,
+      this.popUpWindow, this.firebase, this.lotInfo, this.userData);
+    message.createMessageWindow();
   }
 }
