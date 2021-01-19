@@ -52,7 +52,7 @@ export default class SettingsPage {
         this.wrapPhotos.classList.add('wrap_photos');
         this.formSetting.appendChild(this.wrapPhotos);
 
-        this.inputPhotos.addEventListener('change', this.changeAvatar.bind(this));
+        this.inputPhotos.addEventListener('change', this.changeAvatar);
 
         this.nickName = document.createElement('span');
         this.nickName.classList.add('name_lot');
@@ -141,7 +141,7 @@ export default class SettingsPage {
       });
   }
 
-  changeAvatar(e) {
+  changeAvatar = (e) => {
     this.avatar.innerHTML = '';
     const MAX_WIDTH = 150;
     const MAX_HEIGHT = 150;
@@ -160,6 +160,9 @@ export default class SettingsPage {
       img.height = height;
       this.avatar.appendChild(img);
     };
+    this.resizePhotoForServer()
+      .then((dataURLs) => this.firebase.addUserAvatar(dataURLs[0]))
+      .then(() => alert('photo added'));
   }
 
   formUserValidation = (e) => {
@@ -209,20 +212,11 @@ export default class SettingsPage {
       this.formSetting.location.after(this.createMessageError('add your location'));
     }
 
-    /* if (inputError === false) {
-      this.resizePhotoForServer()
-        .then((dataURLs) => {
-          const imgDataURLs = dataURLs;
-          const lotObj = RealDatabase.createLotObj(this.formLot.nameLot.value, this.formLot.descriptionLot.value,
-            Number.parseInt(this.formLot.karma.value, 10), this.listCategory.selectedIndex, imgDataURLs,
-            this.firebase.auth.currentUser.uid);
-          return this.firebase.addLotMultiPicURL(lotObj);
-        })
-        .then(() => alert('lot add'));
-      const mainPageLots = new MainPageLots(this.firebase, this.container, this.main, this.header,
-        this.errorBlock);
-      mainPageLots.createMainPageLots();
-    } */
+    if (inputError === false) {
+      this.firebase.addUserInfo(this.formSetting.nickName.value, this.formSetting.phone.value,
+        this.formSetting.location.value)
+        .then(() => alert('info added'));
+    }
   }
 
   createMessageError(str) {
@@ -233,39 +227,57 @@ export default class SettingsPage {
   }
 
   async resizePhotoForServer() {
-    const MAX_WIDTH = 150;
-    const MAX_HEIGHT = 150;
-
-    const img = document.createElement('img');
-    img.src = window.URL.createObjectURL(this.inputPhotos.files[0]);
-    const contain = document.createElement('div');
-    contain.classList.add('contain');
-    const canvas = document.createElement('CANVAS');
-    const ctx = canvas.getContext('2d');
-    // eslint-disable-next-line no-loop-func
-    const promise = new Promise((res, rej) => {
-      img.onload = () => {
-        let { width } = img;
-        let { height } = img;
-        if (width > height) {
-          if (width > MAX_WIDTH) {
-            height *= MAX_WIDTH / width;
-            width = MAX_WIDTH;
+    this.arrImages = [];
+    let MAX_WIDTH = 1024;
+    let MAX_HEIGHT = 768;
+    let i = 0;
+    const arr = [];
+    arr.push(this.inputPhotos.files[0]);
+    for (let index = 0; index < this.inputPhotos.files.length; index++) {
+      arr.push(this.inputPhotos.files[index]);
+    }
+    // eslint-disable-next-line no-restricted-syntax
+    for (const elem of arr) {
+      const img = document.createElement('img');
+      img.src = window.URL.createObjectURL(elem);
+      const contain = document.createElement('div');
+      contain.classList.add('contain');
+      const canvas = document.createElement('CANVAS');
+      const ctx = canvas.getContext('2d');
+      // eslint-disable-next-line no-loop-func
+      const promise = new Promise((res, rej) => {
+        img.onload = () => {
+          if (i === 0) {
+            MAX_WIDTH = 150;
+            MAX_HEIGHT = 150;
+          } else {
+            MAX_WIDTH = 1024;
+            MAX_HEIGHT = 768;
           }
-        } else if (height > MAX_HEIGHT) {
-          width *= MAX_HEIGHT / height;
-          height = MAX_HEIGHT;
-        }
-        canvas.width = width;
-        canvas.height = height;
-        ctx.drawImage(img, 0, 0, width, height);
-        const dataurl = canvas.toDataURL('image/jpeg', 0.9);
-        res(dataurl);
-        rej(new Error('Photo do not add'));
-      };
-    });
-    // eslint-disable-next-line no-await-in-loop
-    const result = await promise;
-    return result;
+          i += 1;
+          let { width } = img;
+          let { height } = img;
+          if (width > height) {
+            if (width > MAX_WIDTH) {
+              height *= MAX_WIDTH / width;
+              width = MAX_WIDTH;
+            }
+          } else if (height > MAX_HEIGHT) {
+            width *= MAX_HEIGHT / height;
+            height = MAX_HEIGHT;
+          }
+          canvas.width = width;
+          canvas.height = height;
+          ctx.drawImage(img, 0, 0, width, height);
+          const dataurl = canvas.toDataURL('image/jpeg', 0.9);
+          res(dataurl);
+          rej(new Error('Photo do not add'));
+        };
+      });
+      // eslint-disable-next-line no-await-in-loop
+      const result = await promise;
+      this.arrImages.push(result);
+    }
+    return this.arrImages;
   }
 }
