@@ -21,9 +21,24 @@ export default class SettingsPage {
         this.headForm.innerText = 'Settings';
         this.formSetting.appendChild(this.headForm);
 
+        this.wrapAvatarEmail = document.createElement('div');
+        this.wrapAvatarEmail.classList.add('wrap_avatar_email');
+        this.formSetting.appendChild(this.wrapAvatarEmail);
+
         this.avatar = document.createElement('div');
         this.avatar.classList.add('avatar-photo');
-        this.formSetting.appendChild(this.avatar);
+        this.wrapAvatarEmail.appendChild(this.avatar);
+
+        if (data.avatarURL !== undefined) {
+          this.avatarPhoto = document.createElement('img');
+          this.avatarPhoto.setAttribute('src', data.avatarURL);
+          this.avatar.appendChild(this.avatarPhoto);
+        }
+
+        this.emailUser = document.createElement('span');
+        this.emailUser.classList.add('email');
+        this.emailUser.innerHTML = `${data.email}`;
+        this.wrapAvatarEmail.appendChild(this.emailUser);
 
         this.inputPhotos = document.createElement('input');
         this.inputPhotos.setAttribute('type', 'file');
@@ -65,43 +80,6 @@ export default class SettingsPage {
         this.inputNickName.setAttribute('class', 'name_lot_input');
         this.inputNickName.setAttribute('value', `${data.nick}`);
         this.formSetting.appendChild(this.inputNickName);
-
-        this.email = document.createElement('span');
-        this.email.classList.add('name_lot');
-        this.email.innerText = 'Your email';
-        this.formSetting.appendChild(this.email);
-
-        this.inputEmail = document.createElement('input');
-        this.inputEmail.setAttribute('type', 'text');
-        this.inputEmail.setAttribute('name', 'email');
-        this.inputEmail.setAttribute('class', 'name_lot_input');
-        this.inputEmail.setAttribute('value', `${data.email}`);
-        this.inputEmail.setAttribute('placeholder', 'john@mail.com');
-        this.formSetting.appendChild(this.inputEmail);
-
-        this.password = document.createElement('span');
-        this.password.classList.add('name_lot');
-        this.password.innerText = 'New password';
-        this.formSetting.appendChild(this.password);
-
-        this.inputPassword = document.createElement('input');
-        this.inputPassword.setAttribute('type', 'text');
-        this.inputPassword.setAttribute('name', 'password');
-        this.inputPassword.setAttribute('class', 'name_lot_input');
-        this.inputPassword.setAttribute('placeholder', 'password');
-        this.formSetting.appendChild(this.inputPassword);
-
-        this.passwordRepeat = document.createElement('span');
-        this.passwordRepeat.classList.add('name_lot');
-        this.passwordRepeat.innerText = 'Repeat new password';
-        this.formSetting.appendChild(this.passwordRepeat);
-
-        this.inputPasswordRepeat = document.createElement('input');
-        this.inputPasswordRepeat.setAttribute('type', 'text');
-        this.inputPasswordRepeat.setAttribute('name', 'passwordRepeat');
-        this.inputPasswordRepeat.setAttribute('class', 'name_lot_input');
-        this.inputPasswordRepeat.setAttribute('placeholder', 'password');
-        this.formSetting.appendChild(this.inputPasswordRepeat);
 
         this.phone = document.createElement('span');
         this.phone.classList.add('name_lot');
@@ -175,29 +153,6 @@ export default class SettingsPage {
       // this.labelBtnAddPhotos.after(this.createMessageError('add photos'));
     } */
     if (this.formSetting.nickName.value.length === 0) {
-      inputError = true;
-      this.formSetting.nickName.after(this.createMessageError('add your name'));
-    }
-
-    if (this.formSetting.email.value.length > 0) {
-      if (!(/@/.test(this.formSetting.email.value))) {
-        inputError = true;
-        this.formSetting.email.after(this.createMessageError('email must contain @'));
-      }
-    } else {
-      inputError = true;
-      this.formSetting.email.after(this.createMessageError('add email'));
-    }
-
-    if (this.formSetting.password.value.length !== 0) {
-      if (this.formSetting.passwordRepeat.value.length === 0) {
-        inputError = true;
-        this.formSetting.passwordRepeat.after(this.createMessageError('repeat new password'));
-      } if (this.formSetting.passwordRepeat.value.length !== 0
-        && this.formSetting.passwordRepeat.value !== this.formSetting.password.value) {
-        inputError = true;
-        this.formSetting.passwordRepeat.after(this.createMessageError('passwords do not match'));
-      }
       inputError = true;
       this.formSetting.nickName.after(this.createMessageError('add your name'));
     }

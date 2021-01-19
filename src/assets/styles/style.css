@@ -588,7 +588,7 @@ footer {
   margin-top: 5px;
 }
 
-.form_lot {
+.form_lot, .form_setting {
   width: 100%;
   padding: 30px;
 }
@@ -978,4 +978,14 @@ footer {
   top: 0px;
   left: 0px;
   background-color: gray;
+}
+
+.wrap_avatar_email {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.email {
+  font-size: 16px;
+  margin-bottom: 15px;
 }
