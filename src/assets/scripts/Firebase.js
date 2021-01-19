@@ -21,6 +21,7 @@ export default class Firebase {
     this.storage = this.fireapp.storage();
     this.storageRef = this.storage.ref();
     this.storageLotsRef = this.storageRef.child('lots');
+    this.storageUsersRef = this.storageRef.child('users');
     this.usersNode = this.database.ref('users');
     this.lotsNode = this.database.ref('lots');
     this.chatsNode = this.database.ref('chats');
@@ -86,6 +87,54 @@ export default class Firebase {
 
   signOUT() {
     this.auth.signOut();
+  }
+
+  addUserAvatar(dataurl) {
+    const userID = this.auth.currentUser.uid;
+    const userStorageRef = this.storageUsersRef.child(userID);
+    const avatarRef = userStorageRef.child('avatar');
+    return avatarRef.putString(dataurl, 'data_url')
+      .then((uploadTaskSnapshot) => uploadTaskSnapshot.ref.getDownloadURL())
+      .then((downloadURL) => {
+        this.log('firebase.addUserAvatar downloadURL = ', downloadURL);
+        const userAvatarRef = this.usersNode.child(`${userID}/avatarURL`);
+        return userAvatarRef.set(downloadURL);
+      })
+      .then(() => {
+        this.log('firebase.addUserAvatar avatar loaded');
+        return Promise.resolve('ok');
+      })
+      .catch((e) => {
+        const obj = {
+          code: e.code,
+          message: e.message
+        };
+        this.log('firebase.addUserAvatar error', obj);
+        throw e;
+      });
+  }
+
+  addUserInfo(nickname, phone, location) {
+    const userID = this.auth.currentUser.uid;
+    // const userRef = this.usersNode.child(userID);
+    const updates = {};
+    updates[`/users/${userID}/nick`] = nickname;
+    updates[`/users/${userID}/phone`] = phone;
+    updates[`/users/${userID}/location`] = location;
+    this.log('firebase.addUserInfo updates = ', updates);
+    return this.database.ref().update(updates)
+      .then(() => {
+        this.log('firebase.addUserInfo ok');
+        return Promise.resolve('ok');
+      })
+      .catch((e) => {
+        const obj = {
+          code: e.code,
+          message: e.message
+        };
+        this.log('firebase.addUserInfo error', obj);
+        throw e;
+      });
   }
 
   addLotSinglePic(lot) {
