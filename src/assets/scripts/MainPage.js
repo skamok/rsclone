@@ -3,6 +3,7 @@ import MainPageLots from './MainPageLots.js';
 import AddLotPage from './AddLotPage.js';
 import WishListLots from './WishListLots.js';
 import SettingsPage from './SettingsPage.js';
+import TakenLotsList from './TakenLotsList.js';
 
 export default class MainPage {
   constructor(firebase, mainSection, headerSection, logo) {
@@ -39,7 +40,7 @@ export default class MainPage {
 
         this.karmaPoints = document.createElement('span');
         this.karmaPoints.classList.add('karma_header');
-        this.karmaPoints.innerText = `${3} karma`;
+        this.karmaPoints.innerText = `${userData.karmaCount} karma`;
         this.profileSubcontainer.appendChild(this.karmaPoints);
 
         this.header.appendChild(this.profileContainer);
@@ -112,6 +113,27 @@ export default class MainPage {
         this.burgerMenuWishes.appendChild(this.burgerMenuWishesText);
 
         this.burgerMenu.appendChild(this.burgerMenuWishes);
+        // ___________________
+
+        // ___________________
+        this.burgerMenuTaken = document.createElement('div');
+        this.burgerMenuTaken.classList.add('burger_menu_element');
+        this.burgerMenuTaken.addEventListener('click', () => {
+          const takenList = new TakenLotsList(this.firebase, this.lotsContainer, this.header, this.main);
+          takenList.createTakenList();
+        });
+
+        this.burgerMenuTakenIcon = document.createElement('img');
+        this.burgerMenuTakenIcon.classList.add('add_lot_img');
+        this.burgerMenuTakenIcon.src = './assets/images/take.png';
+        this.burgerMenuTaken.appendChild(this.burgerMenuTakenIcon);
+
+        this.burgerMenuTakenText = document.createElement('div');
+        this.burgerMenuTakenText.classList.add('add_lot_text');
+        this.burgerMenuTakenText.innerText = 'Taken';
+        this.burgerMenuTaken.appendChild(this.burgerMenuTakenText);
+
+        this.burgerMenu.appendChild(this.burgerMenuTaken);
         // ___________________
         this.burgerMenuMessages = document.createElement('div');
         this.burgerMenuMessages.classList.add('burger_menu_element');

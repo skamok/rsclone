@@ -23,7 +23,7 @@ export default class WishListLots {
 
           this.lotCardHeader = document.createElement('div');
           this.lotCardHeader.classList.add('lot_card_header');
-          this.lotCardHeader.innerText = '15 Karma';
+          this.lotCardHeader.innerText = `${data[i].price} Karma`;
           this.lotCard.appendChild(this.lotCardHeader);
 
           this.lotCardMain = document.createElement('div');
@@ -44,7 +44,7 @@ export default class WishListLots {
           this.lotCardFooter.appendChild(this.lotTitle);
 
           this.toWishesButton = document.createElement('img');
-          this.toWishesButton.src = './assets/images/heart.png';
+          this.toWishesButton.src = './assets/images/red-heart.png';
           this.lotCardFooter.appendChild(this.toWishesButton);
           this.toWishesButton.classList.add('to_wishes_button');
 
