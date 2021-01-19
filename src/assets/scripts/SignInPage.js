@@ -1,8 +1,12 @@
 import MainPage from './MainPage.js';
+// eslint-disable-next-line import/no-cycle
+import RegistrationPage from './RegistrationPage.js';
 
 export default class SignInPage {
-  constructor(firebase) {
-    this.main = document.querySelector('main');
+  constructor(firebase, mainSection, headerSection, logo) {
+    this.main = mainSection;
+    this.header = headerSection;
+    this.logo = logo;
     this.firebase = firebase;
   }
 
@@ -37,6 +41,12 @@ export default class SignInPage {
     this.signInForm.appendChild(this.buttonSubmit);
     this.buttonSubmit.addEventListener('click', this.signIn);
 
+    this.linkRegistration = document.createElement('span');
+    this.linkRegistration.classList.add('link_registration');
+    this.linkRegistration.innerText = 'For registration click here';
+    this.signInForm.appendChild(this.linkRegistration);
+    this.linkRegistration.addEventListener('click', this.goToRegistration.bind(this));
+
     this.errorField = document.createElement('div');
     this.errorField.classList.add('signIn_error', 'zero_opacity');
     this.errorField.innerText = 'No errors';
@@ -51,12 +61,17 @@ export default class SignInPage {
     event.preventDefault();
     this.firebase.signIN(this.emailField.value, this.passwordField.value)
       .then(() => {
-        const mainPage = new MainPage(this.firebase);
+        const mainPage = new MainPage(this.firebase, this.main, this.header, this.logo);
         mainPage.createMainPage();
       })
       .catch((e) => {
         this.errorField.innerText = `${e.message}`;
         this.errorField.classList.remove('zero_opacity');
       });
+  }
+
+  goToRegistration() {
+    const registrationPage = new RegistrationPage(this.firebase, this.main, this.header, this.logo);
+    registrationPage.createRegistrationPage();
   }
 }

@@ -1,15 +1,20 @@
+/* eslint-disable no-console */
+import MainPageLots from './MainPageLots.js';
+import AddLotPage from './AddLotPage.js';
+import WishListLots from './WishListLots.js';
+import SettingsPage from './SettingsPage.js';
+
 export default class MainPage {
-  constructor(firebase) {
-    this.main = document.querySelector('main');
-    this.header = document.querySelector('header');
-    this.logo = document.querySelector('.logo');
+  constructor(firebase, mainSection, headerSection, logo) {
+    this.main = mainSection;
+    this.header = headerSection;
+    this.logo = logo;
     this.firebase = firebase;
   }
 
   createMainPage() {
     this.firebase.readCurrentUser()
       .then((userData) => {
-        console.log('MainPage.createMainPage userData=', userData);
         this.main.innerHTML = '';
 
         this.header.classList.add('header_entered');
@@ -55,6 +60,7 @@ export default class MainPage {
 
         this.burgerMenuAddLot = document.createElement('div');
         this.burgerMenuAddLot.classList.add('burger_menu_element');
+        this.burgerMenuAddLot.addEventListener('click', this.addLotClick);
 
         this.burgerMenuAddLotIcon = document.createElement('img');
         this.burgerMenuAddLotIcon.classList.add('add_lot_img');
@@ -70,6 +76,11 @@ export default class MainPage {
         // ___________________
         this.burgerMenuChart = document.createElement('div');
         this.burgerMenuChart.classList.add('burger_menu_element');
+        this.burgerMenuChart.addEventListener('click', () => {
+          const mainPageLots = new MainPageLots(this.firebase, this.lotsContainer, this.main, this.header,
+            this.errorBlock);
+          mainPageLots.createMainPageLots();
+        });
 
         this.burgerMenuChartIcon = document.createElement('img');
         this.burgerMenuChartIcon.classList.add('add_lot_img');
@@ -85,6 +96,10 @@ export default class MainPage {
         // ___________________
         this.burgerMenuWishes = document.createElement('div');
         this.burgerMenuWishes.classList.add('burger_menu_element');
+        this.burgerMenuWishes.addEventListener('click', () => {
+          const wishList = new WishListLots(this.firebase, this.lotsContainer, this.header, this.main);
+          wishList.createWishList();
+        });
 
         this.burgerMenuWishesIcon = document.createElement('img');
         this.burgerMenuWishesIcon.classList.add('add_lot_img');
@@ -125,8 +140,25 @@ export default class MainPage {
         this.burgerMenuSettingsText.classList.add('add_lot_text');
         this.burgerMenuSettingsText.innerText = 'Settings';
         this.burgerMenuSettings.appendChild(this.burgerMenuSettingsText);
+        this.burgerMenuSettings.addEventListener('click', this.goToSettings);
 
         this.burgerMenu.appendChild(this.burgerMenuSettings);
+
+        const mainPageLots = new MainPageLots(this.firebase, this.lotsContainer, this.main, this.header,
+          this.errorBlock);
+        mainPageLots.createMainPageLots();
       });
+  }
+
+  addLotClick = (event) => {
+    event.preventDefault();
+    this.addLotPage = new AddLotPage(this.lotsContainer, this.firebase, this.header, this.main);
+    this.addLotPage.createAddLotPage();
+  }
+
+  goToSettings = (event) => {
+    event.preventDefault();
+    const settings = new SettingsPage(this.lotsContainer, this.firebase, this.header, this.main);
+    settings.changeSettings();
   }
 }
