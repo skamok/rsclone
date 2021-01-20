@@ -55,5 +55,18 @@ export default class MessageFromPopup {
     this.sendMessageButton.classList.add('send_message_from_popup_button');
     this.sendMessageButton.innerText = 'Send message';
     this.popupMessageBlockFooter.appendChild(this.sendMessageButton);
+    this.sendMessageButton.addEventListener('click', this.sendMessageClick);
+  }
+
+  sendMessageClick = (event) => {
+    event.preventDefault();
+    if (this.textArea.value !== '') {
+      this.firebase.addMessageFromLot(this.lotInfo.lotID, this.lotInfo.userID, this.textArea.value)
+        .then(() => {
+          alert('sent');
+          this.closeButton.click();
+        })
+        .catch((e) => alert(e.message));
+    }
   }
 }

@@ -474,7 +474,12 @@ export default class Firebase {
     // check if chat exist
     return this.chatsNode.orderByChild('lotID').equalTo(lotID).once('value')
       .then((lotsTable) => {
-        const chatsArray = Object.values(lotsTable.val());
+        let chatsArray;
+        if ((lotsTable.val() !== null) && (lotsTable.val() !== undefined)) {
+          chatsArray = Object.values(lotsTable.val());
+        } else {
+          chatsArray = [];
+        }
         const exist = chatsArray.find((chat) => chat.userFirst === currentUserID);
         if (exist === undefined) {
           this.log('firebase.addMessageFromLot need new chat');
