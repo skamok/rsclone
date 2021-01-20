@@ -212,12 +212,9 @@ export default class SettingsPage {
           i += 1;
           let { width } = img;
           let { height } = img;
-          if (width > height) {
-            if (width > MAX_WIDTH) {
-              height *= MAX_WIDTH / width;
-              width = MAX_WIDTH;
-            }
-          } else if (height > MAX_HEIGHT) {
+          height *= MAX_WIDTH / width;
+          width = MAX_WIDTH;
+          if (height < MAX_HEIGHT) {
             width *= MAX_HEIGHT / height;
             height = MAX_HEIGHT;
           }
