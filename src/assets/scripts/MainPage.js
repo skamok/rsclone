@@ -79,7 +79,7 @@ export default class MainPage {
         this.burgerMenuChart.classList.add('burger_menu_element');
         this.burgerMenuChart.addEventListener('click', () => {
           const mainPageLots = new MainPageLots(this.firebase, this.lotsContainer, this.main, this.header,
-            this.errorBlock);
+            this.errorBlock, userData);
           mainPageLots.createMainPageLots();
         });
 
@@ -98,7 +98,7 @@ export default class MainPage {
         this.burgerMenuWishes = document.createElement('div');
         this.burgerMenuWishes.classList.add('burger_menu_element');
         this.burgerMenuWishes.addEventListener('click', () => {
-          const wishList = new WishListLots(this.firebase, this.lotsContainer, this.header, this.main);
+          const wishList = new WishListLots(this.firebase, this.lotsContainer, this.header, this.main, userData);
           wishList.createWishList();
         });
 
