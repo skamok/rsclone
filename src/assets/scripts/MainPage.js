@@ -1,6 +1,9 @@
 /* eslint-disable no-console */
-
 import MainPageLots from './MainPageLots.js';
+import AddLotPage from './AddLotPage.js';
+import WishListLots from './WishListLots.js';
+import SettingsPage from './SettingsPage.js';
+import TakenLotsList from './TakenLotsList.js';
 
 export default class MainPage {
   constructor(firebase, mainSection, headerSection, logo) {
@@ -37,7 +40,7 @@ export default class MainPage {
 
         this.karmaPoints = document.createElement('span');
         this.karmaPoints.classList.add('karma_header');
-        this.karmaPoints.innerText = `${3} karma`;
+        this.karmaPoints.innerText = `${userData.karmaCount} karma`;
         this.profileSubcontainer.appendChild(this.karmaPoints);
 
         this.header.appendChild(this.profileContainer);
@@ -58,6 +61,7 @@ export default class MainPage {
 
         this.burgerMenuAddLot = document.createElement('div');
         this.burgerMenuAddLot.classList.add('burger_menu_element');
+        this.burgerMenuAddLot.addEventListener('click', this.addLotClick);
 
         this.burgerMenuAddLotIcon = document.createElement('img');
         this.burgerMenuAddLotIcon.classList.add('add_lot_img');
@@ -73,6 +77,11 @@ export default class MainPage {
         // ___________________
         this.burgerMenuChart = document.createElement('div');
         this.burgerMenuChart.classList.add('burger_menu_element');
+        this.burgerMenuChart.addEventListener('click', () => {
+          const mainPageLots = new MainPageLots(this.firebase, this.lotsContainer, this.main, this.header,
+            this.errorBlock, userData);
+          mainPageLots.createMainPageLots();
+        });
 
         this.burgerMenuChartIcon = document.createElement('img');
         this.burgerMenuChartIcon.classList.add('add_lot_img');
@@ -88,6 +97,10 @@ export default class MainPage {
         // ___________________
         this.burgerMenuWishes = document.createElement('div');
         this.burgerMenuWishes.classList.add('burger_menu_element');
+        this.burgerMenuWishes.addEventListener('click', () => {
+          const wishList = new WishListLots(this.firebase, this.lotsContainer, this.header, this.main, userData);
+          wishList.createWishList();
+        });
 
         this.burgerMenuWishesIcon = document.createElement('img');
         this.burgerMenuWishesIcon.classList.add('add_lot_img');
@@ -100,6 +113,27 @@ export default class MainPage {
         this.burgerMenuWishes.appendChild(this.burgerMenuWishesText);
 
         this.burgerMenu.appendChild(this.burgerMenuWishes);
+        // ___________________
+
+        // ___________________
+        this.burgerMenuTaken = document.createElement('div');
+        this.burgerMenuTaken.classList.add('burger_menu_element');
+        this.burgerMenuTaken.addEventListener('click', () => {
+          const takenList = new TakenLotsList(this.firebase, this.lotsContainer, this.header, this.main);
+          takenList.createTakenList();
+        });
+
+        this.burgerMenuTakenIcon = document.createElement('img');
+        this.burgerMenuTakenIcon.classList.add('add_lot_img');
+        this.burgerMenuTakenIcon.src = './assets/images/take.png';
+        this.burgerMenuTaken.appendChild(this.burgerMenuTakenIcon);
+
+        this.burgerMenuTakenText = document.createElement('div');
+        this.burgerMenuTakenText.classList.add('add_lot_text');
+        this.burgerMenuTakenText.innerText = 'Taken';
+        this.burgerMenuTaken.appendChild(this.burgerMenuTakenText);
+
+        this.burgerMenu.appendChild(this.burgerMenuTaken);
         // ___________________
         this.burgerMenuMessages = document.createElement('div');
         this.burgerMenuMessages.classList.add('burger_menu_element');
@@ -128,11 +162,25 @@ export default class MainPage {
         this.burgerMenuSettingsText.classList.add('add_lot_text');
         this.burgerMenuSettingsText.innerText = 'Settings';
         this.burgerMenuSettings.appendChild(this.burgerMenuSettingsText);
+        this.burgerMenuSettings.addEventListener('click', this.goToSettings);
 
         this.burgerMenu.appendChild(this.burgerMenuSettings);
 
-        const mainPageLots = new MainPageLots(this.firebase, this.lotsContainer, this.main, this.header);
+        const mainPageLots = new MainPageLots(this.firebase, this.lotsContainer, this.main, this.header,
+          this.errorBlock);
         mainPageLots.createMainPageLots();
       });
+  }
+
+  addLotClick = (event) => {
+    event.preventDefault();
+    this.addLotPage = new AddLotPage(this.lotsContainer, this.firebase, this.header, this.main);
+    this.addLotPage.createAddLotPage();
+  }
+
+  goToSettings = (event) => {
+    event.preventDefault();
+    const settings = new SettingsPage(this.lotsContainer, this.firebase, this.header, this.main);
+    settings.changeSettings();
   }
 }

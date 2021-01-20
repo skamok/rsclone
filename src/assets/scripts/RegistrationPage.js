@@ -1,7 +1,12 @@
+// eslint-disable-next-line import/no-cycle
+import SignInPage from './SignInPage.js';
+
 export default class RegistrationPage {
-  constructor(firebase, mainSection) {
+  constructor(firebase, mainSection, headerSection, logo) {
     this.main = mainSection;
     this.firebase = firebase;
+    this.header = headerSection;
+    this.logo = logo;
   }
 
   createRegistrationPage() {
@@ -48,6 +53,12 @@ export default class RegistrationPage {
     this.buttonSubmit.innerText = 'Submit';
     this.registrationForm.appendChild(this.buttonSubmit);
 
+    this.linkSignIn = document.createElement('span');
+    this.linkSignIn.classList.add('link_registration');
+    this.linkSignIn.innerText = 'For signIn click here';
+    this.registrationForm.appendChild(this.linkSignIn);
+    this.linkSignIn.addEventListener('click', this.goToSignIn.bind(this));
+
     this.main.appendChild(this.registrationContainer);
 
     this.registrationForm.addEventListener('submit', this.signUp);
@@ -60,5 +71,10 @@ export default class RegistrationPage {
         alert(obj.email);
       })
       .catch((e) => alert(e));
+  }
+
+  goToSignIn() {
+    const signInPage = new SignInPage(this.firebase, this.main, this.header, this.logo);
+    signInPage.createSignInPage();
   }
 }
