@@ -176,7 +176,7 @@ footer {
 }
 
 .profile_image {
-  width: 50px;
+
 }
 
 .profile_subcontainer {
@@ -794,7 +794,7 @@ footer {
   }
 }
 
-.avatar-photo {
+.avatar-photo, .wrap_profile_img {
   width: 150px;
   height: 150px;
   border-radius: 50%;
@@ -809,6 +809,13 @@ footer {
   font-weight: 500;
   overflow: hidden;
   margin-bottom: 15px;
+}
+
+.wrap_profile_img {
+  width: 40px;
+  height: 40px;
+  margin: 0px;
+  margin-right: 8px;
 }
 
 .select_avatar {
