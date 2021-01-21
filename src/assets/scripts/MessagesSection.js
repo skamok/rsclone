@@ -1,3 +1,5 @@
+import Chat from './ChatSeparate.js';
+
 /* eslint-disable no-console */
 export default class MessagesSection {
   constructor(firebase, parentContainer, main, header) {
@@ -27,6 +29,11 @@ export default class MessagesSection {
               this.separateMessageBlock = document.createElement('div');
               this.separateMessageBlock.classList.add('separate_message');
               this.messagesContainer.appendChild(this.separateMessageBlock);
+              this.separateMessageBlock.addEventListener('click', () => {
+                const chat = new Chat(this.firebase, this.header, this.main, this.parentContainer,
+                  messagesData[i].messages);
+                chat.createChat();
+              });
 
               this.lotDescription = document.createElement('div');
               this.lotDescription.classList.add('lot_description_block');
