@@ -1,3 +1,5 @@
+import MainPageLots from './MainPageLots.js';
+
 export default class SettingsPage {
   constructor(сontainer, firebase, header, main) {
     this.container = сontainer;
@@ -137,6 +139,20 @@ export default class SettingsPage {
       img.width = width;
       img.height = height;
       this.avatar.appendChild(img);
+      const profileImage = this.header.querySelector('.profile_image');
+      profileImage.src = window.URL.createObjectURL(e.target.files[0]);
+      console.log(profileImage.width, profileImage.height);
+      console.log(img.width, img.height)
+      if (img.width === 150) {
+        const divider = img.width / 40;
+        profileImage.style.width = `${img.width / divider}px`;
+        profileImage.style.height = `${img.height / divider}px`;
+      } else {
+        const divider = img.height / 40;
+        profileImage.width = img.width / divider;
+        profileImage.height = img.height / divider;
+      }
+      console.log(profileImage.width, profileImage.height);
     };
     this.resizePhotoForServer()
       .then((dataURLs) => this.firebase.addUserAvatar(dataURLs[0]))
@@ -148,10 +164,6 @@ export default class SettingsPage {
     const listMessage = document.querySelectorAll('.message_err');
     let inputError = false;
     listMessage.forEach((elem) => { elem.remove(); });
-    /* if (this.wrapPhotos.children.length === 0) {
-      inputError = true;
-      // this.labelBtnAddPhotos.after(this.createMessageError('add photos'));
-    } */
     if (this.formSetting.nickName.value.length === 0) {
       inputError = true;
       this.formSetting.nickName.after(this.createMessageError('add your name'));
@@ -171,6 +183,9 @@ export default class SettingsPage {
       this.firebase.addUserInfo(this.formSetting.nickName.value, this.formSetting.phone.value,
         this.formSetting.location.value)
         .then(() => alert('info added'));
+      const mainPageLots = new MainPageLots(this.firebase, this.container, this.main, this.header,
+        this.errorBlock);
+      mainPageLots.createMainPageLots();
     }
   }
 
