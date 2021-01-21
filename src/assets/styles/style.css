@@ -694,6 +694,9 @@ footer {
   display: flex;
   flex-direction: column;
   row-gap: 35px;
+  padding: 20px;
+  justify-content: center;
+  align-items: center;
 }
 
 .separate_message {
@@ -701,7 +704,55 @@ footer {
   height: 60px;
   background-color: #C4C4C4;
   border-radius: 5px;
+  display: flex;
 }
+
+.lot_description_block {
+  width: 20%;
+  height: 100%;
+  background-color: #B0B0B0;
+  border-radius: 5px 0 0 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.lot_description_title {
+  font-size: 1.4rem;
+  color: #ffffff;
+}
+
+.lot_description_message {
+  font-size: 1.2rem;
+  color: #ffffff;
+}
+
+.message_text_container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 60%;
+  height: 100%;
+  background-color: #C4C4C4;
+}
+
+.message_date {
+  width: 20%;
+  height: 100%;
+  background-color: #B0B0B0;
+  border-radius: 0 5px 5px 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  row-gap: 5px;
+}
+
+.message_date_day, .message_date_time {
+  font-size: 1.2rem;
+  color: #ffffff;
+}
+
 /* _____________________________________________scrollbar */
 
 ::-webkit-scrollbar {
@@ -721,7 +772,7 @@ footer {
 /* _____________________________________________hover effects */
 
 .authorization-buttons:hover, .gh_link:hover, .rss_logo:hover, .close_popup_button:hover, .popup_action:hover, .slider_controls:hover, 
-.send_message_from_popup_button:hover {
+.send_message_from_popup_button:hover, .separate_message:hover  {
   transform: scale(1.05);
   transition: 0.3s ease-out;
   cursor: pointer;
@@ -729,13 +780,14 @@ footer {
 
 
 
-.slider_controls:hover, .close_popup_message_button:hover  {
+.slider_controls:hover, .close_popup_message_button:hover {
   transform: scale(1.2);
   transition: 0.3s ease-out;
   cursor: pointer;
 }
 
-.slider_controls:active, .close_popup_button:active, .close_popup_message_button:active, .send_message_from_popup_button:active  {
+.slider_controls:active, .close_popup_button:active, .close_popup_message_button:active, .send_message_from_popup_button:active, 
+.separate_message:active  {
   opacity: .4;
 }
 
