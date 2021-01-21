@@ -14,7 +14,7 @@ export default class SettingsPage {
       .then((data) => {
         this.formSetting = document.createElement('form');
         this.formSetting.setAttribute('name', 'form_setting');
-        this.formSetting.classList.add('form_setting');
+        this.formSetting.classList.add('form_setting', 'animation');
         this.container.appendChild(this.formSetting);
         this.formSetting.addEventListener('submit', this.formUserValidation);
 

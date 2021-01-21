@@ -224,6 +224,12 @@ footer {
   justify-content: center;
 }
 
+.animation {
+  animation-name: opacityAnimation;
+  animation-duration: 2s;
+  transition: ease-in;
+}
+
 .burger_menu_element {
   display: flex;
   width: 70%;
@@ -824,6 +830,15 @@ footer {
   to {
     opacity: 1;
     transform: translateY(0);
+  }
+}
+
+@keyframes opacityAnimation {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
   }
 }
 

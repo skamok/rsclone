@@ -20,7 +20,7 @@ export default class MainPageLots {
             const keys = Object.keys(allLotsData);
             for (let i = 0; i < keys.length; i++) {
               this.lotCard = document.createElement('div');
-              this.lotCard.classList.add('lot_card');
+              this.lotCard.classList.add('lot_card', 'animation');
               this.lotCard.addEventListener('click', () => {
                 const lotPage = new CurrentLotPage(allLotsData[keys[i]], this.header, this.main,
                   this.firebase, false, userData);
