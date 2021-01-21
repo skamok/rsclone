@@ -176,7 +176,7 @@ footer {
 }
 
 .profile_image {
-  width: 50px;
+
 }
 
 .profile_subcontainer {
@@ -588,7 +588,7 @@ footer {
   margin-top: 5px;
 }
 
-.form_lot {
+.form_lot, .form_setting {
   width: 100%;
   padding: 30px;
 }
@@ -948,7 +948,7 @@ footer {
   }
 }
 
-.avatar-photo {
+.avatar-photo, .wrap_profile_img {
   width: 150px;
   height: 150px;
   border-radius: 50%;
@@ -965,6 +965,13 @@ footer {
   margin-bottom: 15px;
 }
 
+.wrap_profile_img {
+  width: 40px;
+  height: 40px;
+  margin: 0px;
+  margin-right: 8px;
+}
+
 .select_avatar {
   overflow: auto;
   margin: auto;
@@ -978,4 +985,14 @@ footer {
   top: 0px;
   left: 0px;
   background-color: gray;
+}
+
+.wrap_avatar_email {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.email {
+  font-size: 16px;
+  margin-bottom: 15px;
 }
