@@ -686,6 +686,22 @@ footer {
   transition: 0.3s ease-out;
 }
 
+/* _____________________________________________messages section */
+
+.messages_container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  row-gap: 35px;
+}
+
+.separate_message {
+  width: 80%;
+  height: 60px;
+  background-color: #C4C4C4;
+  border-radius: 5px;
+}
 /* _____________________________________________scrollbar */
 
 ::-webkit-scrollbar {
