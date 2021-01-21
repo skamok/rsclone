@@ -149,6 +149,7 @@ export default class MainPage {
         this.burgerMenuMessages.appendChild(this.burgerMenuMessagesText);
 
         this.burgerMenu.appendChild(this.burgerMenuMessages);
+        this.burgerMenuMessages.addEventListener('click', this.messageClick);
         // ___________________
         this.burgerMenuSettings = document.createElement('div');
         this.burgerMenuSettings.classList.add('burger_menu_element');
@@ -182,5 +183,10 @@ export default class MainPage {
     event.preventDefault();
     const settings = new SettingsPage(this.lotsContainer, this.firebase, this.header, this.main);
     settings.changeSettings();
+  }
+
+  messageClick =(event) => {
+    event.preventDefault();
+    this.firebase.readCurrentUserChats().then((data) => console.log(data));
   }
 }

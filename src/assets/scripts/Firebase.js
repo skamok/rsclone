@@ -302,6 +302,32 @@ export default class Firebase {
       });
   }
 
+  readCurrentUserChats() {
+    const userID = this.auth.currentUser.uid;
+    const refUser = this.usersNode.child(userID);
+    return refUser.once('value')
+      .then((dataSnapshot) => {
+        const user = dataSnapshot.val();
+        const { chats } = user;
+        if (chats === undefined) {
+          return Promise.resolve([]);
+        }
+        return Firebase.readNodesByID(chats, this.chatsNode);
+      })
+      .then((data) => {
+        this.log('firebase.readCurrentUserChats', data);
+        return Promise.resolve(data);
+      })
+      .catch((e) => {
+        const obj = {
+          code: e.code,
+          message: e.message
+        };
+        this.log('firebase.readCurrentUserChats error', obj);
+        throw e;
+      });
+  }
+
   readCurrentUserWinLots() {
     const userID = this.auth.currentUser.uid;
     const refUser = this.usersNode.child(userID);
@@ -367,6 +393,23 @@ export default class Firebase {
           message: e.message
         };
         this.log('firebase.readUsers error', obj);
+        throw e;
+      });
+  }
+
+  readUserByID(userID) {
+    const refUser = this.usersNode.child(userID);
+    return refUser.once('value')
+      .then((dataSnapshot) => {
+        const user = dataSnapshot.val();
+        return Promise.resolve(user);
+      })
+      .catch((e) => {
+        const obj = {
+          code: e.code,
+          message: e.message
+        };
+        this.log('firebase.readUserByID error', obj);
         throw e;
       });
   }
