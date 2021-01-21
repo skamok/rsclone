@@ -761,6 +761,8 @@ footer {
   display: flex;
   flex-direction: column;
   row-gap: 10px;
+  overflow-y: scroll;
+  position: relative;
 }
 
 .chat_message_wrapper {
@@ -772,16 +774,17 @@ footer {
   background-color: #B0B0B0;
   border-radius: 10px;
   width: 250px;
-  min-height: 100px;
+  min-height: 70px;
   margin: 20px 0 0 20px;
   display: flex;
+  position: relative;
 }
 
 .message_image_container {
   width: 65px;
   display: inline-flex;
   justify-content: center;
-  padding-top: 20px;
+  padding-top: 7px;
   height: 100%;
 }
 
@@ -794,12 +797,12 @@ footer {
 .message_container_for_text_and_date {
   width: 185px;
   height: 100%;
+  color: #ffffff;
 }
 
 .message_container_for_text {
-  height: 90%;
   width: 100%;
-  padding: 10px;
+  padding: 18px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -808,8 +811,41 @@ footer {
 }
 
 .message_container_for_date {
-  height: 10%;
+  position: absolute;
+  bottom: 5px;
+  right: 5px;
 }
+
+.input_message_container {
+  width: 100%;
+  position: sticky;
+  top: 0;
+  height: 30px;
+  display: flex;
+  justify-content: space-evenly;
+  margin-top: 5px;
+}
+
+.message_textarea {
+  width: 93%;
+  outline: none;
+  border: none;
+  resize: none;
+  height: 100%;
+  font-size: 1.2rem;
+  font-family: 'Quicksand', sans-serif;
+}
+
+.send_container {
+  width: 4%;
+  height: 100%;
+}
+
+.send_icon{
+  width: 30px
+}
+
+
 
 /* _____________________________________________scrollbar */
 
@@ -830,7 +866,7 @@ footer {
 /* _____________________________________________hover effects */
 
 .authorization-buttons:hover, .gh_link:hover, .rss_logo:hover, .close_popup_button:hover, .popup_action:hover, .slider_controls:hover, 
-.send_message_from_popup_button:hover, .separate_message:hover  {
+.send_message_from_popup_button:hover, .separate_message:hover, .send_container:hover  {
   transform: scale(1.05);
   transition: 0.3s ease-out;
   cursor: pointer;
@@ -845,7 +881,7 @@ footer {
 }
 
 .slider_controls:active, .close_popup_button:active, .close_popup_message_button:active, .send_message_from_popup_button:active, 
-.separate_message:active  {
+.separate_message:active, .send_container:active  {
   opacity: .4;
 }
 

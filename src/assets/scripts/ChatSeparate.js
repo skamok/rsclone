@@ -10,7 +10,6 @@ export default class Chat {
 
   createChat() {
     this.parentContainer.innerHTML = '';
-    console.log(this.messages);
 
     this.chatContainer = document.createElement('div');
     this.chatContainer.classList.add('chat_container', 'animation');
@@ -19,8 +18,6 @@ export default class Chat {
     for (let i = 0; i < this.messagesKeys.length; i++) {
       this.firebase.readUserByID(this.messages[this.messagesKeys[i]].userID)
         .then((userData) => {
-          console.log(userData);
-
           this.chatMessageWrapper = document.createElement('div');
           this.chatMessageWrapper.classList.add('chat_message_wrapper');
           this.chatContainer.appendChild(this.chatMessageWrapper);
@@ -44,9 +41,7 @@ export default class Chat {
 
           this.textOfMessage = document.createElement('div');
           this.textOfMessage.classList.add('message_container_for_text');
-          //   this.textOfMessage.innerText = this.messages[this.messagesKeys[i]].message;
-          // eslint-disable-next-line max-len
-          this.textOfMessage.innerText = 'Lore ipsum dolor sit amet consectetur adipisicing elit. Cupiditate provident, aut quia tenetur repudiandae laudantium recusandae asperiores vitae facilis explicabo, perferendis alias non? In, magnam ratione reprehenderit modi cupiditate impedit! Lore ipsum dolor sit amet consectetur adipisicing elit. Cupiditate provident, aut quia tenetur repudiandae laudantium recusandae asperiores vitae facilis explicabo, perferendis alias non? In, magnam ratione reprehenderit modi cupiditate impedit!Lore ipsum dolor sit amet consectetur adipisicing elit. Cupiditate provident, aut quia tenetur repudiandae laudantium recusandae asperiores vitae facilis explicabo, perferendis alias non? In, magnam ratione reprehenderit modi cupiditate impedit!';
+          this.textOfMessage.innerText = this.messages[this.messagesKeys[i]].message;
 
           this.messageContainerForTextAndDate.appendChild(this.textOfMessage);
 
@@ -56,5 +51,21 @@ export default class Chat {
           this.messageContainerForTextAndDate.appendChild(this.date);
         });
     }
+    this.inputMessageContainer = document.createElement('div');
+    this.inputMessageContainer.classList.add('input_message_container');
+    this.chatContainer.appendChild(this.inputMessageContainer);
+
+    this.messageTextarea = document.createElement('textarea');
+    this.messageTextarea.classList.add('message_textarea');
+    this.inputMessageContainer.appendChild(this.messageTextarea);
+
+    this.sendButton = document.createElement('div');
+    this.sendButton.classList.add('send_container');
+    this.inputMessageContainer.appendChild(this.sendButton);
+
+    this.sendIcon = document.createElement('img');
+    this.sendIcon.src = './assets/images/send.png';
+    this.sendIcon.classList.add('send_icon');
+    this.sendButton.appendChild(this.sendIcon);
   }
 }
