@@ -414,6 +414,23 @@ export default class Firebase {
       });
   }
 
+  readLotByID(lotID) {
+    const refLot = this.lotsNode.child(lotID);
+    return refLot.once('value')
+      .then((dataSnapshot) => {
+        const lot = dataSnapshot.val();
+        return Promise.resolve(lot);
+      })
+      .catch((e) => {
+        const obj = {
+          code: e.code,
+          message: e.message
+        };
+        this.log('firebase.readLotByID error', obj);
+        throw e;
+      });
+  }
+
   toggleWishLots(lotInfo) {
     const lot = lotInfo.lotID;
     const currentUserID = this.auth.currentUser.uid;
