@@ -166,10 +166,7 @@ export default class MainPage {
 
         this.burgerMenu.appendChild(this.burgerMenuMessages);
 
-        this.burgerMenuMessages.addEventListener('click', () => {
-          const messages = new MessagesSection(this.firebase, this.lotsContainer, this.main, this.header);
-          messages.createMessagesSection();
-        });
+        this.burgerMenuMessages.addEventListener('click', this.messageClick);
         // ___________________
         this.burgerMenuSettings = document.createElement('div');
         this.burgerMenuSettings.classList.add('burger_menu_element');
@@ -207,6 +204,7 @@ export default class MainPage {
 
   messageClick =(event) => {
     event.preventDefault();
-    this.firebase.readCurrentUserChats().then((data) => console.log(data));
+    const messages = new MessagesSection(this.firebase, this.lotsContainer, this.main, this.header);
+    messages.createMessagesSection();
   }
 }

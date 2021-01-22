@@ -141,8 +141,6 @@ export default class SettingsPage {
       this.avatar.appendChild(img);
       const profileImage = this.header.querySelector('.profile_image');
       profileImage.src = window.URL.createObjectURL(e.target.files[0]);
-      console.log(profileImage.width, profileImage.height);
-      console.log(img.width, img.height)
       if (img.width === 150) {
         const divider = img.width / 40;
         profileImage.style.width = `${img.width / divider}px`;
@@ -152,7 +150,6 @@ export default class SettingsPage {
         profileImage.width = img.width / divider;
         profileImage.height = img.height / divider;
       }
-      console.log(profileImage.width, profileImage.height);
     };
     this.resizePhotoForServer()
       .then((dataURLs) => this.firebase.addUserAvatar(dataURLs[0]))
