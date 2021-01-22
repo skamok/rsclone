@@ -4,6 +4,7 @@ import AddLotPage from './AddLotPage.js';
 import WishListLots from './WishListLots.js';
 import SettingsPage from './SettingsPage.js';
 import TakenLotsList from './TakenLotsList.js';
+import MessagesSection from './MessagesSection.js';
 
 export default class MainPage {
   constructor(firebase, mainSection, headerSection, logo) {
@@ -24,10 +25,25 @@ export default class MainPage {
         this.profileContainer = document.createElement('div');
         this.profileContainer.classList.add('profile_container');
 
+        this.wrapProfileImage = document.createElement('div');
+        this.wrapProfileImage.classList.add('wrap_profile_img');
+        this.profileContainer.appendChild(this.wrapProfileImage);
+
         this.profileImage = document.createElement('img');
         this.profileImage.classList.add('profile_image');
-        this.profileImage.src = './assets/images/default-profile.png';
-        this.profileContainer.appendChild(this.profileImage);
+        if (userData.avatarURL !== undefined) {
+          this.profileImage.src = userData.avatarURL;
+          this.wrapProfileImage.appendChild(this.profileImage);
+          this.profileImage.onload = () => {
+            if (this.profileImage.width === 150) {
+              const divider = this.profileImage.width / 40;
+              this.profileImage.width /= divider;
+            } else {
+              const divider = this.profileImage.height / 40;
+              this.profileImage.width /= divider;
+            }
+          };
+        }
 
         this.profileSubcontainer = document.createElement('div');
         this.profileSubcontainer.classList.add('profile_subcontainer');
@@ -149,7 +165,11 @@ export default class MainPage {
         this.burgerMenuMessages.appendChild(this.burgerMenuMessagesText);
 
         this.burgerMenu.appendChild(this.burgerMenuMessages);
-        this.burgerMenuMessages.addEventListener('click', this.messageClick);
+
+        this.burgerMenuMessages.addEventListener('click', () => {
+          const messages = new MessagesSection(this.firebase, this.lotsContainer, this.main, this.header);
+          messages.createMessagesSection();
+        });
         // ___________________
         this.burgerMenuSettings = document.createElement('div');
         this.burgerMenuSettings.classList.add('burger_menu_element');
