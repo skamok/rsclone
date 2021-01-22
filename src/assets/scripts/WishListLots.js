@@ -16,7 +16,7 @@ export default class WishListLots {
       .then((data) => {
         for (let i = 0; i < data.length; i++) {
           this.lotCard = document.createElement('div');
-          this.lotCard.classList.add('lot_card');
+          this.lotCard.classList.add('lot_card', 'animation');
           this.lotCard.addEventListener('click', () => {
             const lotPage = new CurrentLotPage(data[i], this.header, this.main, this.firebase, false, this.userData);
             lotPage.createCurrentLotPage();

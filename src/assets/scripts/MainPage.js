@@ -4,6 +4,7 @@ import AddLotPage from './AddLotPage.js';
 import WishListLots from './WishListLots.js';
 import SettingsPage from './SettingsPage.js';
 import TakenLotsList from './TakenLotsList.js';
+import MessagesSection from './MessagesSection.js';
 
 export default class MainPage {
   constructor(firebase, mainSection, headerSection, logo) {
@@ -164,7 +165,11 @@ export default class MainPage {
         this.burgerMenuMessages.appendChild(this.burgerMenuMessagesText);
 
         this.burgerMenu.appendChild(this.burgerMenuMessages);
-        this.burgerMenuMessages.addEventListener('click', this.messageClick);
+
+        this.burgerMenuMessages.addEventListener('click', () => {
+          const messages = new MessagesSection(this.firebase, this.lotsContainer, this.main, this.header);
+          messages.createMessagesSection();
+        });
         // ___________________
         this.burgerMenuSettings = document.createElement('div');
         this.burgerMenuSettings.classList.add('burger_menu_element');
