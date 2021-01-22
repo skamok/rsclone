@@ -97,6 +97,7 @@ export default class SettingsPage {
         }
         this.inputPhone.setAttribute('placeholder', '+375 XX XXXXXXX');
         this.formSetting.appendChild(this.inputPhone);
+        this.inputPhone.addEventListener('keyup', this.addSpaceInInputPhone.bind(this));
 
         this.location = document.createElement('span');
         this.location.classList.add('name_lot');
@@ -121,6 +122,13 @@ export default class SettingsPage {
       });
   }
 
+  addSpaceInInputPhone() {
+    const numberLength = this.inputPhone.value.length;
+    if (numberLength === 4 || numberLength === 7 || numberLength === 11 || numberLength === 14) {
+      this.inputPhone.value += ' ';
+    }
+  }
+
   changeAvatar = (e) => {
     this.avatar.innerHTML = '';
     const MAX_WIDTH = 150;
@@ -141,8 +149,6 @@ export default class SettingsPage {
       this.avatar.appendChild(img);
       const profileImage = this.header.querySelector('.profile_image');
       profileImage.src = window.URL.createObjectURL(e.target.files[0]);
-      console.log(profileImage.width, profileImage.height);
-      console.log(img.width, img.height)
       if (img.width === 150) {
         const divider = img.width / 40;
         profileImage.style.width = `${img.width / divider}px`;
@@ -152,7 +158,6 @@ export default class SettingsPage {
         profileImage.width = img.width / divider;
         profileImage.height = img.height / divider;
       }
-      console.log(profileImage.width, profileImage.height);
     };
     this.resizePhotoForServer()
       .then((dataURLs) => this.firebase.addUserAvatar(dataURLs[0]))
