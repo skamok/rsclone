@@ -1,4 +1,4 @@
-import Chat from './ChatSeparate.js';
+import ChatSeparate from './ChatSeparate.js';
 
 /* eslint-disable no-console */
 export default class MessagesSection {
@@ -15,12 +15,8 @@ export default class MessagesSection {
     this.parentContainer.innerHTML = '';
     this.firebase.readLots()
       .then((allLots) => {
-        console.log(allLots);
-
         this.firebase.readCurrentUserChats()
           .then((messagesData) => {
-            console.log(messagesData);
-
             this.messagesContainer = document.createElement('div');
             this.messagesContainer.classList.add('messages_container', 'animation');
             this.parentContainer.appendChild(this.messagesContainer);
@@ -30,8 +26,8 @@ export default class MessagesSection {
               this.separateMessageBlock.classList.add('separate_message');
               this.messagesContainer.appendChild(this.separateMessageBlock);
               this.separateMessageBlock.addEventListener('click', () => {
-                const chat = new Chat(this.firebase, this.header, this.main, this.parentContainer,
-                  messagesData[i].messages);
+                const chat = new ChatSeparate(this.firebase, this.header, this.main, this.parentContainer,
+                  messagesData[i]);
                 chat.createChat();
               });
 
@@ -46,8 +42,6 @@ export default class MessagesSection {
               this.messageDate = document.createElement('div');
               this.messageDate.classList.add('message_date');
               this.separateMessageBlock.appendChild(this.messageDate);
-
-              console.log(this.lotsDataArray);
 
               this.lotDescriptionTitle = document.createElement('div');
               this.lotDescriptionTitle.classList.add('lot_description_title');

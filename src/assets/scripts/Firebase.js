@@ -518,6 +518,36 @@ export default class Firebase {
     throw new Error('error');
   }
 
+  sendMessage(chat, message) {
+    const currentUserID = this.auth.currentUser.uid;
+    const messagesRef = this.chatsNode.child(chat.chatID).child('messages');
+    const messageID = messagesRef.push().key;
+    const messageObj = {
+      messageID,
+      message,
+      userID: currentUserID,
+      dtCreate: (new Date()).toJSON()
+    };
+    return messagesRef.child(messageID).set(messageObj)
+      .then(() => {
+        this.log('firebase.sendMessage new messageID = ', messageID);
+        return Promise.resolve(messageID);
+      })
+      .catch((e) => {
+        const obj = {
+          code: e.code,
+          message: e.message
+        };
+        this.log('firebase.sendMessage error', obj);
+        throw e;
+      });
+  }
+
+  readMessagesContinues(chatID, callbackFunction) {
+    const messagesRef = this.chatsNode.child(chatID).child('messages');
+    return messagesRef.on('child_added', callbackFunction);
+  }
+
   addMessageFromLot(lotID, lotOwner, message) {
     const currentUserID = this.auth.currentUser.uid;
     if (currentUserID === lotOwner) {
