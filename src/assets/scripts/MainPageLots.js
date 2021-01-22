@@ -51,8 +51,10 @@ export default class MainPageLots {
 
               this.toWishesButton = document.createElement('img');
 
-              if (userData.wishLots.includes(keys[i])) {
-                this.toWishesButton.src = './assets/images/red-heart.png';
+              if (userData.wishLots !== undefined) {
+                if (userData.wishLots.includes(keys[i])) {
+                  this.toWishesButton.src = './assets/images/red-heart.png';
+                }
               } else {
                 this.toWishesButton.src = './assets/images/heart.png';
               }
