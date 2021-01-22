@@ -97,6 +97,7 @@ export default class SettingsPage {
         }
         this.inputPhone.setAttribute('placeholder', '+375 XX XXXXXXX');
         this.formSetting.appendChild(this.inputPhone);
+        this.inputPhone.addEventListener('keyup', this.addSpaceInInputPhone.bind(this));
 
         this.location = document.createElement('span');
         this.location.classList.add('name_lot');
@@ -119,6 +120,13 @@ export default class SettingsPage {
         this.btnSubmit.classList.add('lot_submit');
         this.formSetting.appendChild(this.btnSubmit);
       });
+  }
+
+  addSpaceInInputPhone() {
+    const numberLength = this.inputPhone.value.length;
+    if (numberLength === 4 || numberLength === 7 || numberLength === 11 || numberLength === 14) {
+      this.inputPhone.value += ' ';
+    }
   }
 
   changeAvatar = (e) => {
