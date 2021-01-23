@@ -941,6 +941,7 @@ footer {
   font-size: 1.4rem;
   font-weight: 400;
   border-radius: 0 0 10px 10px;
+  text-align: center;
 }
 
 .error_block_hidden {
