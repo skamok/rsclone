@@ -718,6 +718,7 @@ footer {
 .lot_description_title {
   font-size: 1.4rem;
   color: #ffffff;
+  text-align: center;
 }
 
 .lot_description_message {
@@ -1120,6 +1121,28 @@ footer {
 
   .lot_popup_description {
     padding: 7px;
+  }
+
+  .separate_message {
+    width: 100%;
+  }
+
+  .message_container {
+    width: 210px;
+    min-height: 60px;
+  }
+
+  .message_container_for_date {
+    font-size: 1rem;
+  }
+
+  .message_image {
+    width: 45px;
+    height: 45px;
+  }
+
+  .message_textarea {
+    width: 83%;
   }
 }
 
