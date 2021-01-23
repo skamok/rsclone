@@ -18,6 +18,11 @@ export default class MessagesSection {
       .then((allLots) => {
         this.firebase.readCurrentUserChats()
           .then((messagesData) => {
+            console.log(messagesData);
+            if (!messagesData.length) {
+              this.parentContainer.innerText = 'You have no messages yet';
+              return;
+            }
             this.messagesContainer = document.createElement('div');
             this.messagesContainer.classList.add('messages_container', 'animation');
             this.parentContainer.appendChild(this.messagesContainer);

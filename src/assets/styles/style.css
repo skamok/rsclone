@@ -218,6 +218,8 @@ footer {
   overflow-y: scroll;
   border-radius: 5px;
   justify-content: center;
+  align-items: center;
+  font-size: 1.6rem;
 }
 
 .animation {
