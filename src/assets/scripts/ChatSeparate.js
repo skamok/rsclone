@@ -1,5 +1,5 @@
 export default class ChatSeparate {
-  constructor(firebase, header, main, parentContainer, chat) {
+  constructor(firebase, header, main, parentContainer, chat, currentUserData) {
     this.firebase = firebase;
     this.header = header;
     this.main = main;
@@ -8,11 +8,11 @@ export default class ChatSeparate {
     this.messages = chat.messages;
     this.messagesKeys = Object.keys(this.messages);
     this.users = [];
+    this.currentUserData = currentUserData;
   }
 
   createChat() {
     this.parentContainer.innerHTML = '';
-
     this.chatContainer = document.createElement('div');
     this.chatContainer.classList.add('chat_container', 'animation');
     this.parentContainer.appendChild(this.chatContainer);
@@ -63,6 +63,11 @@ export default class ChatSeparate {
       this.messageContainer = document.createElement('div');
       this.messageContainer.classList.add('message_container');
       this.chatMessageWrapper.appendChild(this.messageContainer);
+
+      if (messageObj.userID !== this.currentUserData.userID) {
+        this.chatMessageWrapper.classList.add('chat_message_wrapper_opposite');
+        this.messageContainer.classList.add('message_container_opposite');
+      }
 
       this.messageImageContainer = document.createElement('div');
       this.messageImageContainer.classList.add('message_image_container');

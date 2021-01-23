@@ -2,13 +2,14 @@ import ChatSeparate from './ChatSeparate.js';
 
 /* eslint-disable no-console */
 export default class MessagesSection {
-  constructor(firebase, parentContainer, main, header) {
+  constructor(firebase, parentContainer, main, header, userData) {
     this.firebase = firebase;
     this.parentContainer = parentContainer;
     this.main = main;
     this.header = header;
     this.lotsDataArray = [];
     this.lots = [];
+    this.currentUserData = userData;
   }
 
   createMessagesSection() {
@@ -27,7 +28,7 @@ export default class MessagesSection {
               this.messagesContainer.appendChild(this.separateMessageBlock);
               this.separateMessageBlock.addEventListener('click', () => {
                 const chat = new ChatSeparate(this.firebase, this.header, this.main, this.parentContainer,
-                  messagesData[i]);
+                  messagesData[i], this.currentUserData);
                 chat.createChat();
               });
 
