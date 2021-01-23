@@ -88,10 +88,19 @@ export default class ChatSeparate {
 
       this.messageContainerForTextAndDate.appendChild(this.textOfMessage);
 
-      this.date = document.createElement('div');
-      this.date.classList.add('message_container_for_date');
-      this.date.innerText = messageObj.dtCreate;
-      this.messageContainerForTextAndDate.appendChild(this.date);
+      this.dateContainer = document.createElement('div');
+      this.dateContainer.classList.add('message_container_for_date');
+
+      this.date = new Date(messageObj.dtCreate);
+
+      this.day = (this.date.getDate()).toString().padStart(2, '0');
+      this.month = (this.date.getMonth() + 1).toString().padStart(2, '0');
+      this.fullYear = this.date.getFullYear();
+      this.hours = this.date.getHours().toString().padStart(2, '0');
+      this.minutes = this.date.getMinutes().toString().padStart(2, '0');
+
+      this.dateContainer.innerText = `${this.day}.${this.month}.${this.fullYear} | ${this.hours}:${this.minutes}`;
+      this.messageContainerForTextAndDate.appendChild(this.dateContainer);
     }
   }
 
