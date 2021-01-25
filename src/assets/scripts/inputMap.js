@@ -14,8 +14,16 @@ function init() {
   const inputMap = document.querySelector('.input_map');
   // eslint-disable-next-line no-use-before-define
   // eslint-disable-next-line no-unused-expressions
-  inputMap.addEventListener('keydown', (e) => { e.key === 'Enter' ? geocode() : false; });
+  inputMap.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      geocode();
+    }
+  });
   inputMap.addEventListener('blur', () => { geocode(); });
+  if (inputMap.value.length !== 0) {
+    geocode();
+  }
 
   function geocode() {
     // Забираем запрос из поля ввода.
@@ -61,6 +69,8 @@ function init() {
     });
   }
   function showResult(obj) {
+    const notice = document.querySelector('#notice');
+    notice.style.display = 'none';
     const shortAddress = obj.properties._data.name;
     const mapState = {
       center: obj.geometry._coordinates,
@@ -105,5 +115,6 @@ function init() {
       placemark.geometry.setCoordinates(state.center);
       placemark.properties.set({ iconCaption: caption, balloonContent: caption });
     }
+    return (state, caption);
   }
 }
