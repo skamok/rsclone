@@ -1,7 +1,7 @@
 import SignInPage from './SignInPage.js';
 import RegistrationPage from './RegistrationPage.js';
 
-export default class AuthorizationPage {
+export default class AuthorizationPage { 
   constructor(firebase, header, main, logo) {
     this.header = header;
     this.main = main;
@@ -9,7 +9,20 @@ export default class AuthorizationPage {
     this.firebase = firebase;
   }
 
-  createAuthorizationPage() {
+  start() {
+    this.firebase.authState(this.auth);
+  }
+
+  auth = (user) => {
+    if (user) {
+      console.log('AuthorizationPage.onAuthStateChanged User is signed IN', user.email, user.uid);
+      this.createAuthorizationPage(user);
+    } else {
+      console.log('AuthorizationPage.onAuthStateChanged User is signed out');
+    }
+  }
+
+  createAuthorizationPage(user) {
     this.authorizationContainer = document.createElement('div');
     this.authorizationContainer.classList.add('authorization');
 
@@ -22,7 +35,11 @@ export default class AuthorizationPage {
 
     this.buttonSignIn = document.createElement('button');
     this.buttonSignIn.classList.add('sign-in-button', 'authorization-buttons');
-    this.buttonSignIn.innerText = 'Sign in';
+    if (user !== null) {
+      this.buttonSignIn.innerText = user.email;
+    } else {
+      this.buttonSignIn.innerText = 'Sign in';
+    }
     this.buttonSignIn.addEventListener('click', () => {
       const signInPage = new SignInPage(this.firebase, this.main, this.header, this.logo);
       signInPage.createSignInPage();
