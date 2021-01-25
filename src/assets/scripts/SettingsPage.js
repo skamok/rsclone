@@ -1,3 +1,5 @@
+import MainPageLots from './MainPageLots.js';
+
 export default class SettingsPage {
   constructor(сontainer, firebase, header, main) {
     this.container = сontainer;
@@ -12,7 +14,7 @@ export default class SettingsPage {
       .then((data) => {
         this.formSetting = document.createElement('form');
         this.formSetting.setAttribute('name', 'form_setting');
-        this.formSetting.classList.add('form_setting');
+        this.formSetting.classList.add('form_setting', 'animation');
         this.container.appendChild(this.formSetting);
         this.formSetting.addEventListener('submit', this.formUserValidation);
 
@@ -21,9 +23,24 @@ export default class SettingsPage {
         this.headForm.innerText = 'Settings';
         this.formSetting.appendChild(this.headForm);
 
+        this.wrapAvatarEmail = document.createElement('div');
+        this.wrapAvatarEmail.classList.add('wrap_avatar_email');
+        this.formSetting.appendChild(this.wrapAvatarEmail);
+
         this.avatar = document.createElement('div');
         this.avatar.classList.add('avatar-photo');
-        this.formSetting.appendChild(this.avatar);
+        this.wrapAvatarEmail.appendChild(this.avatar);
+
+        if (data.avatarURL !== undefined) {
+          this.avatarPhoto = document.createElement('img');
+          this.avatarPhoto.setAttribute('src', data.avatarURL);
+          this.avatar.appendChild(this.avatarPhoto);
+        }
+
+        this.emailUser = document.createElement('span');
+        this.emailUser.classList.add('email');
+        this.emailUser.innerHTML = `${data.email}`;
+        this.wrapAvatarEmail.appendChild(this.emailUser);
 
         this.inputPhotos = document.createElement('input');
         this.inputPhotos.setAttribute('type', 'file');
@@ -66,43 +83,6 @@ export default class SettingsPage {
         this.inputNickName.setAttribute('value', `${data.nick}`);
         this.formSetting.appendChild(this.inputNickName);
 
-        this.email = document.createElement('span');
-        this.email.classList.add('name_lot');
-        this.email.innerText = 'Your email';
-        this.formSetting.appendChild(this.email);
-
-        this.inputEmail = document.createElement('input');
-        this.inputEmail.setAttribute('type', 'text');
-        this.inputEmail.setAttribute('name', 'email');
-        this.inputEmail.setAttribute('class', 'name_lot_input');
-        this.inputEmail.setAttribute('value', `${data.email}`);
-        this.inputEmail.setAttribute('placeholder', 'john@mail.com');
-        this.formSetting.appendChild(this.inputEmail);
-
-        this.password = document.createElement('span');
-        this.password.classList.add('name_lot');
-        this.password.innerText = 'New password';
-        this.formSetting.appendChild(this.password);
-
-        this.inputPassword = document.createElement('input');
-        this.inputPassword.setAttribute('type', 'text');
-        this.inputPassword.setAttribute('name', 'password');
-        this.inputPassword.setAttribute('class', 'name_lot_input');
-        this.inputPassword.setAttribute('placeholder', 'password');
-        this.formSetting.appendChild(this.inputPassword);
-
-        this.passwordRepeat = document.createElement('span');
-        this.passwordRepeat.classList.add('name_lot');
-        this.passwordRepeat.innerText = 'Repeat new password';
-        this.formSetting.appendChild(this.passwordRepeat);
-
-        this.inputPasswordRepeat = document.createElement('input');
-        this.inputPasswordRepeat.setAttribute('type', 'text');
-        this.inputPasswordRepeat.setAttribute('name', 'passwordRepeat');
-        this.inputPasswordRepeat.setAttribute('class', 'name_lot_input');
-        this.inputPasswordRepeat.setAttribute('placeholder', 'password');
-        this.formSetting.appendChild(this.inputPasswordRepeat);
-
         this.phone = document.createElement('span');
         this.phone.classList.add('name_lot');
         this.phone.innerText = 'Your phone number';
@@ -117,6 +97,7 @@ export default class SettingsPage {
         }
         this.inputPhone.setAttribute('placeholder', '+375 XX XXXXXXX');
         this.formSetting.appendChild(this.inputPhone);
+        this.inputPhone.addEventListener('keyup', this.addSpaceInInputPhone.bind(this));
 
         this.location = document.createElement('span');
         this.location.classList.add('name_lot');
@@ -141,6 +122,13 @@ export default class SettingsPage {
       });
   }
 
+  addSpaceInInputPhone() {
+    const numberLength = this.inputPhone.value.length;
+    if (numberLength === 4 || numberLength === 7 || numberLength === 11 || numberLength === 14) {
+      this.inputPhone.value += ' ';
+    }
+  }
+
   changeAvatar = (e) => {
     this.avatar.innerHTML = '';
     const MAX_WIDTH = 150;
@@ -159,6 +147,17 @@ export default class SettingsPage {
       img.width = width;
       img.height = height;
       this.avatar.appendChild(img);
+      const profileImage = this.header.querySelector('.profile_image');
+      profileImage.src = window.URL.createObjectURL(e.target.files[0]);
+      if (img.width === 150) {
+        const divider = img.width / 40;
+        profileImage.style.width = `${img.width / divider}px`;
+        profileImage.style.height = `${img.height / divider}px`;
+      } else {
+        const divider = img.height / 40;
+        profileImage.width = img.width / divider;
+        profileImage.height = img.height / divider;
+      }
     };
     this.resizePhotoForServer()
       .then((dataURLs) => this.firebase.addUserAvatar(dataURLs[0]))
@@ -170,34 +169,7 @@ export default class SettingsPage {
     const listMessage = document.querySelectorAll('.message_err');
     let inputError = false;
     listMessage.forEach((elem) => { elem.remove(); });
-    /* if (this.wrapPhotos.children.length === 0) {
-      inputError = true;
-      // this.labelBtnAddPhotos.after(this.createMessageError('add photos'));
-    } */
     if (this.formSetting.nickName.value.length === 0) {
-      inputError = true;
-      this.formSetting.nickName.after(this.createMessageError('add your name'));
-    }
-
-    if (this.formSetting.email.value.length > 0) {
-      if (!(/@/.test(this.formSetting.email.value))) {
-        inputError = true;
-        this.formSetting.email.after(this.createMessageError('email must contain @'));
-      }
-    } else {
-      inputError = true;
-      this.formSetting.email.after(this.createMessageError('add email'));
-    }
-
-    if (this.formSetting.password.value.length !== 0) {
-      if (this.formSetting.passwordRepeat.value.length === 0) {
-        inputError = true;
-        this.formSetting.passwordRepeat.after(this.createMessageError('repeat new password'));
-      } if (this.formSetting.passwordRepeat.value.length !== 0
-        && this.formSetting.passwordRepeat.value !== this.formSetting.password.value) {
-        inputError = true;
-        this.formSetting.passwordRepeat.after(this.createMessageError('passwords do not match'));
-      }
       inputError = true;
       this.formSetting.nickName.after(this.createMessageError('add your name'));
     }
@@ -216,6 +188,9 @@ export default class SettingsPage {
       this.firebase.addUserInfo(this.formSetting.nickName.value, this.formSetting.phone.value,
         this.formSetting.location.value)
         .then(() => alert('info added'));
+      const mainPageLots = new MainPageLots(this.firebase, this.container, this.main, this.header,
+        this.errorBlock);
+      mainPageLots.createMainPageLots();
     }
   }
 
@@ -257,12 +232,9 @@ export default class SettingsPage {
           i += 1;
           let { width } = img;
           let { height } = img;
-          if (width > height) {
-            if (width > MAX_WIDTH) {
-              height *= MAX_WIDTH / width;
-              width = MAX_WIDTH;
-            }
-          } else if (height > MAX_HEIGHT) {
+          height *= MAX_WIDTH / width;
+          width = MAX_WIDTH;
+          if (height < MAX_HEIGHT) {
             width *= MAX_HEIGHT / height;
             height = MAX_HEIGHT;
           }

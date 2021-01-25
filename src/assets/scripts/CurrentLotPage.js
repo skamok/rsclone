@@ -1,13 +1,15 @@
 /* eslint-disable no-console */
+import MessageFromPopup from './MessageFromPopup.js';
 import NotificationBlock from './NotificationBlock.js';
 
 export default class CurrentLotPage {
-  constructor(lotInfo, header, main, firebase, errorBlock) {
+  constructor(lotInfo, header, main, firebase, isTaken, userData) {
     this.lotInfo = lotInfo;
     this.main = main;
     this.header = header;
     this.firebase = firebase;
-    this.errorBlock = errorBlock;
+    this.isTaken = isTaken;
+    this.userData = userData;
   }
 
   createCurrentLotPage() {
@@ -88,70 +90,82 @@ export default class CurrentLotPage {
       }
     });
 
-    this.errorBlock = document.createElement('div');
-    this.errorBlock.classList.add('ErrorBlock');
-
     // actions
 
     this.popupActionsContainer = document.createElement('div');
     this.popupActionsContainer.classList.add('popup_actions_container');
     this.mainLotInfoContainer.appendChild(this.popupActionsContainer);
 
-    // take action
+    if (!this.isTaken) {
+      // take action
+      this.popupTakeAction = document.createElement('div');
+      this.popupTakeAction.classList.add('popup_action');
+      this.popupActionsContainer.appendChild(this.popupTakeAction);
 
-    this.popupTakeAction = document.createElement('div');
-    this.popupTakeAction.classList.add('popup_action');
-    this.popupActionsContainer.appendChild(this.popupTakeAction);
+      this.popupTakeActionImage = document.createElement('img');
+      this.popupTakeActionImage.src = './assets/images/take.png';
+      this.popupTakeActionImage.classList.add('popup_action_image');
+      this.popupTakeAction.appendChild(this.popupTakeActionImage);
 
-    this.popupTakeActionImage = document.createElement('img');
-    this.popupTakeActionImage.src = './assets/images/take.png';
-    this.popupTakeActionImage.classList.add('popup_action_image');
-    this.popupTakeAction.appendChild(this.popupTakeActionImage);
+      this.popupTakeActionText = document.createElement('div');
+      this.popupTakeActionText.classList.add('popup_action_text');
+      this.popupTakeActionText.innerText = 'Take';
+      this.popupTakeAction.appendChild(this.popupTakeActionText);
 
-    this.popupTakeActionText = document.createElement('div');
-    this.popupTakeActionText.classList.add('popup_action_text');
-    this.popupTakeActionText.innerText = 'Take';
-    this.popupTakeAction.appendChild(this.popupTakeActionText);
+      // message action
 
-    // message action
+      this.popupMessageAction = document.createElement('div');
+      this.popupMessageAction.classList.add('popup_action');
+      this.popupActionsContainer.appendChild(this.popupMessageAction);
 
-    this.popupMessageAction = document.createElement('div');
-    this.popupMessageAction.classList.add('popup_action');
-    this.popupActionsContainer.appendChild(this.popupMessageAction);
+      this.popupMessageActionImage = document.createElement('img');
+      this.popupMessageActionImage.src = './assets/images/messages.png';
+      this.popupMessageActionImage.classList.add('popup_action_image');
+      this.popupMessageAction.appendChild(this.popupMessageActionImage);
 
-    this.popupMessageActionImage = document.createElement('img');
-    this.popupMessageActionImage.src = './assets/images/messages.png';
-    this.popupMessageActionImage.classList.add('popup_action_image');
-    this.popupMessageAction.appendChild(this.popupMessageActionImage);
+      this.popupMessageActionText = document.createElement('div');
+      this.popupMessageActionText.classList.add('popup_action_text');
+      this.popupMessageActionText.innerText = 'Message to owner';
+      this.popupMessageAction.appendChild(this.popupMessageActionText);
 
-    this.popupMessageActionText = document.createElement('div');
-    this.popupMessageActionText.classList.add('popup_action_text');
-    this.popupMessageActionText.innerText = 'Message to owner';
-    this.popupMessageAction.appendChild(this.popupMessageActionText);
+      // to wishes action
 
-    // to wishes action
+      this.popupWishesAction = document.createElement('div');
+      this.popupWishesAction.classList.add('popup_action');
+      this.popupActionsContainer.appendChild(this.popupWishesAction);
 
-    this.popupWishesAction = document.createElement('div');
-    this.popupWishesAction.classList.add('popup_action');
-    this.popupActionsContainer.appendChild(this.popupWishesAction);
+      this.popupWishesActionImage = document.createElement('img');
+      this.popupWishesActionImage.src = './assets/images/wishes.png';
+      this.popupWishesActionImage.classList.add('popup_action_image');
+      this.popupWishesAction.appendChild(this.popupWishesActionImage);
 
-    this.popupWishesActionImage = document.createElement('img');
-    this.popupWishesActionImage.src = './assets/images/wishes.png';
-    this.popupWishesActionImage.classList.add('popup_action_image');
-    this.popupWishesAction.appendChild(this.popupWishesActionImage);
+      this.popupWishesActionText = document.createElement('div');
+      this.popupWishesActionText.classList.add('popup_action_text');
+      this.popupWishesActionText.innerText = 'To wishes';
+      this.popupWishesAction.appendChild(this.popupWishesActionText);
+      this.popupWishesAction.addEventListener('click', this.toggleWishes);
+      this.popupTakeAction.addEventListener('click', this.takeLot);
+    } else {
+      this.popupMessageAction = document.createElement('div');
+      this.popupMessageAction.classList.add('popup_action');
+      this.popupActionsContainer.appendChild(this.popupMessageAction);
 
-    this.popupWishesActionText = document.createElement('div');
-    this.popupWishesActionText.classList.add('popup_action_text');
-    this.popupWishesActionText.innerText = 'To wishes';
-    this.popupWishesAction.appendChild(this.popupWishesActionText);
+      this.popupMessageActionImage = document.createElement('img');
+      this.popupMessageActionImage.src = './assets/images/messages.png';
+      this.popupMessageActionImage.classList.add('popup_action_image');
+      this.popupMessageAction.appendChild(this.popupMessageActionImage);
+
+      this.popupMessageActionText = document.createElement('div');
+      this.popupMessageActionText.classList.add('popup_action_text');
+      this.popupMessageActionText.innerText = 'Message to owner';
+      this.popupMessageAction.appendChild(this.popupMessageActionText);
+    }
 
     this.closeButton.addEventListener('click', () => {
       this.popUpContainer.parentNode.removeChild(this.popUpContainer);
     });
 
     this.popupMessageAction.addEventListener('click', this.writeMessage);
-    this.popupWishesAction.addEventListener('click', this.toggleWishes);
-    this.popupTakeAction.addEventListener('click', this.takeLot);
   }
 
   takeLot = (event) => {
@@ -163,7 +177,14 @@ export default class CurrentLotPage {
         }
         throw new Error('error');
       })
-      .then(() => alert('you win')).catch((e) => alert(e.message));
+      .then(() => {
+        const winNotification = new NotificationBlock(this.header, 'You win! Connect to owner.', false);
+        winNotification.showNotification();
+      })
+      .catch((e) => {
+        const takeError = new NotificationBlock(this.header, e.message, true);
+        takeError.showNotification();
+      });
   }
 
   toggleWishes = (event) => {
@@ -187,10 +208,8 @@ export default class CurrentLotPage {
 
   writeMessage = (event) => {
     event.preventDefault();
-    this.firebase.addMessageFromLot(this.lotInfo.lotID, this.lotInfo.userID, 'message form firstUser')
-      .then(() => {
-        const message = new NotificationBlock(this.header, 'Added', false);
-        message.showNotification();
-      });
+    const message = new MessageFromPopup(this.header, this.main,
+      this.popUpWindow, this.firebase, this.lotInfo, this.userData);
+    message.createMessageWindow();
   }
 }

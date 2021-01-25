@@ -302,6 +302,32 @@ export default class Firebase {
       });
   }
 
+  readCurrentUserChats() {
+    const userID = this.auth.currentUser.uid;
+    const refUser = this.usersNode.child(userID);
+    return refUser.once('value')
+      .then((dataSnapshot) => {
+        const user = dataSnapshot.val();
+        const { chats } = user;
+        if (chats === undefined) {
+          return Promise.resolve([]);
+        }
+        return Firebase.readNodesByID(chats, this.chatsNode);
+      })
+      .then((data) => {
+        this.log('firebase.readCurrentUserChats', data);
+        return Promise.resolve(data);
+      })
+      .catch((e) => {
+        const obj = {
+          code: e.code,
+          message: e.message
+        };
+        this.log('firebase.readCurrentUserChats error', obj);
+        throw e;
+      });
+  }
+
   readCurrentUserWinLots() {
     const userID = this.auth.currentUser.uid;
     const refUser = this.usersNode.child(userID);
@@ -367,6 +393,40 @@ export default class Firebase {
           message: e.message
         };
         this.log('firebase.readUsers error', obj);
+        throw e;
+      });
+  }
+
+  readUserByID(userID) {
+    const refUser = this.usersNode.child(userID);
+    return refUser.once('value')
+      .then((dataSnapshot) => {
+        const user = dataSnapshot.val();
+        return Promise.resolve(user);
+      })
+      .catch((e) => {
+        const obj = {
+          code: e.code,
+          message: e.message
+        };
+        this.log('firebase.readUserByID error', obj);
+        throw e;
+      });
+  }
+
+  readLotByID(lotID) {
+    const refLot = this.lotsNode.child(lotID);
+    return refLot.once('value')
+      .then((dataSnapshot) => {
+        const lot = dataSnapshot.val();
+        return Promise.resolve(lot);
+      })
+      .catch((e) => {
+        const obj = {
+          code: e.code,
+          message: e.message
+        };
+        this.log('firebase.readLotByID error', obj);
         throw e;
       });
   }
@@ -458,6 +518,36 @@ export default class Firebase {
     throw new Error('error');
   }
 
+  sendMessage(chat, message) {
+    const currentUserID = this.auth.currentUser.uid;
+    const messagesRef = this.chatsNode.child(chat.chatID).child('messages');
+    const messageID = messagesRef.push().key;
+    const messageObj = {
+      messageID,
+      message,
+      userID: currentUserID,
+      dtCreate: (new Date()).toJSON()
+    };
+    return messagesRef.child(messageID).set(messageObj)
+      .then(() => {
+        this.log('firebase.sendMessage new messageID = ', messageID);
+        return Promise.resolve(messageID);
+      })
+      .catch((e) => {
+        const obj = {
+          code: e.code,
+          message: e.message
+        };
+        this.log('firebase.sendMessage error', obj);
+        throw e;
+      });
+  }
+
+  readMessagesContinues(chatID, callbackFunction) {
+    const messagesRef = this.chatsNode.child(chatID).child('messages');
+    return messagesRef.on('child_added', callbackFunction);
+  }
+
   addMessageFromLot(lotID, lotOwner, message) {
     const currentUserID = this.auth.currentUser.uid;
     if (currentUserID === lotOwner) {
@@ -474,7 +564,12 @@ export default class Firebase {
     // check if chat exist
     return this.chatsNode.orderByChild('lotID').equalTo(lotID).once('value')
       .then((lotsTable) => {
-        const chatsArray = Object.values(lotsTable.val());
+        let chatsArray;
+        if ((lotsTable.val() !== null) && (lotsTable.val() !== undefined)) {
+          chatsArray = Object.values(lotsTable.val());
+        } else {
+          chatsArray = [];
+        }
         const exist = chatsArray.find((chat) => chat.userFirst === currentUserID);
         if (exist === undefined) {
           this.log('firebase.addMessageFromLot need new chat');
