@@ -166,7 +166,10 @@ export default class MainPage {
 
         this.burgerMenu.appendChild(this.burgerMenuMessages);
 
-        this.burgerMenuMessages.addEventListener('click', this.messageClick);
+        this.burgerMenuMessages.addEventListener('click', () => {
+          const messages = new MessagesSection(this.firebase, this.lotsContainer, this.main, this.header, userData);
+          messages.createMessagesSection();
+        });
         // ___________________
         this.burgerMenuSettings = document.createElement('div');
         this.burgerMenuSettings.classList.add('burger_menu_element');
@@ -200,11 +203,5 @@ export default class MainPage {
     event.preventDefault();
     const settings = new SettingsPage(this.lotsContainer, this.firebase, this.header, this.main);
     settings.changeSettings();
-  }
-
-  messageClick =(event) => {
-    event.preventDefault();
-    const messages = new MessagesSection(this.firebase, this.lotsContainer, this.main, this.header);
-    messages.createMessagesSection();
   }
 }

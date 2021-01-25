@@ -1,5 +1,5 @@
 export default class ChatSeparate {
-  constructor(firebase, header, main, parentContainer, chat) {
+  constructor(firebase, header, main, parentContainer, chat, currentUserData) {
     this.firebase = firebase;
     this.header = header;
     this.main = main;
@@ -8,11 +8,11 @@ export default class ChatSeparate {
     this.messages = chat.messages;
     this.messagesKeys = Object.keys(this.messages);
     this.users = [];
+    this.currentUserData = currentUserData;
   }
 
   createChat() {
     this.parentContainer.innerHTML = '';
-
     this.chatContainer = document.createElement('div');
     this.chatContainer.classList.add('chat_container', 'animation');
     this.parentContainer.appendChild(this.chatContainer);
@@ -64,6 +64,11 @@ export default class ChatSeparate {
       this.messageContainer.classList.add('message_container');
       this.chatMessageWrapper.appendChild(this.messageContainer);
 
+      if (messageObj.userID !== this.currentUserData.userID) {
+        this.chatMessageWrapper.classList.add('chat_message_wrapper_opposite');
+        this.messageContainer.classList.add('message_container_opposite');
+      }
+
       this.messageImageContainer = document.createElement('div');
       this.messageImageContainer.classList.add('message_image_container');
       this.messageContainer.appendChild(this.messageImageContainer);
@@ -83,10 +88,19 @@ export default class ChatSeparate {
 
       this.messageContainerForTextAndDate.appendChild(this.textOfMessage);
 
-      this.date = document.createElement('div');
-      this.date.classList.add('message_container_for_date');
-      this.date.innerText = messageObj.dtCreate;
-      this.messageContainerForTextAndDate.appendChild(this.date);
+      this.dateContainer = document.createElement('div');
+      this.dateContainer.classList.add('message_container_for_date');
+
+      this.date = new Date(messageObj.dtCreate);
+
+      this.day = (this.date.getDate()).toString().padStart(2, '0');
+      this.month = (this.date.getMonth() + 1).toString().padStart(2, '0');
+      this.fullYear = this.date.getFullYear();
+      this.hours = this.date.getHours().toString().padStart(2, '0');
+      this.minutes = this.date.getMinutes().toString().padStart(2, '0');
+
+      this.dateContainer.innerText = `${this.day}.${this.month}.${this.fullYear} | ${this.hours}:${this.minutes}`;
+      this.messageContainerForTextAndDate.appendChild(this.dateContainer);
     }
   }
 

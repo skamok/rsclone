@@ -12,6 +12,10 @@ export default class TakenLotsList {
   createTakenList() {
     this.lotsContainer.innerHTML = '';
     this.firebase.readCurrentUserWinLots().then((data) => {
+      if (!data.length) {
+        this.lotsContainer.innerText = 'You have no lots here';
+        return;
+      }
       for (let i = 0; i < data.length; i++) {
         this.lotCard = document.createElement('div');
         this.lotCard.classList.add('lot_card', 'animation');

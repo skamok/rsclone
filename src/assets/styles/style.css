@@ -175,10 +175,6 @@ footer {
   margin-right: 20px;
 }
 
-.profile_image {
-
-}
-
 .profile_subcontainer {
   display: flex;
   flex-direction: column;
@@ -222,6 +218,8 @@ footer {
   overflow-y: scroll;
   border-radius: 5px;
   justify-content: center;
+  align-items: center;
+  font-size: 1.6rem;
 }
 
 .animation {
@@ -720,6 +718,7 @@ footer {
 .lot_description_title {
   font-size: 1.4rem;
   color: #ffffff;
+  text-align: center;
 }
 
 .lot_description_message {
@@ -845,8 +844,13 @@ footer {
   width: 30px
 }
 
+.chat_message_wrapper_opposite {
+  justify-content: flex-end;
+}
 
-
+.message_container_opposite {
+  background-color: #777777;
+}
 /* _____________________________________________scrollbar */
 
 ::-webkit-scrollbar {
@@ -938,6 +942,7 @@ footer {
   font-size: 1.4rem;
   font-weight: 400;
   border-radius: 0 0 10px 10px;
+  text-align: center;
 }
 
 .error_block_hidden {
@@ -1116,6 +1121,28 @@ footer {
 
   .lot_popup_description {
     padding: 7px;
+  }
+
+  .separate_message {
+    width: 100%;
+  }
+
+  .message_container {
+    width: 210px;
+    min-height: 60px;
+  }
+
+  .message_container_for_date {
+    font-size: 1rem;
+  }
+
+  .message_image {
+    width: 45px;
+    height: 45px;
+  }
+
+  .message_textarea {
+    width: 83%;
   }
 }
 

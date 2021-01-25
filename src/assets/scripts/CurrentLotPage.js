@@ -177,7 +177,14 @@ export default class CurrentLotPage {
         }
         throw new Error('error');
       })
-      .then(() => alert('you win')).catch((e) => alert(e.message));
+      .then(() => {
+        const winNotification = new NotificationBlock(this.header, 'You win! Connect to owner.', false);
+        winNotification.showNotification();
+      })
+      .catch((e) => {
+        const takeError = new NotificationBlock(this.header, e.message, true);
+        takeError.showNotification();
+      });
   }
 
   toggleWishes = (event) => {
