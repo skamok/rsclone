@@ -510,7 +510,7 @@ footer {
   margin: 15px 0px;
 }
 
-.name_lot_input, .karma_count_lot_input {
+.name_lot_input, .karma_count_lot_input, .input_map {
   display: block;
   margin-top: 15px;
   width: 220px;
@@ -580,7 +580,7 @@ footer {
   transition: all 0.3s;
 }
 
-.lot_submit:hover, .karma_count_lot_input:hover, .description_lot_input:hover {
+.lot_submit:hover, .karma_count_lot_input:hover, .description_lot_input:hover, .input_map:hover {
   transform: scale(1.05);
 }
 
@@ -1199,4 +1199,26 @@ footer {
 .email {
   font-size: 16px;
   margin-bottom: 15px;
+}
+
+#message {
+  height: 76px;
+}
+
+#map {
+  display: none;
+  height: 200px;
+  width: 320px;
+  margin: 20px 0px 0px 0px;
+  position: relative;
+}
+
+#wrap_input_map {
+  position: relative;
+  height: 28px;
+  width: 320px;
+  margin: 20px 0px 0px 0px;
+}
+
+#notice {
 }

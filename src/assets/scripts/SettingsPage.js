@@ -1,4 +1,5 @@
 import MainPageLots from './MainPageLots.js';
+import startMap from './inputMap.js';
 
 export default class SettingsPage {
   constructor(сontainer, firebase, header, main) {
@@ -104,15 +105,23 @@ export default class SettingsPage {
         this.location.innerText = 'Your location';
         this.formSetting.appendChild(this.location);
 
-        this.inputLocation = document.createElement('input');
-        this.inputLocation.setAttribute('type', 'text');
-        this.inputLocation.setAttribute('name', 'location');
-        this.inputLocation.setAttribute('class', 'name_lot_input');
-        if (data.location !== undefined) {
-          this.inputLocation.setAttribute('value', `${data.location}`);
-        }
-        this.inputLocation.setAttribute('placeholder', 'Homyel');
-        this.formSetting.appendChild(this.inputLocation);
+        this.wrapInputLocationMap = document.createElement('div');
+        this.wrapInputLocationMap.setAttribute('id', 'wrap_input_map');
+        this.formSetting.appendChild(this.wrapInputLocationMap);
+        this.inputLocationMap = document.createElement('input');
+        this.inputLocationMap.setAttribute('type', 'text');
+        this.inputLocationMap.setAttribute('id', 'suggest');
+        this.inputLocationMap.setAttribute('name', 'location');
+        this.inputLocationMap.setAttribute('placeholder', 'Input address');
+        this.inputLocationMap.classList.add('input_map');
+        this.wrapInputLocationMap.appendChild(this.inputLocationMap);
+        this.errMessage = document.createElement('p');
+        this.errMessage.setAttribute('id', 'notice');
+        this.formSetting.appendChild(this.errMessage);
+        this.mapContainer = document.createElement('div');
+        this.mapContainer.setAttribute('id', 'map');
+        this.formSetting.appendChild(this.mapContainer);
+        startMap();
 
         this.btnSubmit = document.createElement('input');
         this.btnSubmit.setAttribute('type', 'submit');
@@ -181,7 +190,6 @@ export default class SettingsPage {
 
     if (this.formSetting.location.value.length === 0) {
       inputError = true;
-      this.formSetting.location.after(this.createMessageError('add your location'));
     }
 
     if (inputError === false) {
