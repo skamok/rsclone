@@ -108,6 +108,7 @@ export default class SettingsPage {
         this.wrapInputLocationMap = document.createElement('div');
         this.wrapInputLocationMap.setAttribute('id', 'wrap_input_map');
         this.formSetting.appendChild(this.wrapInputLocationMap);
+
         this.inputLocationMap = document.createElement('input');
         this.inputLocationMap.setAttribute('type', 'text');
         this.inputLocationMap.setAttribute('id', 'suggest');
@@ -115,9 +116,15 @@ export default class SettingsPage {
         this.inputLocationMap.setAttribute('placeholder', 'Input address');
         this.inputLocationMap.classList.add('input_map');
         this.wrapInputLocationMap.appendChild(this.inputLocationMap);
+
+        if (data.location !== undefined) {
+          this.inputLocationMap.setAttribute('value', `${data.location}`);
+        }
+
         this.errMessage = document.createElement('p');
         this.errMessage.setAttribute('id', 'notice');
         this.formSetting.appendChild(this.errMessage);
+
         this.mapContainer = document.createElement('div');
         this.mapContainer.setAttribute('id', 'map');
         this.formSetting.appendChild(this.mapContainer);
@@ -178,7 +185,7 @@ export default class SettingsPage {
     const listMessage = document.querySelectorAll('.message_err');
     let inputError = false;
     listMessage.forEach((elem) => { elem.remove(); });
-    if (this.formSetting.nickName.value.length === 0) {
+    if (this.formSetting.nickName.value.length === 0 || this.errMessage.classList.contains('err_message')) {
       inputError = true;
       this.formSetting.nickName.after(this.createMessageError('add your name'));
     }

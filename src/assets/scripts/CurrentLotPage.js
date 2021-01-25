@@ -143,6 +143,23 @@ export default class CurrentLotPage {
       this.popupWishesActionText.classList.add('popup_action_text');
       this.popupWishesActionText.innerText = 'To wishes';
       this.popupWishesAction.appendChild(this.popupWishesActionText);
+
+      // to see on map
+
+      this.popupMapAction = document.createElement('div');
+      this.popupMapAction.classList.add('popup_action');
+      this.popupActionsContainer.appendChild(this.popupMapAction);
+
+      this.popupMapActionImage = document.createElement('img');
+      this.popupMapActionImage.src = './assets/images/map_icon.png';
+      this.popupMapActionImage.classList.add('popup_action_image');
+      this.popupMapAction.appendChild(this.popupMapActionImage);
+
+      this.popupMapActionText = document.createElement('div');
+      this.popupMapActionText.classList.add('popup_action_text');
+      this.popupMapActionText.innerText = 'Show on map';
+      this.popupMapAction.appendChild(this.popupMapActionText);
+
       this.popupWishesAction.addEventListener('click', this.toggleWishes);
       this.popupTakeAction.addEventListener('click', this.takeLot);
     } else {
