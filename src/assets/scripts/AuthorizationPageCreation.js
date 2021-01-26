@@ -1,7 +1,7 @@
 import SignInPage from './SignInPage.js';
 import RegistrationPage from './RegistrationPage.js';
 
-export default class AuthorizationPage { 
+export default class AuthorizationPage {
   constructor(firebase, header, main, logo) {
     this.header = header;
     this.main = main;
