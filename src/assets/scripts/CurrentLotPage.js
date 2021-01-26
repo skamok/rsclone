@@ -159,6 +159,7 @@ export default class CurrentLotPage {
       this.popupMapActionText = document.createElement('div');
       this.popupMapActionText.classList.add('popup_action_text');
       this.popupMapActionText.innerText = 'On map';
+
       this.popupMapAction.appendChild(this.popupMapActionText);
 
       this.popupWishesAction.addEventListener('click', this.toggleWishes);

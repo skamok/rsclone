@@ -580,7 +580,7 @@ footer {
   transition: all 0.3s;
 }
 
-.lot_submit:hover, .karma_count_lot_input:hover, .description_lot_input:hover {
+.lot_submit:hover, .karma_count_lot_input:hover, .description_lot_input:hover, .input_map:hover {
   transform: scale(1.05);
 }
 
