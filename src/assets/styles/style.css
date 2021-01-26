@@ -255,6 +255,8 @@ footer {
   height: 240px;
   background-color: #DCC29B;
   border-radius: 10px;
+  box-shadow: rgb(213 215 199 / 80%) 0px 16px 33px, rgb(213 215 199 / 50%) 0px -12px 30px, rgb(213 215 199 / 30%) 0px 4px 6px, rgb(213 215 199 / 20%) 0px 12px 13px, rgb(213 215 199 / 10%) 0px -3px 5px;
+  transition: 0.3s ease-out;
 }
 
 .lot_card_header {
@@ -513,7 +515,7 @@ footer {
   display: block;
   font-size: 18px;
   font-weight: 500;
-  margin: 15px 0 0 0;
+  margin: 15px 0 7px 0;
 }
 
 .name_lot_input, .karma_count_lot_input {
@@ -587,7 +589,7 @@ footer {
   transition: all 0.3s;
   font-family: 'Quicksand', sans-serif;
   color: #fff;
-  box-shadow: rgb(49 175 146 / 36%) 0px 16px 33px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
+  box-shadow: rgb(49 175 146 / 36%) 0px 16px 33px, rgb(49 175 146 / 30%) 0px -12px 30px, rgb(49 175 146 / 25%) 0px 4px 6px, rgb(49 175 146 / 20%) 0px 12px 13px, rgb(49 175 146 / 15%) 0px -3px 5px;
 }
 
 .sign_out_button {
@@ -601,11 +603,7 @@ footer {
   color: #fff;
   padding: 3px 10px 3px 10px;
   font-family: 'Quicksand', sans-serif;
-  box-shadow: rgb(228 63 96 / 27%) 0px 30px 33px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
-}
-
-.lot_submit:hover, .karma_count_lot_input:hover, .description_lot_input:hover {
-  transform: scale(1.05);
+  box-shadow: rgb(228 63 96 / 27%) 0px 30px 33px, rgb(228 63 96 / 25%) 0px -12px 30px, rgb(228 63 96 / 20%) 0px 4px 6px, rgb(228 63 96 / 25%) 0px 12px 13px, rgb(228 63 96 / 10%) 0px -3px 5px;
 }
 
 .message_err {
@@ -734,6 +732,7 @@ footer {
   background-color: #C4C4C4;
   border-radius: 5px;
   display: flex;
+  box-shadow: rgb(213 215 199 / 30%) 0px 16px 33px, rgb(213 215 199 / 10%) 0px -12px 30px, rgb(213 215 199 / 40%) 0px 4px 6px, rgb(213 215 199 / 20%) 0px 12px 13px, rgb(213 215 199 / 5%) 0px -3px 5px;
 }
 
 .lot_description_block {
@@ -836,7 +835,6 @@ footer {
   display: flex;
   justify-content: center;
   align-items: center;
-  word-break: break-all;
   font-size: 1.2rem;
 }
 
@@ -844,6 +842,7 @@ footer {
   position: absolute;
   bottom: 5px;
   right: 5px;
+  font-size: 1rem;
 }
 
 .input_message_container {
@@ -901,13 +900,15 @@ footer {
 /* _____________________________________________hover effects */
 
 .authorization-buttons:hover, .gh_link:hover, .rss_logo:hover, .close_popup_button:hover, .popup_action:hover, .slider_controls:hover, 
-.send_message_from_popup_button:hover, .separate_message:hover, .send_container:hover, .sign_out_button:hover  {
+.send_message_from_popup_button:hover, .separate_message:hover, .send_container:hover {
   transform: scale(1.05);
   transition: 0.3s ease-out;
   cursor: pointer;
 }
 
-
+.karma_count_lot_input:hover, .description_lot_input:hover {
+  transform: scale(1.05);
+}
 
 .slider_controls:hover, .close_popup_message_button:hover {
   transform: scale(1.2);
@@ -940,14 +941,32 @@ footer {
   cursor: pointer;
   background-color: rgba(255, 255, 255, 0.5);
   border-radius: 5px;
+  box-shadow: rgb(49 175 146 / 36%) 0px 16px 33px, rgb(49 175 146 / 30%) 0px -12px 30px, rgb(49 175 146 / 25%) 0px 4px 6px, rgb(49 175 146 / 20%) 0px 12px 13px, rgb(49 175 146 / 15%) 0px -3px 5px;
 }
 
 .lot_card:hover {
-  opacity: .7;
+  box-shadow: rgb(49 175 146 / 36%) 0px 16px 33px, rgb(49 175 146 / 30%) 0px -12px 30px, rgb(49 175 146 / 25%) 0px 4px 6px, rgb(49 175 146 / 20%) 0px 12px 13px, rgb(49 175 146 / 15%) 0px -3px 5px;
   transition: 0.3s ease-out;
   cursor: pointer;
 }
 
+.separate_message:hover {
+  transform: scale(1.05);
+  transition: 0.3s ease-out;
+  cursor: pointer;
+  box-shadow: rgb(49 175 146 / 36%) 0px 16px 33px, rgb(49 175 146 / 30%) 0px -12px 30px, rgb(49 175 146 / 25%) 0px 4px 6px, rgb(49 175 146 / 20%) 0px 12px 13px, rgb(49 175 146 / 15%) 0px -3px 5px;
+}
+
+.lot_submit:hover {
+  transform: scale(1.05);
+  cursor: pointer;
+  box-shadow: rgb(49 175 146 / 70%) 0px 16px 33px, rgb(49 175 146 / 50%) 0px -12px 30px, rgb(49 175 146 / 40%) 0px 4px 6px, rgb(49 175 146 / 30%) 0px 12px 13px, rgb(49 175 146 / 25%) 0px -3px 5px;
+}
+.sign_out_button:hover {
+  transform: scale(1.05);
+  cursor: pointer;
+  box-shadow: rgb(228 63 96 / 70%) 0px 30px 33px, rgb(228 63 96 / 50%) 0px -12px 30px, rgb(228 63 96 / 40%) 0px 4px 6px, rgb(228 63 96 / 30%) 0px 12px 13px, rgb(228 63 96 / 25%) 0px -3px 5px;
+}
 /* _____________________________________________helpers */
 
 .zero_opacity {
