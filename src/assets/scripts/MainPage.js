@@ -33,17 +33,19 @@ export default class MainPage {
         this.profileImage.classList.add('profile_image');
         if (userData.avatarURL !== undefined) {
           this.profileImage.src = userData.avatarURL;
-          this.wrapProfileImage.appendChild(this.profileImage);
-          this.profileImage.onload = () => {
-            if (this.profileImage.width === 150) {
-              const divider = this.profileImage.width / 40;
-              this.profileImage.width /= divider;
-            } else {
-              const divider = this.profileImage.height / 40;
-              this.profileImage.width /= divider;
-            }
-          };
+        } else {
+          this.profileImage.src = '';
         }
+        this.wrapProfileImage.appendChild(this.profileImage);
+        this.profileImage.onload = () => {
+          if (this.profileImage.width === 150) {
+            const divider = this.profileImage.width / 40;
+            this.profileImage.width /= divider;
+          } else {
+            const divider = this.profileImage.height / 40;
+            this.profileImage.width /= divider;
+          }
+        };
 
         this.profileSubcontainer = document.createElement('div');
         this.profileSubcontainer.classList.add('profile_subcontainer');

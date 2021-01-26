@@ -1,7 +1,7 @@
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable no-undef */
 /* eslint-disable no-use-before-define */
-export default function startMap() {
+export function startMap() {
   ymaps.ready(init);
 }
 
@@ -116,5 +116,31 @@ function init() {
       placemark.properties.set({ iconCaption: caption, balloonContent: caption });
     }
     return (state, caption);
+  }
+}
+
+export function mapPopap(addressLot) {
+  ymaps.ready(createMapPopap);
+  function createMapPopap() {
+    ymaps.geocode(addressLot).then((res) => {
+      const obj = res.geoObjects.get(0);
+      const caption = obj.properties._data.name;
+      const state = {
+        center: obj.geometry._coordinates,
+        controls: [],
+        zoom: 14
+      };
+      const mapContainer = document.querySelector('#map_popap');
+      const map = new ymaps.Map(mapContainer, state);
+      const placemark = new ymaps.Placemark(
+        state.center, {
+          iconCaption: caption,
+          balloonContent: caption
+        }, {
+          preset: 'islands#redDotIconWithCaption'
+        }
+      );
+      map.geoObjects.add(placemark);
+    });
   }
 }

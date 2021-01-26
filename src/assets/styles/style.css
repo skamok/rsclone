@@ -580,7 +580,7 @@ footer {
   transition: all 0.3s;
 }
 
-.lot_submit:hover, .karma_count_lot_input:hover, .description_lot_input:hover, .input_map:hover {
+.lot_submit:hover, .karma_count_lot_input:hover, .description_lot_input:hover {
   transform: scale(1.05);
 }
 
@@ -885,7 +885,7 @@ footer {
 }
 
 .slider_controls:active, .close_popup_button:active, .close_popup_message_button:active, .send_message_from_popup_button:active, 
-.separate_message:active, .send_container:active  {
+.separate_message:active, .send_container:active, .close_popup_map_button:hover  {
   opacity: .4;
 }
 
@@ -1220,5 +1220,16 @@ footer {
   margin: 20px 0px 0px 0px;
 }
 
-#notice {
+#map_popap {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+}
+
+.close_popup_map_button {
+  position: absolute;
+  top: 0;
+  right: 8px;
+  width: 35px;
+  z-index: 1000;
 }

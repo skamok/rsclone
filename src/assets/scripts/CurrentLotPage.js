@@ -1,6 +1,7 @@
 /* eslint-disable no-console */
 import MessageFromPopup from './MessageFromPopup.js';
 import NotificationBlock from './NotificationBlock.js';
+import { mapPopap } from './inputMap.js';
 
 export default class CurrentLotPage {
   constructor(lotInfo, header, main, firebase, isTaken, userData) {
@@ -157,11 +158,12 @@ export default class CurrentLotPage {
 
       this.popupMapActionText = document.createElement('div');
       this.popupMapActionText.classList.add('popup_action_text');
-      this.popupMapActionText.innerText = 'Show on map';
+      this.popupMapActionText.innerText = 'On map';
       this.popupMapAction.appendChild(this.popupMapActionText);
 
       this.popupWishesAction.addEventListener('click', this.toggleWishes);
       this.popupTakeAction.addEventListener('click', this.takeLot);
+      this.popupMapAction.addEventListener('click', this.mapLot);
     } else {
       this.popupMessageAction = document.createElement('div');
       this.popupMessageAction.classList.add('popup_action');
@@ -183,6 +185,26 @@ export default class CurrentLotPage {
     });
 
     this.popupMessageAction.addEventListener('click', this.writeMessage);
+  }
+
+  mapLot = (event) => {
+    event.preventDefault();
+    this.firebase.readUserByID(this.lotInfo.userID)
+      .then((user) => {
+        if (user.location !== undefined) {
+          this.mapPopapContainer = document.createElement('div');
+          this.mapPopapContainer.setAttribute('id', 'map_popap');
+          this.popUpContainer.appendChild(this.mapPopapContainer);
+
+          this.closePopupMapButton = document.createElement('img');
+          this.closePopupMapButton.src = './assets/images/close.png';
+          this.closePopupMapButton.classList.add('close_popup_map_button');
+          this.mapPopapContainer.appendChild(this.closePopupMapButton);
+
+          this.closePopupMapButton.addEventListener('click', () => { this.mapPopapContainer.remove(); });
+          mapPopap(user.location);
+        }
+      });
   }
 
   takeLot = (event) => {

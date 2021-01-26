@@ -1,5 +1,6 @@
 import MainPageLots from './MainPageLots.js';
-import startMap from './inputMap.js';
+// eslint-disable-next-line import/named
+import { startMap } from './inputMap.js';
 
 export default class SettingsPage {
   constructor(сontainer, firebase, header, main) {
@@ -96,7 +97,7 @@ export default class SettingsPage {
         if (data.phone !== undefined) {
           this.inputPhone.setAttribute('value', `${data.phone}`);
         }
-        this.inputPhone.setAttribute('placeholder', '+375 XX XXXXXXX');
+        this.inputPhone.setAttribute('placeholder', '+375 XX XXX XX XX');
         this.formSetting.appendChild(this.inputPhone);
         this.inputPhone.addEventListener('keyup', this.addSpaceInInputPhone.bind(this));
 
@@ -113,7 +114,7 @@ export default class SettingsPage {
         this.inputLocationMap.setAttribute('type', 'text');
         this.inputLocationMap.setAttribute('id', 'suggest');
         this.inputLocationMap.setAttribute('name', 'location');
-        this.inputLocationMap.setAttribute('placeholder', 'Input address');
+        this.inputLocationMap.setAttribute('placeholder', 'City street house number');
         this.inputLocationMap.classList.add('input_map');
         this.wrapInputLocationMap.appendChild(this.inputLocationMap);
 
@@ -138,46 +139,50 @@ export default class SettingsPage {
       });
   }
 
-  addSpaceInInputPhone() {
+  addSpaceInInputPhone(e) {
     const numberLength = this.inputPhone.value.length;
-    if (numberLength === 4 || numberLength === 7 || numberLength === 11 || numberLength === 14) {
-      this.inputPhone.value += ' ';
+    if (e.key !== 'Backspace') {
+      if (numberLength === 4 || numberLength === 7 || numberLength === 11 || numberLength === 14) {
+        this.inputPhone.value += ' ';
+      }
     }
   }
 
   changeAvatar = (e) => {
-    this.avatar.innerHTML = '';
-    const MAX_WIDTH = 150;
-    const MAX_HEIGHT = 150;
-    const img = document.createElement('img');
-    img.src = window.URL.createObjectURL(e.target.files[0]);
-    img.onload = () => {
-      let { width } = img;
-      let { height } = img;
-      height *= MAX_WIDTH / width;
-      width = MAX_WIDTH;
-      if (height < MAX_HEIGHT) {
-        width *= MAX_HEIGHT / height;
-        height = MAX_HEIGHT;
-      }
-      img.width = width;
-      img.height = height;
-      this.avatar.appendChild(img);
-      const profileImage = this.header.querySelector('.profile_image');
-      profileImage.src = window.URL.createObjectURL(e.target.files[0]);
-      if (img.width === 150) {
-        const divider = img.width / 40;
-        profileImage.style.width = `${img.width / divider}px`;
-        profileImage.style.height = `${img.height / divider}px`;
-      } else {
-        const divider = img.height / 40;
-        profileImage.width = img.width / divider;
-        profileImage.height = img.height / divider;
-      }
-    };
-    this.resizePhotoForServer()
-      .then((dataURLs) => this.firebase.addUserAvatar(dataURLs[0]))
-      .then(() => alert('photo added'));
+    if (e.target.files.length !== 0) {
+      this.avatar.innerHTML = '';
+      const MAX_WIDTH = 150;
+      const MAX_HEIGHT = 150;
+      const img = document.createElement('img');
+      img.src = window.URL.createObjectURL(e.target.files[0]);
+      img.onload = () => {
+        let { width } = img;
+        let { height } = img;
+        height *= MAX_WIDTH / width;
+        width = MAX_WIDTH;
+        if (height < MAX_HEIGHT) {
+          width *= MAX_HEIGHT / height;
+          height = MAX_HEIGHT;
+        }
+        img.width = width;
+        img.height = height;
+        this.avatar.appendChild(img);
+        const profileImage = this.header.querySelector('.profile_image');
+        profileImage.src = window.URL.createObjectURL(e.target.files[0]);
+        if (img.width === 150) {
+          const divider = img.width / 40;
+          profileImage.style.width = `${img.width / divider}px`;
+          profileImage.style.height = `${img.height / divider}px`;
+        } else {
+          const divider = img.height / 40;
+          profileImage.style.width = `${img.width / divider}px`;
+          profileImage.style.height = `${img.height / divider}px`;
+        }
+      };
+      this.resizePhotoForServer()
+        .then((dataURLs) => this.firebase.addUserAvatar(dataURLs[0]))
+        .then(() => alert('photo added'));
+    }
   }
 
   formUserValidation = (e) => {
@@ -190,9 +195,9 @@ export default class SettingsPage {
       this.formSetting.nickName.after(this.createMessageError('add your name'));
     }
 
-    if (!(/^[+][\d]{3} [\d]{2} [\d]{2,3}[\d]{2,3}[\d]{2,3}$/.test(this.formSetting.phone.value))) {
+    if (!(/^[+][\d]{3} [\d]{2} [\d]{3} [\d]{2} [\d]{2}$/.test(this.formSetting.phone.value))) {
       inputError = true;
-      this.formSetting.phone.after(this.createMessageError('enter phone number format +XXX XX XXXXXXX'));
+      this.formSetting.phone.after(this.createMessageError('enter phone number format +XXX XX XXX XX XX'));
     }
 
     if (this.formSetting.location.value.length === 0) {
