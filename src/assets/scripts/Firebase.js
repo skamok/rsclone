@@ -10,6 +10,7 @@ export default class Firebase {
     this.fireapp = firebase.initializeApp(firebaseConfig);
     this.log('firebase.initializeApp');
     this.auth = this.fireapp.auth();
+    /*
     this.auth.onAuthStateChanged((user) => {
       if (user) {
         this.log('firebase.onAuthStateChanged User is signed IN', user.email, user.uid);
@@ -17,6 +18,7 @@ export default class Firebase {
         this.log('firebase.onAuthStateChanged User is signed out');
       }
     });
+    */
     this.database = this.fireapp.database();
     this.storage = this.fireapp.storage();
     this.storageRef = this.storage.ref();
@@ -25,6 +27,10 @@ export default class Firebase {
     this.usersNode = this.database.ref('users');
     this.lotsNode = this.database.ref('lots');
     this.chatsNode = this.database.ref('chats');
+  }
+
+  authState(foo) {
+    this.auth.onAuthStateChanged(foo);
   }
 
   signUP(email, password, nick) {
