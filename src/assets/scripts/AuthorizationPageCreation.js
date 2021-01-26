@@ -9,20 +9,7 @@ export default class AuthorizationPage {
     this.firebase = firebase;
   }
 
-  start() {
-    this.firebase.authState(this.auth);
-  }
-
-  auth = (user) => {
-    if (user) {
-      console.log('AuthorizationPage.onAuthStateChanged User is signed IN', user.email, user.uid);
-      this.createAuthorizationPage(user);
-    } else {
-      console.log('AuthorizationPage.onAuthStateChanged User is signed out');
-    }
-  }
-
-  createAuthorizationPage(user) {
+  createAuthorizationPage() {
     this.authorizationContainer = document.createElement('div');
     this.authorizationContainer.classList.add('authorization');
 
@@ -35,11 +22,7 @@ export default class AuthorizationPage {
 
     this.buttonSignIn = document.createElement('button');
     this.buttonSignIn.classList.add('sign-in-button', 'authorization-buttons');
-    if (user !== null) {
-      this.buttonSignIn.innerText = user.email;
-    } else {
-      this.buttonSignIn.innerText = 'Sign in';
-    }
+    this.buttonSignIn.innerText = 'Sign in';
     this.buttonSignIn.addEventListener('click', () => {
       const signInPage = new SignInPage(this.firebase, this.main, this.header, this.logo);
       signInPage.createSignInPage();
