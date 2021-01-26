@@ -1,3 +1,4 @@
+/* eslint-disable import/no-cycle */
 /* eslint-disable no-console */
 import MainPageLots from './MainPageLots.js';
 import AddLotPage from './AddLotPage.js';
@@ -18,6 +19,8 @@ export default class MainPage {
     this.firebase.readCurrentUser()
       .then((userData) => {
         this.main.innerHTML = '';
+        this.header.innerHTML = '';
+        this.header.appendChild(this.logo);
 
         this.header.classList.add('header_entered');
         this.logo.classList.add('logo_entered');
@@ -66,7 +69,7 @@ export default class MainPage {
         this.main.appendChild(this.mainContainer);
 
         this.burgerMenu = document.createElement('div');
-        this.burgerMenu.classList.add('burger_menu');
+        this.burgerMenu.classList.add('burger_menu', 'burger_animation');
         this.mainContainer.appendChild(this.burgerMenu);
 
         this.lotsContainer = document.createElement('div');
@@ -201,7 +204,8 @@ export default class MainPage {
 
   goToSettings = (event) => {
     event.preventDefault();
-    const settings = new SettingsPage(this.lotsContainer, this.firebase, this.header, this.main);
+    const settings = new SettingsPage(this.lotsContainer, this.firebase, this.header, this.main, this.logo,
+      this.profileContainer);
     settings.changeSettings();
   }
 }

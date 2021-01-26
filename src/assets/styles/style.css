@@ -228,6 +228,12 @@ footer {
   transition: ease-in;
 }
 
+.burger_animation {
+  animation-name: burgerAnimation;
+  animation-duration: 2s;
+  transition: ease-in;
+}
+
 .burger_menu_element {
   display: flex;
   width: 70%;
@@ -507,12 +513,12 @@ footer {
   display: block;
   font-size: 18px;
   font-weight: 500;
-  margin: 15px 0px;
+  margin: 15px 0 0 0;
 }
 
 .name_lot_input, .karma_count_lot_input {
   display: block;
-  margin-top: 15px;
+  margin-top: 5px;
   width: 220px;
   height: 30px;
   border-radius: 5px;
@@ -569,7 +575,8 @@ footer {
 }
 
 .lot_submit {
-  height: 50px;
+  height: 40px;
+  width: 180px;
   background-color: #31af92;
   border-radius: 10px;
   border: 0px;
@@ -578,6 +585,23 @@ footer {
   margin: 25px 0px;
   cursor: pointer;
   transition: all 0.3s;
+  font-family: 'Quicksand', sans-serif;
+  color: #fff;
+  box-shadow: rgb(49 175 146 / 36%) 0px 16px 33px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
+}
+
+.sign_out_button {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background-color: #e43f60;
+  border-radius: 3px;
+  border: none;
+  outline: none;
+  color: #fff;
+  padding: 3px 10px 3px 10px;
+  font-family: 'Quicksand', sans-serif;
+  box-shadow: rgb(228 63 96 / 27%) 0px 30px 33px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
 }
 
 .lot_submit:hover, .karma_count_lot_input:hover, .description_lot_input:hover {
@@ -595,6 +619,13 @@ footer {
 .form_lot, .form_setting {
   width: 100%;
   padding: 30px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: #535553;
+  border-radius: 10px;
+  position: relative;
 }
 
 /* _____________________________________________message popup */
@@ -870,7 +901,7 @@ footer {
 /* _____________________________________________hover effects */
 
 .authorization-buttons:hover, .gh_link:hover, .rss_logo:hover, .close_popup_button:hover, .popup_action:hover, .slider_controls:hover, 
-.send_message_from_popup_button:hover, .separate_message:hover, .send_container:hover  {
+.send_message_from_popup_button:hover, .separate_message:hover, .send_container:hover, .sign_out_button:hover  {
   transform: scale(1.05);
   transition: 0.3s ease-out;
   cursor: pointer;
@@ -885,7 +916,7 @@ footer {
 }
 
 .slider_controls:active, .close_popup_button:active, .close_popup_message_button:active, .send_message_from_popup_button:active, 
-.separate_message:active, .send_container:active  {
+.separate_message:active, .send_container:active, .sign_out_button:active {
   opacity: .4;
 }
 
@@ -1006,6 +1037,15 @@ footer {
   }
   to {
     opacity: 1;
+  }
+}
+
+@keyframes burgerAnimation {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(0%);
   }
 }
 
@@ -1146,12 +1186,6 @@ footer {
   }
 }
 
-@media screen and (max-width: 640px) {
-  .lot_submit {
-    width: 320px;
-  }
-}
-
 .avatar-photo, .wrap_profile_img {
   width: 150px;
   height: 150px;
@@ -1194,6 +1228,9 @@ footer {
 .wrap_avatar_email {
   display: flex;
   flex-wrap: wrap;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
 .email {

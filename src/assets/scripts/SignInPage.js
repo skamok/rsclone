@@ -1,5 +1,5 @@
+/* eslint-disable import/no-cycle */
 import MainPage from './MainPage.js';
-// eslint-disable-next-line import/no-cycle
 import RegistrationPage from './RegistrationPage.js';
 
 export default class SignInPage {
@@ -14,7 +14,7 @@ export default class SignInPage {
     this.main.innerHTML = '';
 
     this.signInContainer = document.createElement('div');
-    this.signInContainer.classList.add('authorization');
+    this.signInContainer.classList.add('authorization', 'animation');
 
     this.signInForm = document.createElement('form');
     this.signInForm.classList.add('sign_in_form');
