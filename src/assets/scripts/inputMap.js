@@ -41,22 +41,22 @@ function init() {
           case 'number':
           case 'near':
           case 'range':
-            error = 'Неточный адрес, требуется уточнение';
-            hint = 'Уточните номер дома';
+            error = 'Inaccurate address, clarification required';
+            hint = 'Specify house number';
             break;
           case 'street':
-            error = 'Неполный адрес, требуется уточнение';
-            hint = 'Уточните номер дома';
+            error = 'Incomplete address, clarification required';
+            hint = 'Specify house number';
             break;
           case 'other':
           default:
-            error = 'Неточный адрес, требуется уточнение';
-            hint = 'Уточните адрес';
+            error = 'Inaccurate address, clarification required';
+            hint = 'Specify the address';
         }
       } else {
-        error = 'Адрес не найден';
+        error = 'Address not found';
         // eslint-disable-next-line no-unused-vars
-        hint = 'Уточните адрес';
+        hint = 'Specify the address';
       }
       if (error) {
         showError(error);

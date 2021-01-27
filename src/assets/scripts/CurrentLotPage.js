@@ -204,6 +204,9 @@ export default class CurrentLotPage {
 
           this.closePopupMapButton.addEventListener('click', () => { this.mapPopapContainer.remove(); });
           mapPopap(user.location);
+        } else {
+          const winNotification = new NotificationBlock(this.header, 'Lot location not specified', false);
+          winNotification.showNotification();
         }
       });
   }

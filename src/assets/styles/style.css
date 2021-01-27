@@ -548,7 +548,7 @@ footer {
   padding: 0px 7px;
   transition: all 0.3s;
   appearance: none;       /* Remove default arrow */
-  background-image: url(http://127.0.0.1:5500/dist/assets/images/arrow-select.png);
+  background-image: url('../images/arrow-select.png');
   background-repeat: no-repeat;
   background-size: 24px;
   background-position: 190px;
@@ -1268,7 +1268,7 @@ footer {
 #map {
   display: none;
   height: 200px;
-  width: 320px;
+  width: 310px;
   margin: 20px 0px 0px 0px;
   position: relative;
 }
@@ -1276,8 +1276,8 @@ footer {
 #wrap_input_map {
   position: relative;
   height: 28px;
-  width: 320px;
-  margin: 20px 0px 0px 0px;
+  width: 220px;
+  margin: 5px 0px 7px 0px;
 }
 
 #map_popap {
