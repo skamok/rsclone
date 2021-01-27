@@ -1,4 +1,4 @@
-/* eslint-disable no-console */
+/* eslint-disable import/no-cycle */
 import MainPageLots from './MainPageLots.js';
 import AddLotPage from './AddLotPage.js';
 import WishListLots from './WishListLots.js';
@@ -203,7 +203,8 @@ export default class MainPage {
 
   goToSettings = (event) => {
     event.preventDefault();
-    const settings = new SettingsPage(this.lotsContainer, this.firebase, this.header, this.main);
+    const settings = new SettingsPage(this.lotsContainer, this.firebase, this.header, this.main, this.logo,
+      this.profileContainer);
     settings.changeSettings();
   }
 }

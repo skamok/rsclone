@@ -1,14 +1,18 @@
+/* eslint-disable import/no-cycle */
 import MainPageLots from './MainPageLots.js';
 // eslint-disable-next-line import/named
 import { startMap } from './inputMap.js';
+import SignInPage from './SignInPage.js';
 
 export default class SettingsPage {
-  constructor(сontainer, firebase, header, main) {
+  constructor(сontainer, firebase, header, main, logo, profileContainer) {
     this.container = сontainer;
     this.firebase = firebase;
     this.header = header;
     this.main = main;
     this.container.innerHTML = '';
+    this.logo = logo;
+    this.profileContainer = profileContainer;
   }
 
   changeSettings() {
@@ -133,10 +137,26 @@ export default class SettingsPage {
 
         this.btnSubmit = document.createElement('input');
         this.btnSubmit.setAttribute('type', 'submit');
-        this.btnSubmit.setAttribute('value', 'Change settings');
+        this.btnSubmit.setAttribute('value', 'Save');
         this.btnSubmit.classList.add('lot_submit');
         this.formSetting.appendChild(this.btnSubmit);
+
+        this.btnSignOut = document.createElement('button');
+        this.btnSignOut.classList.add('sign_out_button');
+        this.btnSignOut.innerText = 'Sign out';
+        this.formSetting.appendChild(this.btnSignOut);
+        this.btnSignOut.addEventListener('click', this.signOut);
       });
+  }
+
+  signOut = (e) => {
+    e.preventDefault();
+    this.firebase.signOUT();
+    this.profileContainer.parentNode.removeChild(this.profileContainer);
+    this.header.classList.remove('header_entered');
+    this.logo.classList.remove('logo_entered');
+    const signInPage = new SignInPage(this.firebase, this.main, this.header, this.logo);
+    signInPage.createSignInPage();
   }
 
   addSpaceInInputPhone(e) {

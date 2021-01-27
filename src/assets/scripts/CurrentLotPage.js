@@ -1,16 +1,16 @@
-/* eslint-disable no-console */
 import MessageFromPopup from './MessageFromPopup.js';
 import NotificationBlock from './NotificationBlock.js';
 import { mapPopap } from './inputMap.js';
 
 export default class CurrentLotPage {
-  constructor(lotInfo, header, main, firebase, isTaken, userData) {
+  constructor(lotInfo, header, main, firebase, isTaken, userData, winLots) {
     this.lotInfo = lotInfo;
     this.main = main;
     this.header = header;
     this.firebase = firebase;
     this.isTaken = isTaken;
     this.userData = userData;
+    this.winLots = winLots;
   }
 
   createCurrentLotPage() {

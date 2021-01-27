@@ -11,10 +11,12 @@ export default class MessageFromPopup {
   }
 
   createMessageWindow() {
-    if (this.userData.lots.includes(this.lotInfo.lotID)) {
-      const error = new NotificationBlock(this.header, 'You can not write message to yourself', true);
-      error.showNotification();
-      return;
+    if (this.userData.lots) {
+      if (this.userData.lots.includes(this.lotInfo.lotID)) {
+        const error = new NotificationBlock(this.header, 'You can not write message to yourself', true);
+        error.showNotification();
+        return;
+      }
     }
     this.messageBlackout = document.createElement('div');
     this.messageBlackout.classList.add('message_blackout');
@@ -63,10 +65,14 @@ export default class MessageFromPopup {
     if (this.textArea.value !== '') {
       this.firebase.addMessageFromLot(this.lotInfo.lotID, this.lotInfo.userID, this.textArea.value)
         .then(() => {
-          alert('sent');
+          const sentNotification = new NotificationBlock(this.header, 'Sent', false);
+          sentNotification.showNotification();
           this.closeButton.click();
         })
-        .catch((e) => alert(e.message));
+        .catch((e) => {
+          const errorNotification = new NotificationBlock(this.header, `${e.message}`, true);
+          errorNotification.showNotification();
+        });
     }
   }
 }
