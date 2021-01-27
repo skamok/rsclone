@@ -1,8 +1,7 @@
 import ChatSeparate from './ChatSeparate.js';
 
-/* eslint-disable no-console */
 export default class MessagesSection {
-  constructor(firebase, parentContainer, main, header, userData) {
+  constructor(firebase, parentContainer, main, header, userData, winLotsData) {
     this.firebase = firebase;
     this.parentContainer = parentContainer;
     this.main = main;
@@ -10,15 +9,16 @@ export default class MessagesSection {
     this.lotsDataArray = [];
     this.lots = [];
     this.currentUserData = userData;
+    this.winLotsData = winLotsData;
   }
 
   createMessagesSection() {
+    const winLots = [...this.winLotsData];
     this.parentContainer.innerHTML = '';
     this.firebase.readLots()
       .then((allLots) => {
         this.firebase.readCurrentUserChats()
           .then((messagesData) => {
-            console.log(messagesData);
             if (!messagesData.length) {
               this.parentContainer.innerText = 'You have no messages yet';
               return;
@@ -51,8 +51,6 @@ export default class MessagesSection {
 
               this.lotDescriptionTitle = document.createElement('div');
               this.lotDescriptionTitle.classList.add('lot_description_title');
-              this.lotDescriptionTitle.innerText = allLots[messagesData[i].lotID].title;
-              this.lotDescription.appendChild(this.lotDescriptionTitle);
 
               this.messagesKeys = Object.keys(messagesData[i].messages);
 
@@ -80,6 +78,15 @@ export default class MessagesSection {
               this.minutes = this.date.getMinutes().toString().padStart(2, '0');
               this.dateTime.innerText = `${this.hours}:${this.minutes}`;
               this.messageDate.appendChild(this.dateTime);
+
+              if (allLots[messagesData[i].lotID]) {
+                this.lotDescriptionTitle.innerText = allLots[messagesData[i].lotID].title;
+                this.lotDescription.appendChild(this.lotDescriptionTitle);
+              } else {
+                this.lotDescriptionTitle.innerText = winLots[0].title;
+                this.lotDescription.appendChild(this.lotDescriptionTitle);
+                winLots.shift();
+              }
             }
           });
       });
