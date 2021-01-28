@@ -29,11 +29,11 @@ export default class App {
 
   auth = (user) => {
     if (user !== null) {
-      console.log('App.auth User is signed IN', user.email, user.uid);
+      this.firebase.log('App.auth User is signed IN', user.email, user.uid);
       const mainPage = new MainPage(this.firebase, mainSection, headerSection, logo);
       mainPage.createMainPage();
     } else {
-      console.log('App.auth User is signed out');
+      this.firebase.log('App.auth User is signed out');
       this.authorizationPage.createAuthorizationPage();
     }
   }

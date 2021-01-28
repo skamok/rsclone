@@ -1,12 +1,12 @@
-/* eslint-disable no-console */
 import CurrentLotPage from './CurrentLotPage.js';
 
 export default class TakenLotsList {
-  constructor(firebase, lotsContainer, header, main) {
+  constructor(firebase, lotsContainer, header, main, userData) {
     this.firebase = firebase;
     this.lotsContainer = lotsContainer;
     this.main = main;
     this.header = header;
+    this.userData = userData;
   }
 
   createTakenList() {
@@ -20,7 +20,7 @@ export default class TakenLotsList {
         this.lotCard = document.createElement('div');
         this.lotCard.classList.add('lot_card', 'animation');
         this.lotCard.addEventListener('click', () => {
-          const lotPage = new CurrentLotPage(data[i], this.header, this.main, this.firebase, true);
+          const lotPage = new CurrentLotPage(data[i], this.header, this.main, this.firebase, true, this.userData);
           lotPage.createCurrentLotPage();
         });
 
