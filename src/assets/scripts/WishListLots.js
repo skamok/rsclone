@@ -2,22 +2,27 @@
 import CurrentLotPage from './CurrentLotPage.js';
 
 export default class WishListLots {
-  constructor(firebase, lotsContainer, header, main) {
+  constructor(firebase, lotsContainer, header, main, userData) {
     this.container = lotsContainer;
     this.firebase = firebase;
     this.header = header;
     this.main = main;
+    this.userData = userData;
   }
 
   createWishList() {
     this.container.innerHTML = '';
     this.firebase.readCurrentUserWishLots()
       .then((data) => {
+        if (!data.length) {
+          this.container.innerText = 'You have no lots here';
+          return;
+        }
         for (let i = 0; i < data.length; i++) {
           this.lotCard = document.createElement('div');
-          this.lotCard.classList.add('lot_card');
+          this.lotCard.classList.add('lot_card', 'animation');
           this.lotCard.addEventListener('click', () => {
-            const lotPage = new CurrentLotPage(data[i], this.header, this.main, this.firebase);
+            const lotPage = new CurrentLotPage(data[i], this.header, this.main, this.firebase, false, this.userData);
             lotPage.createCurrentLotPage();
           });
 

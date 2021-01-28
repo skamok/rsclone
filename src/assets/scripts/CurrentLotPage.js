@@ -1,13 +1,16 @@
-/* eslint-disable no-console */
+import MessageFromPopup from './MessageFromPopup.js';
 import NotificationBlock from './NotificationBlock.js';
+import { mapPopap } from './inputMap.js';
 
 export default class CurrentLotPage {
-  constructor(lotInfo, header, main, firebase, isTaken) {
+  constructor(lotInfo, header, main, firebase, isTaken, userData, winLots) {
     this.lotInfo = lotInfo;
     this.main = main;
     this.header = header;
     this.firebase = firebase;
     this.isTaken = isTaken;
+    this.userData = userData;
+    this.winLots = winLots;
   }
 
   createCurrentLotPage() {
@@ -141,8 +144,27 @@ export default class CurrentLotPage {
       this.popupWishesActionText.classList.add('popup_action_text');
       this.popupWishesActionText.innerText = 'To wishes';
       this.popupWishesAction.appendChild(this.popupWishesActionText);
+
+      // to see on map
+
+      this.popupMapAction = document.createElement('div');
+      this.popupMapAction.classList.add('popup_action');
+      this.popupActionsContainer.appendChild(this.popupMapAction);
+
+      this.popupMapActionImage = document.createElement('img');
+      this.popupMapActionImage.src = './assets/images/map_icon.png';
+      this.popupMapActionImage.classList.add('popup_action_image');
+      this.popupMapAction.appendChild(this.popupMapActionImage);
+
+      this.popupMapActionText = document.createElement('div');
+      this.popupMapActionText.classList.add('popup_action_text');
+      this.popupMapActionText.innerText = 'On map';
+
+      this.popupMapAction.appendChild(this.popupMapActionText);
+
       this.popupWishesAction.addEventListener('click', this.toggleWishes);
       this.popupTakeAction.addEventListener('click', this.takeLot);
+      this.popupMapAction.addEventListener('click', this.mapLot);
     } else {
       this.popupMessageAction = document.createElement('div');
       this.popupMessageAction.classList.add('popup_action');
@@ -166,6 +188,29 @@ export default class CurrentLotPage {
     this.popupMessageAction.addEventListener('click', this.writeMessage);
   }
 
+  mapLot = (event) => {
+    event.preventDefault();
+    this.firebase.readUserByID(this.lotInfo.userID)
+      .then((user) => {
+        if (user.location !== undefined) {
+          this.mapPopapContainer = document.createElement('div');
+          this.mapPopapContainer.setAttribute('id', 'map_popap');
+          this.popUpContainer.appendChild(this.mapPopapContainer);
+
+          this.closePopupMapButton = document.createElement('img');
+          this.closePopupMapButton.src = './assets/images/close.png';
+          this.closePopupMapButton.classList.add('close_popup_map_button');
+          this.mapPopapContainer.appendChild(this.closePopupMapButton);
+
+          this.closePopupMapButton.addEventListener('click', () => { this.mapPopapContainer.remove(); });
+          mapPopap(user.location);
+        } else {
+          const winNotification = new NotificationBlock(this.header, 'Lot location not specified', false);
+          winNotification.showNotification();
+        }
+      });
+  }
+
   takeLot = (event) => {
     event.preventDefault();
     this.firebase.readCurrentUser()
@@ -175,7 +220,14 @@ export default class CurrentLotPage {
         }
         throw new Error('error');
       })
-      .then(() => alert('you win')).catch((e) => alert(e.message));
+      .then(() => {
+        const winNotification = new NotificationBlock(this.header, 'You win! Connect to owner.', false);
+        winNotification.showNotification();
+      })
+      .catch((e) => {
+        const takeError = new NotificationBlock(this.header, e.message, true);
+        takeError.showNotification();
+      });
   }
 
   toggleWishes = (event) => {
@@ -199,10 +251,8 @@ export default class CurrentLotPage {
 
   writeMessage = (event) => {
     event.preventDefault();
-    this.firebase.addMessageFromLot(this.lotInfo.lotID, this.lotInfo.userID, 'message form firstUser')
-      .then(() => {
-        const message = new NotificationBlock(this.header, 'Added', false);
-        message.showNotification();
-      });
+    const message = new MessageFromPopup(this.header, this.main,
+      this.popUpWindow, this.firebase, this.lotInfo, this.userData);
+    message.createMessageWindow();
   }
 }

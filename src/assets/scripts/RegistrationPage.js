@@ -1,5 +1,6 @@
 // eslint-disable-next-line import/no-cycle
 import SignInPage from './SignInPage.js';
+import NotificationBlock from './NotificationBlock.js';
 
 export default class RegistrationPage {
   constructor(firebase, mainSection, headerSection, logo) {
@@ -67,10 +68,14 @@ export default class RegistrationPage {
   signUp = (event) => {
     event.preventDefault();
     this.firebase.signUP(this.emailField.value, this.passwordField.value, this.usernameField.value)
-      .then((obj) => {
-        alert(obj.email);
+      .then(() => {
+        const notification = new NotificationBlock(this.header, 'Successful registration', false);
+        notification.showNotification();
       })
-      .catch((e) => alert(e));
+      .catch((e) => {
+        const error = new NotificationBlock(this.header, e, true);
+        error.showNotification();
+      });
   }
 
   goToSignIn() {

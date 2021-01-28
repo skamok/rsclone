@@ -1,5 +1,6 @@
 import Firebase from './Firebase.js';
 import AuthorizationPage from './AuthorizationPageCreation.js';
+import MainPage from './MainPage.js';
 
 const firebaseConfig = {
   apiKey: 'AIzaSyB1IcbVVCqWFMAOoFpt8K19T63RsKTXHoI',
@@ -17,11 +18,23 @@ const logo = document.querySelector('.logo');
 
 export default class App {
   constructor() {
-    this.firebase = new Firebase(firebaseConfig, true);
+    this.firebase = new Firebase(firebaseConfig, false);
     this.authorizationPage = new AuthorizationPage(this.firebase, headerSection, mainSection, logo);
   }
 
   init() {
-    this.authorizationPage.createAuthorizationPage();
+    // this.authorizationPage.createAuthorizationPage();
+    this.firebase.authState(this.auth);
+  }
+
+  auth = (user) => {
+    if (user !== null) {
+      this.firebase.log('App.auth User is signed IN', user.email, user.uid);
+      const mainPage = new MainPage(this.firebase, mainSection, headerSection, logo);
+      mainPage.createMainPage();
+    } else {
+      this.firebase.log('App.auth User is signed out');
+      this.authorizationPage.createAuthorizationPage();
+    }
   }
 }

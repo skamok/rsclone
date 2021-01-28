@@ -13,7 +13,7 @@ export default class AddLotPage {
   createAddLotPage() {
     this.formLot = document.createElement('form');
     this.formLot.setAttribute('name', 'form_lot');
-    this.formLot.classList.add('form_lot');
+    this.formLot.classList.add('form_lot', 'animation');
     this.container.appendChild(this.formLot);
     this.formLot.addEventListener('submit', this.formLotValidation);
 

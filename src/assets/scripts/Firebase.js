@@ -10,6 +10,7 @@ export default class Firebase {
     this.fireapp = firebase.initializeApp(firebaseConfig);
     this.log('firebase.initializeApp');
     this.auth = this.fireapp.auth();
+    /*
     this.auth.onAuthStateChanged((user) => {
       if (user) {
         this.log('firebase.onAuthStateChanged User is signed IN', user.email, user.uid);
@@ -17,13 +18,19 @@ export default class Firebase {
         this.log('firebase.onAuthStateChanged User is signed out');
       }
     });
+    */
     this.database = this.fireapp.database();
     this.storage = this.fireapp.storage();
     this.storageRef = this.storage.ref();
     this.storageLotsRef = this.storageRef.child('lots');
+    this.storageUsersRef = this.storageRef.child('users');
     this.usersNode = this.database.ref('users');
     this.lotsNode = this.database.ref('lots');
     this.chatsNode = this.database.ref('chats');
+  }
+
+  authState(foo) {
+    this.auth.onAuthStateChanged(foo);
   }
 
   signUP(email, password, nick) {
@@ -86,6 +93,54 @@ export default class Firebase {
 
   signOUT() {
     this.auth.signOut();
+  }
+
+  addUserAvatar(dataurl) {
+    const userID = this.auth.currentUser.uid;
+    const userStorageRef = this.storageUsersRef.child(userID);
+    const avatarRef = userStorageRef.child('avatar');
+    return avatarRef.putString(dataurl, 'data_url')
+      .then((uploadTaskSnapshot) => uploadTaskSnapshot.ref.getDownloadURL())
+      .then((downloadURL) => {
+        this.log('firebase.addUserAvatar downloadURL = ', downloadURL);
+        const userAvatarRef = this.usersNode.child(`${userID}/avatarURL`);
+        return userAvatarRef.set(downloadURL);
+      })
+      .then(() => {
+        this.log('firebase.addUserAvatar avatar loaded');
+        return Promise.resolve('ok');
+      })
+      .catch((e) => {
+        const obj = {
+          code: e.code,
+          message: e.message
+        };
+        this.log('firebase.addUserAvatar error', obj);
+        throw e;
+      });
+  }
+
+  addUserInfo(nickname, phone, location) {
+    const userID = this.auth.currentUser.uid;
+    // const userRef = this.usersNode.child(userID);
+    const updates = {};
+    updates[`/users/${userID}/nick`] = nickname;
+    updates[`/users/${userID}/phone`] = phone;
+    updates[`/users/${userID}/location`] = location;
+    this.log('firebase.addUserInfo updates = ', updates);
+    return this.database.ref().update(updates)
+      .then(() => {
+        this.log('firebase.addUserInfo ok');
+        return Promise.resolve('ok');
+      })
+      .catch((e) => {
+        const obj = {
+          code: e.code,
+          message: e.message
+        };
+        this.log('firebase.addUserInfo error', obj);
+        throw e;
+      });
   }
 
   addLotSinglePic(lot) {
@@ -253,6 +308,32 @@ export default class Firebase {
       });
   }
 
+  readCurrentUserChats() {
+    const userID = this.auth.currentUser.uid;
+    const refUser = this.usersNode.child(userID);
+    return refUser.once('value')
+      .then((dataSnapshot) => {
+        const user = dataSnapshot.val();
+        const { chats } = user;
+        if (chats === undefined) {
+          return Promise.resolve([]);
+        }
+        return Firebase.readNodesByID(chats, this.chatsNode);
+      })
+      .then((data) => {
+        this.log('firebase.readCurrentUserChats', data);
+        return Promise.resolve(data);
+      })
+      .catch((e) => {
+        const obj = {
+          code: e.code,
+          message: e.message
+        };
+        this.log('firebase.readCurrentUserChats error', obj);
+        throw e;
+      });
+  }
+
   readCurrentUserWinLots() {
     const userID = this.auth.currentUser.uid;
     const refUser = this.usersNode.child(userID);
@@ -318,6 +399,40 @@ export default class Firebase {
           message: e.message
         };
         this.log('firebase.readUsers error', obj);
+        throw e;
+      });
+  }
+
+  readUserByID(userID) {
+    const refUser = this.usersNode.child(userID);
+    return refUser.once('value')
+      .then((dataSnapshot) => {
+        const user = dataSnapshot.val();
+        return Promise.resolve(user);
+      })
+      .catch((e) => {
+        const obj = {
+          code: e.code,
+          message: e.message
+        };
+        this.log('firebase.readUserByID error', obj);
+        throw e;
+      });
+  }
+
+  readLotByID(lotID) {
+    const refLot = this.lotsNode.child(lotID);
+    return refLot.once('value')
+      .then((dataSnapshot) => {
+        const lot = dataSnapshot.val();
+        return Promise.resolve(lot);
+      })
+      .catch((e) => {
+        const obj = {
+          code: e.code,
+          message: e.message
+        };
+        this.log('firebase.readLotByID error', obj);
         throw e;
       });
   }
@@ -409,6 +524,36 @@ export default class Firebase {
     throw new Error('error');
   }
 
+  sendMessage(chat, message) {
+    const currentUserID = this.auth.currentUser.uid;
+    const messagesRef = this.chatsNode.child(chat.chatID).child('messages');
+    const messageID = messagesRef.push().key;
+    const messageObj = {
+      messageID,
+      message,
+      userID: currentUserID,
+      dtCreate: (new Date()).toJSON()
+    };
+    return messagesRef.child(messageID).set(messageObj)
+      .then(() => {
+        this.log('firebase.sendMessage new messageID = ', messageID);
+        return Promise.resolve(messageID);
+      })
+      .catch((e) => {
+        const obj = {
+          code: e.code,
+          message: e.message
+        };
+        this.log('firebase.sendMessage error', obj);
+        throw e;
+      });
+  }
+
+  readMessagesContinues(chatID, callbackFunction) {
+    const messagesRef = this.chatsNode.child(chatID).child('messages');
+    return messagesRef.on('child_added', callbackFunction);
+  }
+
   addMessageFromLot(lotID, lotOwner, message) {
     const currentUserID = this.auth.currentUser.uid;
     if (currentUserID === lotOwner) {
@@ -425,7 +570,12 @@ export default class Firebase {
     // check if chat exist
     return this.chatsNode.orderByChild('lotID').equalTo(lotID).once('value')
       .then((lotsTable) => {
-        const chatsArray = Object.values(lotsTable.val());
+        let chatsArray;
+        if ((lotsTable.val() !== null) && (lotsTable.val() !== undefined)) {
+          chatsArray = Object.values(lotsTable.val());
+        } else {
+          chatsArray = [];
+        }
         const exist = chatsArray.find((chat) => chat.userFirst === currentUserID);
         if (exist === undefined) {
           this.log('firebase.addMessageFromLot need new chat');
@@ -568,7 +718,7 @@ export default class Firebase {
         .then((uploadTaskSnapshot) => uploadTaskSnapshot.ref.getDownloadURL())
         .then((downloadURL) => {
           imgURLs.push(downloadURL);
-          this.log('firebase.loadFiles downloadURL = ', downloadURL);
+          // this.log('firebase.loadFiles downloadURL = ', downloadURL);
         });
     }
     return imgURLs;
@@ -584,7 +734,7 @@ export default class Firebase {
         .then((uploadTaskSnapshot) => uploadTaskSnapshot.ref.getDownloadURL())
         .then((downloadURL) => {
           imgURLs.push(downloadURL);
-          this.log('firebase.loadFiles downloadURL = ', downloadURL);
+          // this.log('firebase.loadFiles downloadURL = ', downloadURL);
         });
     }
     return imgURLs;

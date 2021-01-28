@@ -2,12 +2,13 @@
 import CurrentLotPage from './CurrentLotPage.js';
 
 export default class MainPageLots {
-  constructor(firebase, lotsContainer, main, header, errorBlock) {
+  constructor(firebase, lotsContainer, main, header, errorBlock, userData) {
     this.firebase = firebase;
     this.container = lotsContainer;
     this.main = main;
     this.header = header;
     this.errorBlock = errorBlock;
+    this.userData = userData;
   }
 
   createMainPageLots() {
@@ -19,9 +20,10 @@ export default class MainPageLots {
             const keys = Object.keys(allLotsData);
             for (let i = 0; i < keys.length; i++) {
               this.lotCard = document.createElement('div');
-              this.lotCard.classList.add('lot_card');
+              this.lotCard.classList.add('lot_card', 'animation');
               this.lotCard.addEventListener('click', () => {
-                const lotPage = new CurrentLotPage(allLotsData[keys[i]], this.header, this.main, this.firebase, false);
+                const lotPage = new CurrentLotPage(allLotsData[keys[i]], this.header, this.main,
+                  this.firebase, false, userData);
                 lotPage.createCurrentLotPage();
               });
 
@@ -49,8 +51,12 @@ export default class MainPageLots {
 
               this.toWishesButton = document.createElement('img');
 
-              if (userData.wishLots.includes(keys[i])) {
-                this.toWishesButton.src = './assets/images/red-heart.png';
+              if (userData.wishLots !== undefined) {
+                if (userData.wishLots.includes(keys[i])) {
+                  this.toWishesButton.src = './assets/images/red-heart.png';
+                } else {
+                  this.toWishesButton.src = './assets/images/heart.png';
+                }
               } else {
                 this.toWishesButton.src = './assets/images/heart.png';
               }
