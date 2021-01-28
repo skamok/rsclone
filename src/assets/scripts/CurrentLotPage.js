@@ -224,8 +224,8 @@ export default class CurrentLotPage {
         const winNotification = new NotificationBlock(this.header, 'You win! Connect to owner.', false);
         winNotification.showNotification();
       })
-      .catch((e) => {
-        const takeError = new NotificationBlock(this.header, e.message, true);
+      .catch(() => {
+        const takeError = new NotificationBlock(this.header, 'You are owner!', true);
         takeError.showNotification();
       });
   }
