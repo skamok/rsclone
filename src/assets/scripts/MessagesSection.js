@@ -13,7 +13,10 @@ export default class MessagesSection {
   }
 
   createMessagesSection() {
-    const winLots = [...this.winLotsData];
+    let winLots = [];
+    if (this.winLotsData) {
+      winLots = [...this.winLotsData];
+    }
     this.parentContainer.innerHTML = '';
     this.firebase.readLots()
       .then((allLots) => {
