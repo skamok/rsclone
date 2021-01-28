@@ -1,5 +1,7 @@
 /* eslint-disable import/no-cycle */
 import MainPageLots from './MainPageLots.js';
+// eslint-disable-next-line import/named
+import { startMap } from './inputMap.js';
 import SignInPage from './SignInPage.js';
 
 export default class SettingsPage {
@@ -99,7 +101,7 @@ export default class SettingsPage {
         if (data.phone !== undefined) {
           this.inputPhone.setAttribute('value', `${data.phone}`);
         }
-        this.inputPhone.setAttribute('placeholder', '+375 XX XXXXXXX');
+        this.inputPhone.setAttribute('placeholder', '+375 XX XXX XX XX');
         this.formSetting.appendChild(this.inputPhone);
         this.inputPhone.addEventListener('keyup', this.addSpaceInInputPhone.bind(this));
 
@@ -108,15 +110,30 @@ export default class SettingsPage {
         this.location.innerText = 'Your location';
         this.formSetting.appendChild(this.location);
 
-        this.inputLocation = document.createElement('input');
-        this.inputLocation.setAttribute('type', 'text');
-        this.inputLocation.setAttribute('name', 'location');
-        this.inputLocation.setAttribute('class', 'name_lot_input');
+        this.wrapInputLocationMap = document.createElement('div');
+        this.wrapInputLocationMap.setAttribute('id', 'wrap_input_map');
+        this.formSetting.appendChild(this.wrapInputLocationMap);
+
+        this.inputLocationMap = document.createElement('input');
+        this.inputLocationMap.setAttribute('type', 'text');
+        this.inputLocationMap.setAttribute('id', 'suggest');
+        this.inputLocationMap.setAttribute('name', 'location');
+        this.inputLocationMap.setAttribute('placeholder', 'City street house number');
+        this.inputLocationMap.classList.add('input_map');
+        this.wrapInputLocationMap.appendChild(this.inputLocationMap);
+
         if (data.location !== undefined) {
-          this.inputLocation.setAttribute('value', `${data.location}`);
+          this.inputLocationMap.setAttribute('value', `${data.location}`);
         }
-        this.inputLocation.setAttribute('placeholder', 'Homyel');
-        this.formSetting.appendChild(this.inputLocation);
+
+        this.errMessage = document.createElement('p');
+        this.errMessage.setAttribute('id', 'notice');
+        this.formSetting.appendChild(this.errMessage);
+
+        this.mapContainer = document.createElement('div');
+        this.mapContainer.setAttribute('id', 'map');
+        this.formSetting.appendChild(this.mapContainer);
+        startMap();
 
         this.btnSubmit = document.createElement('input');
         this.btnSubmit.setAttribute('type', 'submit');
@@ -142,46 +159,50 @@ export default class SettingsPage {
     signInPage.createSignInPage();
   }
 
-  addSpaceInInputPhone() {
+  addSpaceInInputPhone(e) {
     const numberLength = this.inputPhone.value.length;
-    if (numberLength === 4 || numberLength === 7 || numberLength === 11 || numberLength === 14) {
-      this.inputPhone.value += ' ';
+    if (e.key !== 'Backspace') {
+      if (numberLength === 4 || numberLength === 7 || numberLength === 11 || numberLength === 14) {
+        this.inputPhone.value += ' ';
+      }
     }
   }
 
   changeAvatar = (e) => {
-    this.avatar.innerHTML = '';
-    const MAX_WIDTH = 150;
-    const MAX_HEIGHT = 150;
-    const img = document.createElement('img');
-    img.src = window.URL.createObjectURL(e.target.files[0]);
-    img.onload = () => {
-      let { width } = img;
-      let { height } = img;
-      height *= MAX_WIDTH / width;
-      width = MAX_WIDTH;
-      if (height < MAX_HEIGHT) {
-        width *= MAX_HEIGHT / height;
-        height = MAX_HEIGHT;
-      }
-      img.width = width;
-      img.height = height;
-      this.avatar.appendChild(img);
-      const profileImage = this.header.querySelector('.profile_image');
-      profileImage.src = window.URL.createObjectURL(e.target.files[0]);
-      if (img.width === 150) {
-        const divider = img.width / 40;
-        profileImage.style.width = `${img.width / divider}px`;
-        profileImage.style.height = `${img.height / divider}px`;
-      } else {
-        const divider = img.height / 40;
-        profileImage.width = img.width / divider;
-        profileImage.height = img.height / divider;
-      }
-    };
-    this.resizePhotoForServer()
-      .then((dataURLs) => this.firebase.addUserAvatar(dataURLs[0]))
-      .then(() => alert('photo added'));
+    if (e.target.files.length !== 0) {
+      this.avatar.innerHTML = '';
+      const MAX_WIDTH = 150;
+      const MAX_HEIGHT = 150;
+      const img = document.createElement('img');
+      img.src = window.URL.createObjectURL(e.target.files[0]);
+      img.onload = () => {
+        let { width } = img;
+        let { height } = img;
+        height *= MAX_WIDTH / width;
+        width = MAX_WIDTH;
+        if (height < MAX_HEIGHT) {
+          width *= MAX_HEIGHT / height;
+          height = MAX_HEIGHT;
+        }
+        img.width = width;
+        img.height = height;
+        this.avatar.appendChild(img);
+        const profileImage = this.header.querySelector('.profile_image');
+        profileImage.src = window.URL.createObjectURL(e.target.files[0]);
+        if (img.width === 150) {
+          const divider = img.width / 40;
+          profileImage.style.width = `${img.width / divider}px`;
+          profileImage.style.height = `${img.height / divider}px`;
+        } else {
+          const divider = img.height / 40;
+          profileImage.style.width = `${img.width / divider}px`;
+          profileImage.style.height = `${img.height / divider}px`;
+        }
+      };
+      this.resizePhotoForServer()
+        .then((dataURLs) => this.firebase.addUserAvatar(dataURLs[0]))
+        .then(() => alert('photo added'));
+    }
   }
 
   formUserValidation = (e) => {
@@ -189,19 +210,18 @@ export default class SettingsPage {
     const listMessage = document.querySelectorAll('.message_err');
     let inputError = false;
     listMessage.forEach((elem) => { elem.remove(); });
-    if (this.formSetting.nickName.value.length === 0) {
+    if (this.formSetting.nickName.value.length === 0 || this.errMessage.classList.contains('err_message')) {
       inputError = true;
       this.formSetting.nickName.after(this.createMessageError('add your name'));
     }
 
-    if (!(/^[+][\d]{3} [\d]{2} [\d]{2,3}[\d]{2,3}[\d]{2,3}$/.test(this.formSetting.phone.value))) {
+    if (!(/^[+][\d]{3} [\d]{2} [\d]{3} [\d]{2} [\d]{2}$/.test(this.formSetting.phone.value))) {
       inputError = true;
-      this.formSetting.phone.after(this.createMessageError('enter phone number format +XXX XX XXXXXXX'));
+      this.formSetting.phone.after(this.createMessageError('enter phone number format +XXX XX XXX XX XX'));
     }
 
     if (this.formSetting.location.value.length === 0) {
       inputError = true;
-      this.formSetting.location.after(this.createMessageError('add your location'));
     }
 
     if (inputError === false) {
