@@ -1,5 +1,6 @@
 import RealDatabase from './RealDatabase.js';
 import MainPageLots from './MainPageLots.js';
+import NotificationBlock from './NotificationBlock.js';
 
 export default class AddLotPage {
   constructor(сontainer, firebase, header, main) {
@@ -146,10 +147,13 @@ export default class AddLotPage {
             this.firebase.auth.currentUser.uid);
           return this.firebase.addLotMultiPicURL(lotObj);
         })
-        .then(() => alert('lot add'));
-      const mainPageLots = new MainPageLots(this.firebase, this.container, this.main, this.header,
-        this.errorBlock);
-      mainPageLots.createMainPageLots();
+        .then(() => {
+          const lotAddedNotification = new NotificationBlock(this.header, 'Lot added to chart');
+          lotAddedNotification.showNotification();
+          const mainPageLots = new MainPageLots(this.firebase, this.container, this.main, this.header,
+            this.errorBlock);
+          mainPageLots.createMainPageLots();
+        });
     }
   }
 
