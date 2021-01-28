@@ -734,7 +734,7 @@ export default class Firebase {
         .then((uploadTaskSnapshot) => uploadTaskSnapshot.ref.getDownloadURL())
         .then((downloadURL) => {
           imgURLs.push(downloadURL);
-          this.log('firebase.loadFiles downloadURL = ', downloadURL);
+          // this.log('firebase.loadFiles downloadURL = ', downloadURL);
         });
     }
     return imgURLs;
