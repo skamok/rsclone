@@ -195,6 +195,7 @@ export default class CurrentLotPage {
         if (user.location !== undefined) {
           this.mapPopapContainer = document.createElement('div');
           this.mapPopapContainer.setAttribute('id', 'map_popap');
+          this.mapPopapContainer.classList.add('animation');
           this.popUpContainer.appendChild(this.mapPopapContainer);
 
           this.closePopupMapButton = document.createElement('img');
