@@ -364,6 +364,9 @@ export default class Firebase {
     const retPromise = this.lotsNode.orderByChild('state').equalTo(10).once('value').then((snapshot) => {
       const data = snapshot.val();
       this.log('firebase.readLots', data);
+      if (data === null) {
+        return [];
+      }
       return data;
     });
     return retPromise;
