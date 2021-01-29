@@ -195,6 +195,7 @@ export default class CurrentLotPage {
         if (user.location !== undefined) {
           this.mapPopapContainer = document.createElement('div');
           this.mapPopapContainer.setAttribute('id', 'map_popap');
+          this.mapPopapContainer.classList.add('animation');
           this.popUpContainer.appendChild(this.mapPopapContainer);
 
           this.closePopupMapButton = document.createElement('img');
@@ -224,8 +225,8 @@ export default class CurrentLotPage {
         const winNotification = new NotificationBlock(this.header, 'You win! Connect to owner.', false);
         winNotification.showNotification();
       })
-      .catch((e) => {
-        const takeError = new NotificationBlock(this.header, e.message, true);
+      .catch(() => {
+        const takeError = new NotificationBlock(this.header, 'You are owner!', true);
         takeError.showNotification();
       });
   }

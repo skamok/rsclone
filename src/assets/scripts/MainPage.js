@@ -19,6 +19,10 @@ export default class MainPage {
       .then((userData) => {
         this.main.innerHTML = '';
 
+        this.header.innerHTML = '';
+
+        this.header.appendChild(this.logo);
+
         this.header.classList.add('header_entered');
         this.logo.classList.add('logo_entered');
 

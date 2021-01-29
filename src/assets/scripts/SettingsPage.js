@@ -3,6 +3,7 @@ import MainPageLots from './MainPageLots.js';
 // eslint-disable-next-line import/named
 import { startMap } from './inputMap.js';
 import SignInPage from './SignInPage.js';
+import NotificationBlock from './NotificationBlock.js';
 
 export default class SettingsPage {
   constructor(сontainer, firebase, header, main, logo, profileContainer) {
@@ -201,7 +202,10 @@ export default class SettingsPage {
       };
       this.resizePhotoForServer()
         .then((dataURLs) => this.firebase.addUserAvatar(dataURLs[0]))
-        .then(() => alert('photo added'));
+        .then(() => {
+          const notification = new NotificationBlock(this.header, 'Photo Successfully uploaded');
+          notification.showNotification();
+        });
     }
   }
 
@@ -227,7 +231,10 @@ export default class SettingsPage {
     if (inputError === false) {
       this.firebase.addUserInfo(this.formSetting.nickName.value, this.formSetting.phone.value,
         this.formSetting.location.value)
-        .then(() => alert('info added'));
+        .then(() => {
+          const notificationSettings = new NotificationBlock(this.header, 'Settings successfully changed');
+          notificationSettings.showNotification();
+        });
       const mainPageLots = new MainPageLots(this.firebase, this.container, this.main, this.header,
         this.errorBlock);
       mainPageLots.createMainPageLots();

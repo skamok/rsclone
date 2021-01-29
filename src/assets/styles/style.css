@@ -1207,6 +1207,15 @@ footer {
   .message_textarea {
     width: 83%;
   }
+
+  .lot_description_title {
+    font-size: 1rem;
+    padding: 2px;
+  }
+
+  .message_date_day, .message_date_time {
+    font-size: 1rem;
+}
 }
 
 .avatar-photo, .wrap_profile_img {
