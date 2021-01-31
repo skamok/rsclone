@@ -85,10 +85,12 @@ export default class MessagesSection {
               if (allLots[messagesData[i].lotID]) {
                 this.lotDescriptionTitle.innerText = allLots[messagesData[i].lotID].title;
                 this.lotDescription.appendChild(this.lotDescriptionTitle);
-              } else {
+              } else if (winLots.length) {
                 this.lotDescriptionTitle.innerText = winLots[0].title;
                 this.lotDescription.appendChild(this.lotDescriptionTitle);
                 winLots.shift();
+              } else {
+                this.separateMessageBlock.parentNode.removeChild(this.separateMessageBlock);
               }
             }
           });
