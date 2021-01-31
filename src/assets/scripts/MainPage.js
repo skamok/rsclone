@@ -143,7 +143,7 @@ export default class MainPage {
             this.burgerMenuTaken = document.createElement('div');
             this.burgerMenuTaken.classList.add('burger_menu_element');
             this.burgerMenuTaken.addEventListener('click', () => {
-              const takenList = new TakenLotsList(this.firebase, this.lotsContainer, this.header, this.main);
+              const takenList = new TakenLotsList(this.firebase, this.lotsContainer, this.header, this.main, userData);
               takenList.createTakenList();
             });
 
