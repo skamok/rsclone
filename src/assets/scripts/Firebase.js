@@ -557,6 +557,12 @@ export default class Firebase {
     return messagesRef.on('child_added', callbackFunction);
   }
 
+  readCurrentUserKarmaContinues(callbackFunction) {
+    const currentUserID = this.auth.currentUser.uid;
+    const currentUserKarmaRef = this.usersNode.child(currentUserID).child('karmaCount');
+    return currentUserKarmaRef.on('value', callbackFunction);
+  }
+
   addMessageFromLot(lotID, lotOwner, message) {
     const currentUserID = this.auth.currentUser.uid;
     if (currentUserID === lotOwner) {

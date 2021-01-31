@@ -14,6 +14,13 @@ export default class MainPage {
     this.firebase = firebase;
   }
 
+  reloadKarmaCount = (dataSnapshot) => {
+    const karmaCount = dataSnapshot.val();
+    if ((karmaCount !== undefined) && (karmaCount !== null)) {
+      this.karmaPoints.innerText = `${karmaCount} karma`;
+    }
+  }
+
   createMainPage() {
     this.firebase.readCurrentUserWinLots()
       .then((winLotsData) => {
@@ -66,6 +73,7 @@ export default class MainPage {
             this.karmaPoints.classList.add('karma_header');
             this.karmaPoints.innerText = `${userData.karmaCount} karma`;
             this.profileSubcontainer.appendChild(this.karmaPoints);
+            this.firebase.readCurrentUserKarmaContinues(this.reloadKarmaCount);
 
             this.header.appendChild(this.profileContainer);
 
