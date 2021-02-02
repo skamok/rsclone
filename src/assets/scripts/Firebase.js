@@ -360,6 +360,33 @@ export default class Firebase {
       });
   }
 
+  readCurrentUserAwayLots() {
+    const userID = this.auth.currentUser.uid;
+    const refUser = this.usersNode.child(userID);
+    return refUser.once('value')
+      .then((dataSnapshot) => {
+        const user = dataSnapshot.val();
+        const userLots = user.lots;
+        if ((userLots === undefined) || (userLots === null)) {
+          return Promise.resolve([]);
+        }
+        return Firebase.readNodesByID(userLots, this.lotsNode);
+      })
+      .then((data) => {
+        const awayLots = data.filter((lot) => lot.state === 70);
+        this.log('firebase.readCurrentUserAwayLots', awayLots);
+        return Promise.resolve(awayLots);
+      })
+      .catch((e) => {
+        const obj = {
+          code: e.code,
+          message: e.message
+        };
+        this.log('firebase.readCurrentUserAwayLots error', obj);
+        throw e;
+      });
+  }
+
   readLots() {
     const retPromise = this.lotsNode.orderByChild('state').equalTo(10).once('value').then((snapshot) => {
       const data = snapshot.val();
