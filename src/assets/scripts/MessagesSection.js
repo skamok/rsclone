@@ -86,8 +86,14 @@ export default class MessagesSection {
                 this.lotDescriptionTitle.innerText = allLots[messagesData[i].lotID].title;
                 this.lotDescription.appendChild(this.lotDescriptionTitle);
               } else if (winLots.length) {
-                this.lotDescriptionTitle.innerText = winLots[0].title;
-                this.lotDescription.appendChild(this.lotDescriptionTitle);
+                // eslint-disable-next-line no-restricted-syntax
+                for (const item of winLots) {
+                  if (messagesData[i].lotID === item.lotID) {
+                    this.lotDescriptionTitle.innerText = item.title;
+                    this.lotDescription.appendChild(this.lotDescriptionTitle);
+                  }
+                }
+
                 winLots.shift();
               } else if (this.userAwayLots.length) {
                 for (let j = 0; j < this.userAwayLots.length; j++) {
