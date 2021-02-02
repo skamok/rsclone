@@ -89,11 +89,23 @@ export default class MessagesSection {
                 this.lotDescriptionTitle.innerText = winLots[0].title;
                 this.lotDescription.appendChild(this.lotDescriptionTitle);
                 winLots.shift();
+              } else if (this.userAwayLots.length) {
+                for (let j = 0; j < this.userAwayLots.length; j++) {
+                  if ((this.userAwayLots[j].lotID === messagesData[i].lotID)
+                    && (this.userAwayLots[j].userID === messagesData[i].userSecond)) {
+                    this.lotDescriptionTitle.innerText = this.userAwayLots[j].title;
+                    this.lotDescription.appendChild(this.lotDescriptionTitle);
+                    this.separateMessageBlock.style.opacity = '.5';
+                  }
+                }
               } else {
                 this.separateMessageBlock.parentNode.removeChild(this.separateMessageBlock);
               }
             }
           });
       });
+    this.firebase.readCurrentUserAwayLots().then((data) => { this.userAwayLots = data; })
+      // eslint-disable-next-line no-console
+      .catch(() => { console.log('caught'); });
   }
 }
